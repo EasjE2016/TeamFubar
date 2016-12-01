@@ -4,11 +4,44 @@
     xmlns:local="using:FællesSpisning"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:MainViewModel="using:FællesSpisning.MainViewModel"
+    xmlns:MainViewModel="using:FællesSpisning.ViewModel"
+    xmlns:vm="using:FællesSpisning.ViewModel"
     x:Class="FællesSpisning.MainPage"
     mc:Ignorable="d">
-
+    <Page.DataContext>
+        <vm:MainViewModel></vm:MainViewModel>
+    </Page.DataContext>
+    
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Pivot x:Name="MainMenu">
+            <PivotItem Header="Tilmeld">
+                
+            </PivotItem>
+            <PivotItem Header="Opret hus">
+                <Grid>
+                    <Grid.DataContext>
+                        <vm:NewHouseViewModel />
+                    </Grid.DataContext>
+                    
+                    <TextBlock x:Name="titel1Txt" HorizontalAlignment="Center" Text="Opret husstand" Margin="45, 20, 0, 0" FontSize="36"/>
+                    <TextBox x:Name="husNrTxt" HorizontalAlignment="Center" Margin="45,70,0,0" VerticalAlignment="Top" Width="270" PlaceholderText="Hus nummer" InputScope="Number"/>
+                    <ComboBox x:Name="VoksenCBox" HorizontalAlignment="Center" Margin="-95,110,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding VoksneCBoxOptions}" PlaceholderText="Voksne 15+"/>
+                    <ComboBox x:Name="UngeCBox" HorizontalAlignment="Center" Margin="185,110,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding UngeCBoxOptions}" PlaceholderText="Unge 7-15"/>
+                    <ComboBox x:Name="Børn36CBox" HorizontalAlignment="Center" Margin="-95,150,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding Børn36CBoxOptions}" PlaceholderText="Børn 3-6"/>
+                    <ComboBox x:Name="BørnU3CBox" HorizontalAlignment="Center" Margin="185,150,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding BørnU3CBoxOptions}" PlaceholderText="Børn U3"/>
+                    <Button x:Name="tilmeldBtn" Content="Tilmeld!" HorizontalAlignment="Center" Margin="45,190,0,0" VerticalAlignment="Top" Width="270"/>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Liste">
+                <PivotItem>
+                    <TextBlock Text="Content2"></TextBlock>
+                </PivotItem>
+            </PivotItem>
+            <PivotItem Header="Adminstration">
+                <TextBlock Text="Content3"></TextBlock>
+            </PivotItem>
         
+        </Pivot>
     </Grid>
 </Page>

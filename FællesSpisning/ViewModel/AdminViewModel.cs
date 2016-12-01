@@ -7,7 +7,7 @@ using System.ComponentModel;
 using FællesSpisning.Model;
 using Windows.UI.Popups;
 
-namespace FællesSpisning.MainViewModel
+namespace FællesSpisning.ViewModel
 {
     class AdminViewModel : INotifyPropertyChanged
     {

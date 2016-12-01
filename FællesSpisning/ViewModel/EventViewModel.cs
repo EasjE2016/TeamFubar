@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
-namespace FællesSpisning.MainViewModel
+namespace FællesSpisning.ViewModel
 {
     class EventViewModel : INotifyPropertyChanged
     {
