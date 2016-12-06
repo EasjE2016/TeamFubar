@@ -6,24 +6,47 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:MainViewModel="using:FællesSpisning.ViewModel"
     xmlns:vm="using:FællesSpisning.ViewModel"
+    xmlns:Converter="using:FællesSpisning.Model" 
     x:Class="FællesSpisning.MainPage"
     mc:Ignorable="d">
+
     <Page.DataContext>
         <vm:MainViewModel></vm:MainViewModel>
     </Page.DataContext>
-    
-    
+
+    <Page.Resources>
+        <Converter:DateTimeConverter
+            x:Key="DateTimeConverter" />
+    </Page.Resources>
+
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
         <Pivot x:Name="MainMenu">
-            <PivotItem Header="Tilmeld">
-                
+
+            <PivotItem Header="Tilmeld" Margin="10,10,14,-10">
+                <Grid>
+                    <Grid.DataContext>
+                        <vm:EventViewModel/>
+                    </Grid.DataContext>
+
+                    <CalendarDatePicker x:Name="TilmeldKalenderPicker" Date="{Binding DateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,0,0,0"/>
+                    <TextBox x:Name="SetEventName" Text="{Binding Test.EventName, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="64" />
+                    <ListView x:Name="DisplayDicOfEvents" ItemsSource="{Binding EventList}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="Black" BorderThickness="2" Margin="44,348,51,101" Height="143" Width="241" />
+                    <Button x:Name="AddtoDicEvent" Content="Add Event" Command="{Binding AddEvent, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="142,236,97,319" Width="97" Height="37"/>
+                    <TextBlock x:Name="HowResult" Text="{Binding Result.EventName}" />
+                    <Button x:Name="DisplayResult" Content="Display Event" Command="{Binding DisplayEvent, Mode=TwoWay}" />
+
+                </Grid>
+
             </PivotItem>
+
             <PivotItem Header="Opret hus">
                 <Grid>
                     <Grid.DataContext>
                         <vm:NewHouseViewModel />
                     </Grid.DataContext>
-                    
+
                     <TextBlock x:Name="titel1Txt" HorizontalAlignment="Center" Text="Opret husstand" Margin="45, 20, 0, 0" FontSize="36"/>
                     <TextBox x:Name="husNrTxt" HorizontalAlignment="Center" Margin="45,70,0,0" VerticalAlignment="Top" Width="270" PlaceholderText="Hus nummer" InputScope="Number"/>
                     <ComboBox x:Name="VoksenCBox" HorizontalAlignment="Center" Margin="-95,110,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding VoksneCBoxOptions}" PlaceholderText="Voksne 15+"/>
@@ -41,7 +64,7 @@
             <PivotItem Header="Adminstration">
                 <TextBlock Text="Content3"></TextBlock>
             </PivotItem>
-        
+
         </Pivot>
     </Grid>
 </Page>
