@@ -24,7 +24,7 @@
 
         <Pivot x:Name="MainMenu">
 
-            <PivotItem Header="Tilmeld" Margin="10,10,14,-10">
+            <PivotItem Header="Tilmeld">
                 <Grid>
                     <Grid.DataContext>
                         <vm:EventViewModel/>
