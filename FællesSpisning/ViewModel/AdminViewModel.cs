@@ -14,8 +14,8 @@ namespace FællesSpisning.ViewModel
     {
 
         public JobPerson NewJobPerson { get; set; }
-        public List<string> CBoxJobType { get; set; }
-        public RelayCommand AddPlanlægCommand { get; set; }
+        public RelayCommand AddJobPersonCommand { get; set; }
+        public RelayCommand RemoveJobPersonCommand { get; set; }
 
         private PlanListe _planliste;
 
@@ -25,40 +25,31 @@ namespace FællesSpisning.ViewModel
             set { _planliste = value; OnPropertyChanged(nameof(Planliste)); }
         }
 
-        private string jobpersonNavn;
+        private JobPerson _selectedJobPerson;
 
-        public string JobPersonNavn
+        public JobPerson SelectedJobPerson
         {
-            get { return jobpersonNavn; }
-            set { jobpersonNavn = value; OnPropertyChanged(nameof(JobPersonNavn)); }
+            get { return _selectedJobPerson; }
+            set { _selectedJobPerson = value; OnPropertyChanged(nameof(SelectedJobPerson)); }
         }
-
 
         public AdminViewModel()
         {
             Planliste = new PlanListe();
+            _selectedJobPerson = new JobPerson();
             NewJobPerson = new JobPerson();
-            AddPlanlægCommand = new RelayCommand(AddNewPlanlæg, AddPlanlægCanExecute);
-            AddCBoxType();
+            AddJobPersonCommand = new RelayCommand(AddNewJobPerson, null);
+            RemoveJobPersonCommand = new RelayCommand(RemoveSelectedJobPerson, null);
         }
 
-        private bool AddPlanlægCanExecute()
+        public void AddNewJobPerson()
         {
-            return this.jobpersonNavn != string.Empty;
-        }
-        public void AddNewPlanlæg()
-        {
-            JobPerson addJobPerson = new JobPerson()
-            {
-                JobPersonNavn = this.JobPersonNavn,
-            };
-            Planliste.Add(addJobPerson);
-            this.JobPersonNavn = string.Empty;
+            Planliste.Add(NewJobPerson);
         }
 
-        public void AddCBoxType()
+        public void RemoveSelectedJobPerson()
         {
-            CBoxJobType = new List<string>() { "Chefkok", "Kok", "Oprydder" };
+            Planliste.Remove(SelectedJobPerson);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

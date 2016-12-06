@@ -35,7 +35,7 @@
             </PivotItem>
             <PivotItem Header="Liste">
                 <PivotItem>
-                    <TextBlock Text="Content2"></TextBlock>
+                    
                 </PivotItem>
             </PivotItem>
             <PivotItem Header="Adminstration">
@@ -45,10 +45,11 @@
                     </Grid.DataContext>
 
                     <TextBlock x:Name="listeText" HorizontalAlignment="Left" Text="Planlægning" Margin="50,20,0,0" FontSize="18"/>
-                    <ComboBox x:Name="jobText" HorizontalAlignment="Center" Margin="185,70,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding CBoxJobType}" PlaceholderText="Jobtype"/>
-                    <Button x:Name="planlægButton" Content="Planlæg" HorizontalAlignment="Center" Margin="45,110,0,0" VerticalAlignment="Top" Width="270" Command="{Binding AddPlanlægCommand}"/>
-                    <ListView x:Name="listView" HorizontalAlignment="Left" Margin="50,70,0,0" Height="300" VerticalAlignment="Top" Width="100" ItemsSource="{Binding Planliste}"/>
-                    <TextBox x:Name="textBox" HorizontalAlignment="Center" Margin="-95,70,0,0" TextWrapping="Wrap" Text="{Binding NewJobPerson.JobPersonNavn, Mode=TwoWay}" VerticalAlignment="Top" Width="130"/>
+                    <Button x:Name="jobpersonButton" Content="Tilføj person" HorizontalAlignment="Center" Margin="-95,140,0,0" VerticalAlignment="Top" Command="{Binding AddJobPersonCommand}"/>
+                    <ListView x:Name="listView" HorizontalAlignment="Left" Margin="50,70,0,0" Height="300" VerticalAlignment="Top" Width="100" ItemsSource="{Binding Planliste}" SelectedItem="{Binding SelectedJobPerson, Mode=TwoWay}"/>
+                    <TextBox x:Name="textBox" HorizontalAlignment="Center" Margin="-95,70,0,0" TextWrapping="Wrap" Text="{Binding NewJobPerson.JobPersonNavn, Mode=TwoWay}" VerticalAlignment="Top" Width="130" Header="Navn"/>
+                    <Button x:Name="jobpersonButton2" Content="Fjern person" HorizontalAlignment="Center" Margin="185,140,0,0" VerticalAlignment="Top" Command="{Binding RemoveJobPersonCommand}"/>
+                    <TextBox x:Name="textBox1" HorizontalAlignment="Center" Margin="185,70,0,0" TextWrapping="Wrap" Text="{Binding NewJobPerson.JobPersonOpgave, Mode=TwoWay}" Width="130" VerticalAlignment="Top" Header="Opgave"/>
                 </Grid>
             </PivotItem>
         
