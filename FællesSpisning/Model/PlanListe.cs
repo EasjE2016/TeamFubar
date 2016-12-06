@@ -11,7 +11,7 @@ namespace FællesSpisning.Model
     {
         public PlanListe() : base()
         {
-
+            this.Add(new JobPerson() { JobPersonNavn = "Kenneth" });
         }
     }
 }

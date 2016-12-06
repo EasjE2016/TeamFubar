@@ -39,7 +39,17 @@
                 </PivotItem>
             </PivotItem>
             <PivotItem Header="Adminstration">
-                <TextBlock Text="Content3"></TextBlock>
+                <Grid>
+                    <Grid.DataContext>
+                        <vm:AdminViewModel/>
+                    </Grid.DataContext>
+
+                    <TextBlock x:Name="listeText" HorizontalAlignment="Left" Text="Planlægning" Margin="50,20,0,0" FontSize="18"/>
+                    <ComboBox x:Name="jobText" HorizontalAlignment="Center" Margin="185,70,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding CBoxJobType}" PlaceholderText="Jobtype"/>
+                    <Button x:Name="planlægButton" Content="Planlæg" HorizontalAlignment="Center" Margin="45,110,0,0" VerticalAlignment="Top" Width="270" Command="{Binding AddPlanlægCommand}"/>
+                    <ListView x:Name="listView" HorizontalAlignment="Left" Margin="50,70,0,0" Height="300" VerticalAlignment="Top" Width="100" ItemsSource="{Binding Planliste}"/>
+                    <TextBox x:Name="textBox" HorizontalAlignment="Center" Margin="-95,70,0,0" TextWrapping="Wrap" Text="{Binding NewJobPerson.JobPersonNavn, Mode=TwoWay}" VerticalAlignment="Top" Width="130"/>
+                </Grid>
             </PivotItem>
         
         </Pivot>
