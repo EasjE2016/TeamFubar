@@ -13,15 +13,25 @@ namespace FællesSpisning.Model
         public int AntalUnge { get; set; }
         public int AntalVoksne { get; set; }
         public int HusNr { get; set; }
-        
+
         public Hus()
         {
 
         }
 
+        //Overloaded Constructor
+        public Hus(int AntalBørnU3, int AntalBørn, int AntalUnge, int AntalVoksne, int HusNr)
+        {
+            this.AntalVoksne = AntalVoksne;
+            this.AntalBørn = AntalBørn;
+            this.AntalUnge = AntalUnge;
+            this.AntalVoksne = AntalVoksne;
+            this.HusNr = HusNr;
+        }
 
-
-
-
+        public override string ToString()
+        {
+            return $"Husnr: {HusNr}";
+        }
     }
 }

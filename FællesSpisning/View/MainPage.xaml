@@ -16,7 +16,14 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Pivot x:Name="MainMenu">
             <PivotItem Header="Tilmeld">
-                
+                <Grid>
+                    <Grid.DataContext>
+                        <vm:MainViewModel />
+                    </Grid.DataContext>
+
+                    <ComboBox x:Name="HusListeComboBox" Header="Huse" HorizontalAlignment="Center" Width="130" ItemsSource="{Binding HusListe}">
+                    </ComboBox>
+                </Grid>
             </PivotItem>
             <PivotItem Header="Opret hus">
                 <Grid>
@@ -25,12 +32,16 @@
                     </Grid.DataContext>
                     
                     <TextBlock x:Name="titel1Txt" HorizontalAlignment="Center" Text="Opret husstand" Margin="45, 20, 0, 0" FontSize="36"/>
-                    <TextBox x:Name="husNrTxt" HorizontalAlignment="Center" Margin="45,70,0,0" VerticalAlignment="Top" Width="270" PlaceholderText="Hus nummer" InputScope="Number"/>
-                    <ComboBox x:Name="VoksenCBox" HorizontalAlignment="Center" Margin="-95,110,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding VoksneCBoxOptions}" PlaceholderText="Voksne 15+"/>
-                    <ComboBox x:Name="UngeCBox" HorizontalAlignment="Center" Margin="185,110,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding UngeCBoxOptions}" PlaceholderText="Unge 7-15"/>
-                    <ComboBox x:Name="Børn36CBox" HorizontalAlignment="Center" Margin="-95,150,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding Børn36CBoxOptions}" PlaceholderText="Børn 3-6"/>
-                    <ComboBox x:Name="BørnU3CBox" HorizontalAlignment="Center" Margin="185,150,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding BørnU3CBoxOptions}" PlaceholderText="Børn U3"/>
-                    <Button x:Name="tilmeldBtn" Content="Tilmeld!" HorizontalAlignment="Center" Margin="45,190,0,0" VerticalAlignment="Top" Width="270"/>
+                    <TextBox x:Name="husNrTxt" Header="Hus Nummer" HorizontalAlignment="Center" Margin="45,70,0,0" VerticalAlignment="Top" Width="270" Text="{Binding TempHusNr, Mode=TwoWay}" PlaceholderText="Hus nummer" InputScope="Number"/>
+                    <ComboBox x:Name="VoksenCBox" Header="Voksne 15+" HorizontalAlignment="Center" Margin="-95,130,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding VoksneCBoxOptions}" SelectedIndex="{Binding NytHus.AntalVoksne, Mode=TwoWay}">
+                    </ComboBox>
+                    <ComboBox x:Name="UngeCBox" Header="Unge 7-15" HorizontalAlignment="Center" Margin="185,130,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding UngeCBoxOptions}" SelectedIndex="{Binding NytHus.AntalUnge, Mode=TwoWay}">
+                    </ComboBox>
+                    <ComboBox x:Name="Børn36CBox" Header="Børn 3-6" HorizontalAlignment="Center" Margin="-95,190,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding Børn36CBoxOptions}" SelectedIndex="{Binding NytHus.AntalBørn, Mode=TwoWay}">
+                    </ComboBox>
+                    <ComboBox x:Name="BørnU3CBox" Header="Børn U3" HorizontalAlignment="Center" Margin="185,190,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding BørnU3CBoxOptions}" SelectedIndex="{Binding NytHus.AntalBørnU3, Mode=TwoWay}">
+                    </ComboBox>
+                    <Button x:Name="tilmeldBtn" Content="Opret Hus" HorizontalAlignment="Center" Margin="45,260,0,0" VerticalAlignment="Top" Width="270" Command="{Binding AddNewHouseCommand}"/>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Liste">
@@ -39,9 +50,8 @@
                 </PivotItem>
             </PivotItem>
             <PivotItem Header="Adminstration">
-                <TextBlock Text="Content3"></TextBlock>
             </PivotItem>
-        
         </Pivot>
     </Grid>
 </Page>
+<!--ItemsSource="{Binding VoksneCBoxOptions}"-->
