@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using FællesSpisning.Model;
-using System.Linq.Expressions;
-
+using Windows.UI.Popups;
 
 namespace FællesSpisning.ViewModel
 {
@@ -14,6 +13,7 @@ namespace FællesSpisning.ViewModel
     {
         public RelayCommand AddEvent { get; set; }
         public RelayCommand DisplayEvent { get; set; }
+        public RelayCommand RemoveEvent { get; set; }
 
         private DateTime _dateTime = DateTime.Today;
         public DateTime DateTime 
@@ -38,46 +38,71 @@ namespace FællesSpisning.ViewModel
         }
 
         private TestValues _result;
-
         public TestValues Result
         {
             get { return _result; }
-            set { _result = value; }
+            set { _result = value; OnPropertyChanged(nameof(Result)); }
         }
-
-
-
 
 
         public EventViewModel()
         {
             AddEvent = new RelayCommand(AddEventOnDateTime, null);
             DisplayEvent = new RelayCommand(DisplayEventOnDateTime, null);
+            RemoveEvent = new RelayCommand(RemoveEventOnDateTime, null);
 
             Test = new TestValues();
             EventList = new TestList();
             Result = new TestValues();
-                 
+
         }
 
         
         public void AddEventOnDateTime()
         {
-            Test.EventTime = DateTime;             
-            EventList.Add(Test);
+            TestValues tempEvent = new TestValues();
+            tempEvent.EventTime = DateTime;
+            tempEvent.EventName = Test.EventName;
+
+            EventList.Add(tempEvent);
+
+
+            //Test.EventTime = DateTime;            
+            //EventList.Add(Test);
+
+            //if () - make if statement that detects if element with duplicate eventtime already is present.
+            //{
+            //    MessageDialog eventAlreadyPresent = new MessageDialog("Allerede planlagt en begivenhed på denne dato");
+            //    eventAlreadyPresent.Commands.Add(new UICommand { Label = "Ok" });
+            //    eventAlreadyPresent.ShowAsync().AsTask();
+                         
+            //}
         }
 
         public void DisplayEventOnDateTime()
         {
-            _result = EventList.Single(x => x.EventTime == DateTime);
+            try
+            {
+                Result = EventList.Where(x => x.EventTime == DateTime).First();
+                
 
-            //TestValues result = EventList.Contains(result.EventTime = DateTime);
-            
-            //List<int> list = new List<int>();
-            //var result = list.Find
+            }
+            catch (Exception)
+            {
+
+                MessageDialog noEvent = new MessageDialog("Ingen Begivenhed planlægt på dato");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+
+            }
+
+
         }
 
-        
+        public void RemoveEventOnDateTime()
+        {
+
+        }
 
         // propertychanged
         public event PropertyChangedEventHandler PropertyChanged;
