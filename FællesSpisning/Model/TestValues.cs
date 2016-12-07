@@ -11,11 +11,13 @@ namespace FællesSpisning.Model
         public DateTime EventTime { get; set; }
         public string EventName { get; set; }
 
-        public bool Equals(TestValues objtest)
+        public bool Equals(TestValues obj)
         {
-            return objtest.EventTime.Equals(EventTime);
+            return obj.EventTime.Equals(EventTime);
         }
 
+
+        
         public override bool Equals(object obj)
         {
             if (obj == this)

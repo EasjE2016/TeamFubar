@@ -94,39 +94,6 @@ namespace FællesSpisning.ViewModel
                 EventList.Add(tempEvent);
             }
 
-
-
-
-
-            //foreach (TestValues x in EventList)
-            //{
-            //    if (x.EventTime == tempEvent.EventTime)
-            //    {
-            //        MessageDialog eventAlreadyPresent = new MessageDialog("Allerede planlagt en begivenhed på denne dato");
-            //        eventAlreadyPresent.Commands.Add(new UICommand { Label = "Ok" });
-            //        eventAlreadyPresent.ShowAsync().AsTask();
-
-            //    }
-            //    else
-            //    {
-
-            //EventList.Add(tempEvent);
-
-            //}
-            //}
-
-
-            //if (EventList.Distinct().Count() != EventList.Count())
-            ////-make if statement that detects if element with duplicate eventtime already is present.
-            //{
-            //    MessageDialog eventAlreadyPresent = new MessageDialog("Allerede planlagt en begivenhed på denne dato");
-            //    eventAlreadyPresent.Commands.Add(new UICommand { Label = "Ok" });
-            //    eventAlreadyPresent.ShowAsync().AsTask();
-            //}
-            //else
-            //{
-            //    EventList.Add(tempEvent);
-            //}
         }
 
         public void DisplayEventOnDateTime()
@@ -134,8 +101,6 @@ namespace FællesSpisning.ViewModel
             try
             {
                 Result = EventList.Where(x => x.EventTime == DateTime).First();
-                
-
             }
             catch (Exception)
             {
@@ -145,8 +110,6 @@ namespace FællesSpisning.ViewModel
                 noEvent.ShowAsync().AsTask();
 
             }
-
-
         }
         
         // propertychanged
