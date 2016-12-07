@@ -26,7 +26,7 @@
                             x:Key="DateTimeConverter" />
                     </Grid.Resources>
                     <CalendarDatePicker x:Name="TilmeldKalenderPicker" Date="{Binding DateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="300,28,0,0"/>
-                    <ListView x:Name="Knepdejsælv" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="600" ItemsSource="{Binding Result, Mode=TwoWay}" BorderBrush="Black" BorderThickness="2"/>
+                    <ListView x:Name="TilmeldteListview" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="600" ItemsSource="{Binding Result, Mode=TwoWay}" BorderBrush="Black" BorderThickness="2"/>
                     <ComboBox x:Name="HusListeComboBox" Header="Huse" HorizontalAlignment="Center" Width="180" ItemsSource="{Binding HusListe, Mode=TwoWay}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
                     </ComboBox>
                     <Button x:Name="TilmeldBtn" Content="Tilmeld" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding AddEvent}" Margin="-75, 120, 0 ,0"/>
