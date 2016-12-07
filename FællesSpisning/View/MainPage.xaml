@@ -34,7 +34,8 @@
                     <TextBox x:Name="SetEventName" Text="{Binding Test.EventName, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="64" />
                     <ListView x:Name="DisplayDicOfEvents" ItemsSource="{Binding EventList}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="Black" BorderThickness="2" Margin="44,348,51,101" Height="143" Width="241" />
                     <Button x:Name="AddtoDicEvent" Content="Add Event" Command="{Binding AddEvent, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="142,236,97,319" Width="97" Height="37"/>
-                    
+                    <Button x:Name="RemoveEvent" Content="Remove Event" Command="{Binding RemoveEvent, Mode=TwoWay}" />
+
                     <TextBlock x:Name="HowResult" Text="{Binding Result.EventName, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                     <Button x:Name="DisplayResult" Content="Display Event" Command="{Binding DisplayEvent, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 

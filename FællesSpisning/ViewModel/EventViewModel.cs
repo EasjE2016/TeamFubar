@@ -57,25 +57,75 @@ namespace FællesSpisning.ViewModel
 
         }
 
-        
-        public void AddEventOnDateTime()
+
+        public void RemoveEventOnDateTime()
+        {
+            try
+            {
+                EventList.Remove(EventList.Where(x => x.EventTime == DateTime).Single());
+            }
+            catch (Exception)
+            {
+
+                MessageDialog noEvent = new MessageDialog("Ingen Begivenhed planlægt på dato");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+
+            }
+        }
+
+        public void AddEventOnDateTime()    
         {
             TestValues tempEvent = new TestValues();
             tempEvent.EventTime = DateTime;
             tempEvent.EventName = Test.EventName;
 
-            EventList.Add(tempEvent);
 
 
-            //Test.EventTime = DateTime;            
-            //EventList.Add(Test);
+            if (EventList.Contains(new TestValues { EventTime = DateTime } ))
+            {
+                MessageDialog eventAlreadyPresent = new MessageDialog("Allerede planlagt en begivenhed på denne dato");
+                eventAlreadyPresent.Commands.Add(new UICommand { Label = "Ok" });
+                eventAlreadyPresent.ShowAsync().AsTask();
 
-            //if () - make if statement that detects if element with duplicate eventtime already is present.
+            }
+            else
+            {
+                EventList.Add(tempEvent);
+            }
+
+
+
+
+
+            //foreach (TestValues x in EventList)
+            //{
+            //    if (x.EventTime == tempEvent.EventTime)
+            //    {
+            //        MessageDialog eventAlreadyPresent = new MessageDialog("Allerede planlagt en begivenhed på denne dato");
+            //        eventAlreadyPresent.Commands.Add(new UICommand { Label = "Ok" });
+            //        eventAlreadyPresent.ShowAsync().AsTask();
+
+            //    }
+            //    else
+            //    {
+
+            //EventList.Add(tempEvent);
+
+            //}
+            //}
+
+
+            //if (EventList.Distinct().Count() != EventList.Count())
+            ////-make if statement that detects if element with duplicate eventtime already is present.
             //{
             //    MessageDialog eventAlreadyPresent = new MessageDialog("Allerede planlagt en begivenhed på denne dato");
             //    eventAlreadyPresent.Commands.Add(new UICommand { Label = "Ok" });
             //    eventAlreadyPresent.ShowAsync().AsTask();
-                         
+            //}
+            //else
+            //{
+            //    EventList.Add(tempEvent);
             //}
         }
 
@@ -98,12 +148,7 @@ namespace FællesSpisning.ViewModel
 
 
         }
-
-        public void RemoveEventOnDateTime()
-        {
-
-        }
-
+        
         // propertychanged
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyname)
