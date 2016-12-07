@@ -47,7 +47,6 @@ namespace FællesSpisning.ViewModel
         public ObsHusListeSingleton HusListe { get; set; }
  
 
-
         public NewHouseViewModel()
         {
             AddNewHouseCommand = new RelayCommand(AddNewHouse, null);
@@ -67,6 +66,7 @@ namespace FællesSpisning.ViewModel
                 tempHusObj.AntalBørn = VoksneCBoxOptions[NytHus.AntalBørn];
                 tempHusObj.AntalBørnU3 = VoksneCBoxOptions[NytHus.AntalBørnU3];
                 tempHusObj.HusNr = int.Parse(TempHusNr);
+                tempHusObj.DT = new List<DateTime>();
 
                 HusListe.AddNewHouse(tempHusObj);
                 SaveList_Async();

@@ -34,7 +34,6 @@ namespace FællesSpisning.Model
         {
             HusListe = new ObservableCollection<Hus>();
             LoadJson();
-
         }
 
         public void AddNewHouse(Hus NytHus)
