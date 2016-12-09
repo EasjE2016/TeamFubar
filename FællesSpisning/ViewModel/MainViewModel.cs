@@ -15,28 +15,34 @@ namespace FællesSpisning.ViewModel
 {
     class MainViewModel : INotifyPropertyChanged
     {
-        private ObsHusListeSingleton _instance;
-        public ObsHusListeSingleton Instance
+
+        //Singleton
+        private ObservableCollection<Hus> _husListe;
+        public ObservableCollection<Hus> HusListe
         {
-            get { return _instance; }
-            set { _instance = value;
-                OnPropertyChanged(nameof(Instance));
+            get { return _husListe; }
+            set { _husListe = value;
+                OnPropertyChanged(nameof(HusListe));
             }
         }
 
-        public ObservableCollection<Hus> HusListe { get; set; }
 
-        //Nyt Kode
         //Relay Commands
         public RelayCommand AddEvent { get; set; }
         public RelayCommand DisplayEvent { get; set; }
         public RelayCommand RemoveEvent { get; set; }
+        public RelayCommand RemoveHouse { get; set; }
+
+        //Konstant filnavn
+        const String FileNameForTilmeldsListe = "saveTilmeldsListe.json";
+        const String FileNameForHusListe = "saveHouseList.json";
 
         private DateTime _dateTime = DateTime.Today;
         public DateTime DateTime
         {
             get { return _dateTime; }
-            set { _dateTime = value.Date; OnPropertyChanged(nameof(DateTime)); }
+            set { _dateTime = value.Date;
+                OnPropertyChanged(nameof(DateTime)); }
         }
 
 
@@ -44,7 +50,8 @@ namespace FællesSpisning.ViewModel
         public Hus HusTilListe
         {
             get { return _husTilListe; }
-            set { _husTilListe = value; OnPropertyChanged(nameof(HusTilListe)); }
+            set { _husTilListe = value;
+                OnPropertyChanged(nameof(HusTilListe)); }
         }
 
         private ObservableCollection<Hus> _tilmeldsListe;
@@ -64,7 +71,7 @@ namespace FællesSpisning.ViewModel
                 OnPropertyChanged(nameof(Result));
             }
         }
-
+    
 
         private int _selectedIndex;
         public int SelectedIndex
@@ -75,67 +82,61 @@ namespace FællesSpisning.ViewModel
             }
         }
 
-
-        private Hus _selectedHus;
-        public Hus SelectedHus
+        private Hus _selectedHusListView;
+        public Hus SelectedHusListView
         {
-            get { return _selectedHus; }
-            set { _selectedHus = value;
-                OnPropertyChanged(nameof(SelectedHus));
+            get { return _selectedHusListView; }
+            set { _selectedHusListView = value;
+                OnPropertyChanged(nameof(SelectedHusListView));
             }
         }
 
 
+
         public MainViewModel()
         {
-            this.Instance = ObsHusListeSingleton._Instance;
-            HusListe = Instance.HusListe;
+            HusListe = ObsHusListeSingleton._Instance.HusListe;
 
             AddEvent = new RelayCommand(AddEventOnDateTime, null);
             DisplayEvent = new RelayCommand(DisplayEventOnDateTime, null);
-//            RemoveEvent = new RelayCommand(RemoveEventOnDateTime, null);
+            RemoveEvent = new RelayCommand(RemoveEventOnDateTime, null);
+            RemoveHouse = new RelayCommand(RemoveHouseFromList, null);
 
             HusTilListe = new Hus();
-            //TilmeldsListe = new ObservableCollection<Hus>();
-            //Result = new ObservableCollection<Hus>();
             TilmeldsListe = new ObservableCollection<Hus>();
             Result = new ObservableCollection<Hus>();
-            SelectedHus = new Hus();
+            LoadJson();
 
         }
 
-        //public void RemoveEventOnDateTime()
-        //{
-        //    try
-        //    {
-        //        TilmeldsListe.Remove(TilmeldsListe.Where(x => x.DT == DateTime).Single());
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        MessageDialog noEvent = new MessageDialog("Ingen Begivenhed planlægt på dato");
-        //        noEvent.Commands.Add(new UICommand { Label = "Ok" });
-        //        noEvent.ShowAsync().AsTask();
-
-        //    }
-        //}
+        public void RemoveEventOnDateTime()
+        {
+                
+            if(SelectedHusListView != null) {           
+                TilmeldsListe.Remove(SelectedHusListView);
+                DisplayEventOnDateTime();
+                SaveList_Async(TilmeldsListe, FileNameForTilmeldsListe);
+            } else { 
+                MessageDialog noEvent = new MessageDialog("Vælg en husstand på listen!");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+            }
+        }
 
         public void AddEventOnDateTime()
         {
-            HusListe[SelectedIndex].DT.Add(DateTime);
-            SelectedHus = HusListe[SelectedIndex];
-
-            //if (TilmeldsListe.Contains(new Hus { DT = DateTime }))
-            //{
-            //    MessageDialog eventAlreadyPresent = new MessageDialog("Allerede planlagt en begivenhed på denne dato");
-            //    eventAlreadyPresent.Commands.Add(new UICommand { Label = "Ok" });
-            //    eventAlreadyPresent.ShowAsync().AsTask();
-
-            //}
-            //else
-            //{
-                TilmeldsListe.Add(SelectedHus);
-            //}
+            if (TilmeldsListe.Where(hus => hus.HusNr == HusListe[SelectedIndex].HusNr).Any(hus => hus.DT.Any(husDt => husDt == DateTime)) == false)
+            {
+                HusListe[SelectedIndex].DT.Add(DateTime);
+                TilmeldsListe.Add(HusListe[SelectedIndex]);
+                DisplayEventOnDateTime();
+                SaveList_Async(TilmeldsListe, FileNameForTilmeldsListe);
+            } else
+            {
+                MessageDialog noEvent = new MessageDialog("Denne husstand er allerede tilmeldt!");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+            }
 
         }
 
@@ -143,7 +144,7 @@ namespace FællesSpisning.ViewModel
         {
 
             Result.Clear();
-            
+
             try
             {
                 foreach (Hus husObj in TilmeldsListe)
@@ -163,11 +164,44 @@ namespace FællesSpisning.ViewModel
             }
             catch (Exception)
             {
+            }
+        }
 
-                MessageDialog noEvent = new MessageDialog("Ingen Begivenhed planlægt på dato");
-                noEvent.Commands.Add(new UICommand { Label = "Ok" });
-                noEvent.ShowAsync().AsTask();
+        public void RemoveHouseFromList()
+        {
+            if(HusListe.Count != 0) {
+                ObsHusListeSingleton._Instance.RemoveHouse(HusListe[SelectedIndex]);
+                SaveList_Async(HusListe, FileNameForHusListe);
+                if(HusListe.Count > 0)
+                {
+                    SelectedIndex = 0;
+                }
+            }
+        }
 
+        //Json til at gemme listen
+        private async void SaveList_Async(Object objForSave, String FileName)
+        {
+     
+            StorageFile LocalFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.ReplaceExisting);
+            String jsonSaveData = JsonConvert.SerializeObject(objForSave);
+
+
+            await FileIO.WriteTextAsync(LocalFile, jsonSaveData);
+        }
+
+        //Json til at hente listen
+        private async void LoadJson()
+        {
+            try
+            {
+                StorageFile LocalFile = await ApplicationData.Current.LocalFolder.GetFileAsync(FileNameForTilmeldsListe);
+                String jsonSaveData = await FileIO.ReadTextAsync(LocalFile);
+                TilmeldsListe = JsonConvert.DeserializeObject<ObservableCollection<Hus>>(jsonSaveData);
+                DisplayEventOnDateTime();
+            }
+            catch (Exception)
+            {
             }
         }
 
@@ -176,6 +210,12 @@ namespace FællesSpisning.ViewModel
         protected virtual void OnPropertyChanged(string propertyname)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyname));
+
+            if(propertyname == nameof(DateTime))
+            {
+                DisplayEventOnDateTime();
+            }
+
         }
 
 

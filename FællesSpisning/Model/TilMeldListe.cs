@@ -9,6 +9,10 @@ namespace FællesSpisning.Model
 {
     class TilmeldListe : ObservableCollection<Hus>
     {
+        public TilmeldListe()
+        {
+
+        }
 
     }
 }
