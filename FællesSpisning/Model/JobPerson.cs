@@ -11,7 +11,7 @@ namespace FællesSpisning.Model
         
             public string JobPersonNavn { get; set; }
             public string JobPersonOpgave { get; set; }
-            public string Udlæg { get; set; }
+            public string Menu { get; set; }
             public DateTime JobDateTime { get; set; }
 
         public override string ToString()

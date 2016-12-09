@@ -174,7 +174,7 @@ namespace FællesSpisning.ViewModel
                 SaveList_Async(HusListe, FileNameForHusListe);
                 if(HusListe.Count > 0)
                 {
-                    SelectedIndex = 0;
+                    SelectedIndex = 1;
                 }
             }
         }

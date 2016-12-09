@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using FællesSpisning.Model;
 using Windows.UI.Popups;
+using System.Collections.ObjectModel;
 
 namespace FællesSpisning.ViewModel
 {
@@ -21,15 +22,17 @@ namespace FællesSpisning.ViewModel
         public DateTime PlanDateTime
         {
             get { return _planDateTime; }
-            set { _planDateTime = value.Date; }
+            set { _planDateTime = value.Date;
+                OnPropertyChanged(nameof(PlanDateTime)); 
+            }
         }
 
 
-        private PlanListe _planliste;
-        public PlanListe Planliste
+        private PlanListe _listeOfPlans;
+        public PlanListe ListeOfPlans
         {
-            get { return _planliste; }
-            set { _planliste = value; OnPropertyChanged(nameof(Planliste)); }
+            get { return _listeOfPlans; }
+            set { _listeOfPlans = value; OnPropertyChanged(nameof(ListeOfPlans)); }
         }
 
         private JobPerson _selectedJobPerson;
@@ -39,12 +42,23 @@ namespace FællesSpisning.ViewModel
             set { _selectedJobPerson = value; OnPropertyChanged(nameof(SelectedJobPerson)); }
         }
 
+        private ObservableCollection<JobPerson> _result;
+
+        public  ObservableCollection<JobPerson> Result
+        {
+            get { return _result; }
+            set { _result = value;
+                OnPropertyChanged(nameof(Result));
+            }
+        }
+        
         public int SelectedIndex { get; set; }
 
 
         public AdminViewModel()
         {
-            Planliste = new PlanListe();
+            ListeOfPlans = new PlanListe();
+            Result = new ObservableCollection<JobPerson>();
 
             SelectedJobPerson = new JobPerson();
             NewJobPerson = new JobPerson();
@@ -53,11 +67,36 @@ namespace FællesSpisning.ViewModel
             AddJobPersonCommand = new RelayCommand(AddNewJobPerson, null);
             RemoveJobPersonCommand = new RelayCommand(RemoveSelectedJobPerson, null);
             AddCBoxOptions();
+
         }
+
+        
+        public void DisplayEventOnDateTime()
+        {
+            Result.Clear();
+
+            try
+            {
+
+                foreach (JobPerson personObj in ListeOfPlans)
+                {
+                    if (personObj.JobDateTime == PlanDateTime)
+                    {
+                        Result.Add(personObj);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
 
         public void AddCBoxOptions()
         {
-            JobPersonCBoxOptions = new List<string>() { "Chefkok", "Kok", "Oprydder", "Udlæg" };
+            JobPersonCBoxOptions = new List<string>() { "Chefkok", "Kok", "Oprydder", "Menu" };
         }
 
         public void AddNewJobPerson()
@@ -67,45 +106,22 @@ namespace FællesSpisning.ViewModel
             tempListe.JobDateTime = PlanDateTime;
             tempListe.JobPersonNavn = NewJobPerson.JobPersonNavn;
             tempListe.JobPersonOpgave = JobPersonCBoxOptions[SelectedIndex];
-            tempListe.Udlæg = JobPersonCBoxOptions[SelectedIndex];
+            tempListe.Menu = JobPersonCBoxOptions[SelectedIndex];
 
-            //if (tempListe.Udlæg.All(char.IsDigit) == false)
-            //{
-            //    MessageDialog UdlægNotNr = new MessageDialog("Udlæg skal være et nummer");
-            //    UdlægNotNr.Commands.Add(new UICommand { Label = "Ok" });
-            //    UdlægNotNr.ShowAsync().AsTask();
 
-            //}
-            //else
-            //{
-                Planliste.Add(tempListe);
-            //}
+            ListeOfPlans.Add(tempListe);
+
+            DisplayEventOnDateTime();
+
         }
 
-        public void DisplayEventOnDateTime()
-        {
-            
-
-            //try
-            //{
-            //    _selectedJobPerson = Planliste.Where(x => x.JobDateTime == PlanDateTime).First();
-            //}
-            //catch (Exception)
-            //{
-
-            //    MessageDialog noEvent = new MessageDialog("Ingen Begivenhed planlægt på dato");
-            //    noEvent.Commands.Add(new UICommand { Label = "Ok" });
-            //    noEvent.ShowAsync().AsTask();
-
-            //}
-        }
 
 
         public void RemoveSelectedJobPerson()
         {
             try
             {
-                Planliste.Remove(Planliste.Where(x => x.JobDateTime == PlanDateTime).Single());
+                ListeOfPlans.Remove(ListeOfPlans.Where(x => x.JobDateTime == PlanDateTime).Single());
             }
             catch (Exception)
             {
