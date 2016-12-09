@@ -58,6 +58,25 @@
                 </PivotItem>
             </PivotItem>
             <PivotItem Header="Adminstration">
+                <Grid>
+                    <Grid.DataContext>
+                        <vm:AdminViewModel/>
+                    </Grid.DataContext>
+                    <Grid.Resources>
+                        <m:DateTimeConverter
+                            x:Key="DateTimeConverter" />
+                    </Grid.Resources>
+
+
+                    <TextBlock x:Name="listeText" HorizontalAlignment="Left" Text="Planlægning" Margin="50,20,0,0" FontSize="18"/>
+                    <Button x:Name="jobpersonButton" Content="Tilføj person" HorizontalAlignment="Center" Margin="-95,140,0,0" VerticalAlignment="Top" Command="{Binding AddJobPersonCommand}"/>
+                    <ListView x:Name="listView"  BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Margin="50,70,0,0" Height="300" VerticalAlignment="Top" Width="150" ItemsSource="{Binding Planliste}" SelectedItem="{Binding SelectedJobPerson, Mode=TwoWay}"/>
+                    <TextBox x:Name="textBox" HorizontalAlignment="Center" Margin="-95,70,0,0" TextWrapping="Wrap" Text="{Binding NewJobPerson.JobPersonNavn, Mode=TwoWay}" VerticalAlignment="Top" Width="130" Header="Navn"/>
+                    <Button x:Name="jobpersonButton2" Content="Fjern person" HorizontalAlignment="Center" Margin="185,140,0,0" VerticalAlignment="Top" Command="{Binding RemoveJobPersonCommand}"/>
+                    <ComboBox x:Name="jobtypeCB" HorizontalAlignment="Center" Margin="185,70,0,0" Width="130" VerticalAlignment="Top" Header="Opgave" ItemsSource="{Binding JobPersonCBoxOptions}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"/>
+                    <CalendarDatePicker x:Name="PlanlægKalenderPicker" Date="{Binding PlanDateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="300,28,0,0"/>
+                    
+                </Grid>
             </PivotItem>
         </Pivot>
     </Grid>

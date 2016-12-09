@@ -11,10 +11,11 @@ namespace FællesSpisning.Model
         
             public string JobPersonNavn { get; set; }
             public string JobPersonOpgave { get; set; }
+            public DateTime JobDateTime { get; set; }
 
-            public override string ToString()
+        public override string ToString()
             {
-                return JobPersonNavn + " \n " + JobPersonOpgave + " \n ";
+                return JobPersonNavn + " \n " + JobPersonOpgave + " \n " + JobDateTime;
             }
 
 
