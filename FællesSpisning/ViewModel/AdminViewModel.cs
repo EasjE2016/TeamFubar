@@ -15,9 +15,9 @@ namespace FællesSpisning.ViewModel
         public JobPerson NewJobPerson { get; set; }
         public RelayCommand AddJobPersonCommand { get; set; }
         public RelayCommand RemoveJobPersonCommand { get; set; }
+        public RelayCommand DisplayPlanDate { get; set; }
 
         private DateTime _planDateTime = DateTime.Today;
-
         public DateTime PlanDateTime
         {
             get { return _planDateTime; }
@@ -45,8 +45,11 @@ namespace FællesSpisning.ViewModel
         public AdminViewModel()
         {
             Planliste = new PlanListe();
-            _selectedJobPerson = new JobPerson();
+
+            SelectedJobPerson = new JobPerson();
             NewJobPerson = new JobPerson();
+
+            DisplayPlanDate = new RelayCommand(DisplayEventOnDateTime, null);
             AddJobPersonCommand = new RelayCommand(AddNewJobPerson, null);
             RemoveJobPersonCommand = new RelayCommand(RemoveSelectedJobPerson, null);
             AddCBoxOptions();
@@ -54,7 +57,7 @@ namespace FællesSpisning.ViewModel
 
         public void AddCBoxOptions()
         {
-            JobPersonCBoxOptions = new List<string>() { "Chefkok", "Kok", "Oprydder" };
+            JobPersonCBoxOptions = new List<string>() { "Chefkok", "Kok", "Oprydder", "Udlæg" };
         }
 
         public void AddNewJobPerson()
@@ -64,21 +67,36 @@ namespace FællesSpisning.ViewModel
             tempListe.JobDateTime = PlanDateTime;
             tempListe.JobPersonNavn = NewJobPerson.JobPersonNavn;
             tempListe.JobPersonOpgave = JobPersonCBoxOptions[SelectedIndex];
+            tempListe.Udlæg = JobPersonCBoxOptions[SelectedIndex];
 
-            if (Planliste.Contains(new JobPerson { JobDateTime = PlanDateTime }))
-            {
-                MessageDialog eventAlreadyPresent = new MessageDialog("Allerede planlagt en begivenhed på denne dato");
-                eventAlreadyPresent.Commands.Add(new UICommand { Label = "Ok" });
-                eventAlreadyPresent.ShowAsync().AsTask();
+            //if (tempListe.Udlæg.All(char.IsDigit) == false)
+            //{
+            //    MessageDialog UdlægNotNr = new MessageDialog("Udlæg skal være et nummer");
+            //    UdlægNotNr.Commands.Add(new UICommand { Label = "Ok" });
+            //    UdlægNotNr.ShowAsync().AsTask();
 
-            }
-            else
-            {
+            //}
+            //else
+            //{
                 Planliste.Add(tempListe);
-            }
+            //}
         }
 
+        public void DisplayEventOnDateTime()
+        {
+            try
+            {
+                _selectedJobPerson = Planliste.Where(x => x.JobDateTime == PlanDateTime).First();
+            }
+            catch (Exception)
+            {
 
+                MessageDialog noEvent = new MessageDialog("Ingen Begivenhed planlægt på dato");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+
+            }
+        }
 
 
         public void RemoveSelectedJobPerson()
@@ -101,6 +119,11 @@ namespace FællesSpisning.ViewModel
         protected virtual void OnPropertyChanged(string propertyname)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyname));
+
+            if (propertyname == nameof(PlanDateTime))
+            {
+                DisplayEventOnDateTime();
+            }
         }
 
     }
