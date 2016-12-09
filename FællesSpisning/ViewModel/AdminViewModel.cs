@@ -84,18 +84,20 @@ namespace FællesSpisning.ViewModel
 
         public void DisplayEventOnDateTime()
         {
-            try
-            {
-                _selectedJobPerson = Planliste.Where(x => x.JobDateTime == PlanDateTime).First();
-            }
-            catch (Exception)
-            {
+            
 
-                MessageDialog noEvent = new MessageDialog("Ingen Begivenhed planlægt på dato");
-                noEvent.Commands.Add(new UICommand { Label = "Ok" });
-                noEvent.ShowAsync().AsTask();
+            //try
+            //{
+            //    _selectedJobPerson = Planliste.Where(x => x.JobDateTime == PlanDateTime).First();
+            //}
+            //catch (Exception)
+            //{
 
-            }
+            //    MessageDialog noEvent = new MessageDialog("Ingen Begivenhed planlægt på dato");
+            //    noEvent.Commands.Add(new UICommand { Label = "Ok" });
+            //    noEvent.ShowAsync().AsTask();
+
+            //}
         }
 
 
