@@ -6,56 +6,50 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:MainViewModel="using:FællesSpisning.ViewModel"
     xmlns:vm="using:FællesSpisning.ViewModel"
-    xmlns:Converter="using:FællesSpisning.Model" 
+    xmlns:m="using:FællesSpisning.Model"
     x:Class="FællesSpisning.MainPage"
     mc:Ignorable="d">
-
     <Page.DataContext>
         <vm:MainViewModel></vm:MainViewModel>
     </Page.DataContext>
-
-    <Page.Resources>
-        <Converter:DateTimeConverter
-            x:Key="DateTimeConverter" />
-    </Page.Resources>
-
-
+    
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
         <Pivot x:Name="MainMenu">
-
             <PivotItem Header="Tilmeld">
                 <Grid>
                     <Grid.DataContext>
-                        <vm:EventViewModel/>
+                        <vm:MainViewModel />
                     </Grid.DataContext>
-
-                    <CalendarDatePicker x:Name="TilmeldKalenderPicker" Date="{Binding DateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,0,0,0"/>
-                    <TextBox x:Name="SetEventName" Text="{Binding Test.EventName, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="64" />
-                    <ListView x:Name="DisplayDicOfEvents" ItemsSource="{Binding EventList}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="Black" BorderThickness="2" Margin="44,348,51,101" Height="143" Width="241" />
-                    <Button x:Name="AddtoDicEvent" Content="Add Event" Command="{Binding AddEvent, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="142,236,97,319" Width="97" Height="37"/>
-                    <Button x:Name="RemoveEvent" Content="Remove Event" Command="{Binding RemoveEvent, Mode=TwoWay}" />
-
-                    <TextBlock x:Name="HowResult" Text="{Binding Result.EventName, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                    <Button x:Name="DisplayResult" Content="Display Event" Command="{Binding DisplayEvent, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-
+                    <Grid.Resources>
+                        <m:DateTimeConverter
+                            x:Key="DateTimeConverter" />
+                    </Grid.Resources>
+                    <CalendarDatePicker x:Name="TilmeldKalenderPicker" Date="{Binding DateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="300,28,0,0"/>
+                    <ListView x:Name="TilmeldteListview" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="600" ItemsSource="{Binding Result, Mode=TwoWay}" BorderBrush="Black" BorderThickness="2"/>
+                    <ComboBox x:Name="HusListeComboBox" Header="Huse" HorizontalAlignment="Center" Width="180" ItemsSource="{Binding HusListe, Mode=TwoWay}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
+                    </ComboBox>
+                    <Button x:Name="TilmeldBtn" Content="Tilmeld" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding AddEvent}" Margin="-75, 120, 0 ,0"/>
+                    <Button x:Name="ShowDateBtn" Content="Vis Dato" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding DisplayEvent}" Margin="90, 120, 0 ,0"/>
                 </Grid>
-
             </PivotItem>
-
             <PivotItem Header="Opret hus">
                 <Grid>
                     <Grid.DataContext>
                         <vm:NewHouseViewModel />
                     </Grid.DataContext>
-
+                    
                     <TextBlock x:Name="titel1Txt" HorizontalAlignment="Center" Text="Opret husstand" Margin="45, 20, 0, 0" FontSize="36"/>
-                    <TextBox x:Name="husNrTxt" HorizontalAlignment="Center" Margin="45,70,0,0" VerticalAlignment="Top" Width="270" PlaceholderText="Hus nummer" InputScope="Number"/>
-                    <ComboBox x:Name="VoksenCBox" HorizontalAlignment="Center" Margin="-95,110,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding VoksneCBoxOptions}" PlaceholderText="Voksne 15+"/>
-                    <ComboBox x:Name="UngeCBox" HorizontalAlignment="Center" Margin="185,110,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding UngeCBoxOptions}" PlaceholderText="Unge 7-15"/>
-                    <ComboBox x:Name="Børn36CBox" HorizontalAlignment="Center" Margin="-95,150,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding Børn36CBoxOptions}" PlaceholderText="Børn 3-6"/>
-                    <ComboBox x:Name="BørnU3CBox" HorizontalAlignment="Center" Margin="185,150,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding BørnU3CBoxOptions}" PlaceholderText="Børn U3"/>
-                    <Button x:Name="tilmeldBtn" Content="Tilmeld!" HorizontalAlignment="Center" Margin="45,190,0,0" VerticalAlignment="Top" Width="270"/>
+                    <TextBox x:Name="husNrTxt" Header="Hus Nummer" HorizontalAlignment="Center" Margin="45,70,0,0" VerticalAlignment="Top" Width="270" Text="{Binding TempHusNr, Mode=TwoWay}" PlaceholderText="Hus nummer" InputScope="Number"/>
+                    <ComboBox x:Name="VoksenCBox" Header="Voksne 15+" HorizontalAlignment="Center" Margin="-95,130,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding VoksneCBoxOptions}" SelectedIndex="{Binding NytHus.AntalVoksne, Mode=TwoWay}">
+                    </ComboBox>
+                    <ComboBox x:Name="UngeCBox" Header="Unge 7-15" HorizontalAlignment="Center" Margin="185,130,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding UngeCBoxOptions}" SelectedIndex="{Binding NytHus.AntalUnge, Mode=TwoWay}">
+                    </ComboBox>
+                    <ComboBox x:Name="Børn36CBox" Header="Børn 3-6" HorizontalAlignment="Center" Margin="-95,190,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding Børn36CBoxOptions}" SelectedIndex="{Binding NytHus.AntalBørn, Mode=TwoWay}">
+                    </ComboBox>
+                    <ComboBox x:Name="BørnU3CBox" Header="Børn U3" HorizontalAlignment="Center" Margin="185,190,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding BørnU3CBoxOptions}" SelectedIndex="{Binding NytHus.AntalBørnU3, Mode=TwoWay}">
+                    </ComboBox>
+                    <Button x:Name="tilmeldBtn" Content="Opret Hus" HorizontalAlignment="Center" Margin="45,260,0,0" VerticalAlignment="Top" Width="270" Command="{Binding AddNewHouseCommand}"/>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Liste">
@@ -64,9 +58,8 @@
                 </PivotItem>
             </PivotItem>
             <PivotItem Header="Adminstration">
-                <TextBlock Text="Content3"></TextBlock>
             </PivotItem>
-
         </Pivot>
     </Grid>
 </Page>
+<!--ItemsSource="{Binding VoksneCBoxOptions}"-->

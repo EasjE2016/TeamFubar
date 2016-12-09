@@ -36,4 +36,3 @@ namespace FællesSpisning.Model
         }
     }
 }
-
