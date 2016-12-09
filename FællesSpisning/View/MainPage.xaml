@@ -12,8 +12,8 @@
     <Page.DataContext>
         <vm:MainViewModel></vm:MainViewModel>
     </Page.DataContext>
-    
-    
+
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Pivot x:Name="MainMenu">
             <PivotItem Header="Tilmeld">
@@ -26,11 +26,12 @@
                             x:Key="DateTimeConverter" />
                     </Grid.Resources>
                     <CalendarDatePicker x:Name="TilmeldKalenderPicker" Date="{Binding DateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="300,28,0,0"/>
-                    <ListView x:Name="TilmeldteListview" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="600" ItemsSource="{Binding Result, Mode=TwoWay}" BorderBrush="Black" BorderThickness="2"/>
+                    <ListView x:Name="TilmeldteListview" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="600" ItemsSource="{Binding Result, Mode=TwoWay}" SelectedValue="{Binding SelectedHusListView, Mode=TwoWay}" BorderBrush="Black" BorderThickness="2"/>
                     <ComboBox x:Name="HusListeComboBox" Header="Huse" HorizontalAlignment="Center" Width="180" ItemsSource="{Binding HusListe, Mode=TwoWay}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
                     </ComboBox>
-                    <Button x:Name="TilmeldBtn" Content="Tilmeld" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding AddEvent}" Margin="-75, 120, 0 ,0"/>
-                    <Button x:Name="ShowDateBtn" Content="Vis Dato" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding DisplayEvent}" Margin="90, 120, 0 ,0"/>
+                    <Button x:Name="TilmeldHusBtn" Content="Tilmeld Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding AddEvent}" Margin="-85, 120, 0 ,0"/>
+                    <Button x:Name="AfmeldHusBtn" Content="Afmeld Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding RemoveEvent}" Margin="115, 120, 0 ,0"/>
+                    <Button x:Name="SletHusBtn" Content="Slet Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding RemoveHouse}" Margin="-265, 120, 0, 0" />
                 </Grid>
             </PivotItem>
             <PivotItem Header="Opret hus">
@@ -38,7 +39,7 @@
                     <Grid.DataContext>
                         <vm:NewHouseViewModel />
                     </Grid.DataContext>
-                    
+
                     <TextBlock x:Name="titel1Txt" HorizontalAlignment="Center" Text="Opret husstand" Margin="45, 20, 0, 0" FontSize="36"/>
                     <TextBox x:Name="husNrTxt" Header="Hus Nummer" HorizontalAlignment="Center" Margin="45,70,0,0" VerticalAlignment="Top" Width="270" Text="{Binding TempHusNr, Mode=TwoWay}" PlaceholderText="Hus nummer" InputScope="Number"/>
                     <ComboBox x:Name="VoksenCBox" Header="Voksne 15+" HorizontalAlignment="Center" Margin="-95,130,0,0" VerticalAlignment="Top" Width="130" ItemsSource="{Binding VoksneCBoxOptions}" SelectedIndex="{Binding NytHus.AntalVoksne, Mode=TwoWay}">
@@ -51,11 +52,6 @@
                     </ComboBox>
                     <Button x:Name="tilmeldBtn" Content="Opret Hus" HorizontalAlignment="Center" Margin="45,260,0,0" VerticalAlignment="Top" Width="270" Command="{Binding AddNewHouseCommand}"/>
                 </Grid>
-            </PivotItem>
-            <PivotItem Header="Liste">
-                <PivotItem>
-                    <TextBlock Text="Content2"></TextBlock>
-                </PivotItem>
             </PivotItem>
             <PivotItem Header="Adminstration">
                 <Grid>
@@ -81,7 +77,8 @@
                     
                 </Grid>
             </PivotItem>
+            <PivotItem Header="Kassere">
+            </PivotItem>
         </Pivot>
     </Grid>
 </Page>
-<!--ItemsSource="{Binding VoksneCBoxOptions}"-->

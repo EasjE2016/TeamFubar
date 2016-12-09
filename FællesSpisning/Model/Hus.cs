@@ -30,26 +30,6 @@ namespace FællesSpisning.Model
             this.HusNr = HusNr;
         }
 
-        public bool Equals(Hus obj)
-        {
-            return obj.DT.Equals(DT);
-        }
-
-
-
-        public override bool Equals(object obj)
-        {
-            if (obj == this)
-            {
-                return true;
-            }
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-
-            return Equals((Hus)obj);
-        }
-
         public override string ToString()
         {
             return $"Husnr: {HusNr}\r\nVoksne: {AntalVoksne} - Unge: {AntalUnge}\r\nBørn: {AntalBørn} - Børn U3: {AntalBørnU3}";

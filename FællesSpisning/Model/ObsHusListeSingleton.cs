@@ -41,6 +41,11 @@ namespace FællesSpisning.Model
             HusListe.Add(NytHus);
         }
 
+        public void RemoveHouse(Hus SelectedHus)
+        {
+            HusListe.Remove(SelectedHus);
+        }
+
         private async void LoadJson()
         {
             try
@@ -51,9 +56,6 @@ namespace FællesSpisning.Model
             }
             catch (Exception)
             {
-                MessageDialog noDataDialog = new MessageDialog("No save file found!");
-                noDataDialog.Commands.Add(new UICommand { Label = "OK" });
-                await noDataDialog.ShowAsync();
             }
         }
 
