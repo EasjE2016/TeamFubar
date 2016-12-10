@@ -7,16 +7,23 @@ using System.ComponentModel;
 using FællesSpisning.Model;
 using Windows.UI.Popups;
 using System.Collections.ObjectModel;
+using Windows.Storage;
+using Newtonsoft.Json;
 
 namespace FællesSpisning.ViewModel
 {
     class AdminViewModel : INotifyPropertyChanged
     {
         public List<string> JobPersonCBoxOptions { get; set; }
-        public JobPerson NewJobPerson { get; set; }
+
+        public JobPerson PlanToListe { get; set; }
+        public int SelectedIndex { get; set; }
+        
         public RelayCommand AddJobPersonCommand { get; set; }
         public RelayCommand RemoveJobPersonCommand { get; set; }
         public RelayCommand DisplayPlanDate { get; set; }
+
+        const string PlanFileSave = "savePlanListe.json";
 
         private DateTime _planDateTime = DateTime.Today;
         public DateTime PlanDateTime
@@ -27,7 +34,7 @@ namespace FællesSpisning.ViewModel
             }
         }
 
-
+        
         private PlanListe _listeOfPlans;
         public PlanListe ListeOfPlans
         {
@@ -43,7 +50,6 @@ namespace FællesSpisning.ViewModel
         }
 
         private ObservableCollection<JobPerson> _result;
-
         public  ObservableCollection<JobPerson> Result
         {
             get { return _result; }
@@ -52,7 +58,6 @@ namespace FællesSpisning.ViewModel
             }
         }
         
-        public int SelectedIndex { get; set; }
 
 
         public AdminViewModel()
@@ -61,16 +66,19 @@ namespace FællesSpisning.ViewModel
             Result = new ObservableCollection<JobPerson>();
 
             SelectedJobPerson = new JobPerson();
-            NewJobPerson = new JobPerson();
+            PlanToListe = new JobPerson();
 
             DisplayPlanDate = new RelayCommand(DisplayEventOnDateTime, null);
             AddJobPersonCommand = new RelayCommand(AddNewJobPerson, null);
             RemoveJobPersonCommand = new RelayCommand(RemoveSelectedJobPerson, null);
+
             AddCBoxOptions();
+            LoadJson();
+
 
         }
 
-        
+
         public void DisplayEventOnDateTime()
         {
             Result.Clear();
@@ -101,16 +109,18 @@ namespace FællesSpisning.ViewModel
 
         public void AddNewJobPerson()
         {
+
+
             JobPerson tempListe = new JobPerson();
 
             tempListe.JobDateTime = PlanDateTime;
-            tempListe.JobPersonNavn = NewJobPerson.JobPersonNavn;
+            tempListe.JobPersonNavn = PlanToListe.JobPersonNavn;
             tempListe.JobPersonOpgave = JobPersonCBoxOptions[SelectedIndex];
             tempListe.Menu = JobPersonCBoxOptions[SelectedIndex];
 
-
             ListeOfPlans.Add(tempListe);
 
+            SaveList_Async(ListeOfPlans, PlanFileSave);
             DisplayEventOnDateTime();
 
         }
@@ -119,15 +129,43 @@ namespace FællesSpisning.ViewModel
 
         public void RemoveSelectedJobPerson()
         {
+            if (SelectedJobPerson != null)
+            {
+                ListeOfPlans.Remove(SelectedJobPerson);
+                DisplayEventOnDateTime();
+                SaveList_Async(ListeOfPlans, PlanFileSave);
+
+            }
+            else
+            {
+                MessageDialog noEvent = new MessageDialog("Vælg en husstand på listen!");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+            }
+            
+        }
+
+        private async void SaveList_Async(Object objForSave, String FileName)
+        {
+
+            StorageFile LocalFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.ReplaceExisting);
+            String jsonSaveData = JsonConvert.SerializeObject(objForSave);
+
+
+            await FileIO.WriteTextAsync(LocalFile, jsonSaveData);
+        }
+
+        private async void LoadJson()
+        {
             try
             {
-                ListeOfPlans.Remove(ListeOfPlans.Where(x => x.JobDateTime == PlanDateTime).Single());
+                StorageFile LocalFile = await ApplicationData.Current.LocalFolder.GetFileAsync(PlanFileSave);
+                String jsonSaveData = await FileIO.ReadTextAsync(LocalFile);
+                ListeOfPlans = JsonConvert.DeserializeObject<PlanListe>(jsonSaveData);
+                DisplayEventOnDateTime();
             }
             catch (Exception)
             {
-                MessageDialog noEvent = new MessageDialog("Ingen Begivenhed planlægt på dato");
-                noEvent.Commands.Add(new UICommand { Label = "Ok" });
-                noEvent.ShowAsync().AsTask();
             }
         }
 
