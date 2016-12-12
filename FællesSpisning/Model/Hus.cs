@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FællesSpisning.Model
 {
-    class Hus
+    public class Hus
     {
         public int AntalBørnU3 { get; set; }
         public int AntalBørn { get; set; }
