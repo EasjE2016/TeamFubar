@@ -108,7 +108,7 @@ namespace FællesSpisning.ViewModel
             LoadJson();
 
             // Locktest
-            LåsListeFunktioner = LåsListe.LåsListeFunktioner;
+            LåsListeFunktioner = Lås.LåsListeFunktioner;
             // LockTest
 
         }
@@ -128,15 +128,8 @@ namespace FællesSpisning.ViewModel
         }
 
         // Lock Test
-        public LåsListe LåsListeFunktioner { get; set; }
-
-        //private DateTime _dateToday = DateTime.Today; // will prevent user from signing house as long as lock start.
-        //public DateTime DateToday
-        //{
-        //    get { return _dateToday; }
-        //    set { _dateToday = value.Date; }
-        //}
-
+        public Lås LåsListeFunktioner { get; set; }
+        
         // Lock Test
 
         public void AddEventOnDateTime()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FællesSpisning.Model
 {
-    class LåsListe : INotifyPropertyChanged
+    class Lås : INotifyPropertyChanged
     {
         private DateTime _startDato;
         public DateTime StartDato
@@ -23,14 +23,14 @@ namespace FællesSpisning.Model
             set { _endDato = value.Date; OnPropertyChanged(nameof(EndDato)); }
         }
 
-        private static LåsListe _låsListeFunktioner;
-        public static LåsListe LåsListeFunktioner
+        private static Lås _låsListeFunktioner;
+        public static Lås LåsListeFunktioner
         {
             get
             {
                 if (_låsListeFunktioner == null)
                 {
-                    _låsListeFunktioner = new LåsListe();
+                    _låsListeFunktioner = new Lås();
                 }
                 return _låsListeFunktioner;
             }
@@ -53,17 +53,6 @@ namespace FællesSpisning.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyname));
         }
 
-            //public DateTime DateToCheck { get; set; }
-
-            //public DateTime CheckDate() Brug som if statement.
-            //{
-            //    return DateToCheck >= LåsDatoStart && DateToCheck < LåsDatoEnd;
-            //}
-
-            //public override string ToString()
-            //{
-            //    return $"{LåsDatoStart}{LåsDatoEnd}";
-            //}
         }
 
 }

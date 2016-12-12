@@ -106,7 +106,7 @@
     <Compile Include="ViewModel\EventViewModel.cs" />
     <Compile Include="Model\BeregnPris.cs" />
     <Compile Include="Model\Hus.cs" />
-    <Compile Include="Model\LåsListe.cs" />
+    <Compile Include="Model\Lås.cs" />
     <Compile Include="Model\PlanListe.cs" />
     <Compile Include="Model\TilmeldListe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

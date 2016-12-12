@@ -79,7 +79,7 @@ namespace FællesSpisning.ViewModel
             NewStartLockCommand = new RelayCommand(SetNewStartLock, null);
             NewEndLockCommand = new RelayCommand(SetNewEndLock, null);
 
-            LåsFunktion = LåsListe.LåsListeFunktioner;
+            LåsFunktion = Lås.LåsListeFunktioner;
             // TestLås        
         }
 
@@ -88,7 +88,7 @@ namespace FællesSpisning.ViewModel
         public RelayCommand NewStartLockCommand { get; set; }
         public RelayCommand NewEndLockCommand { get; set; }
 
-        public LåsListe LåsFunktion { get; set; }
+        public Lås LåsFunktion { get; set; }
 
         private DateTime _defaultLåsDate = DateTime.Today;
         public DateTime DefaultLåsDate
