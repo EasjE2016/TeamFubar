@@ -12,17 +12,62 @@ namespace FællesSpisning.Model
         /// <summary>
         /// Properties 
         /// </summary>
-        public double FinalSum { get; set; }
-        public double UdlagtSum { get; set; }
+        /// 
+
+        private double _finalSum;
+
+        public double FinalSum
+        {
+            get { return _finalSum; }
+            set { _finalSum = value; }
+        }
+        
         public Hus HusObj { get; set; }
 
+        private double _udlagtSum1;
 
-
-
-        public override string ToString()
+        public double UdlagtSum1
         {
-            return "Hus nummer: " + HusObj + "Endelig sum for ugen: " + FinalSum + "kr" + "."; 
+            get { return _udlagtSum1; }
+            set { _udlagtSum1 = value; }
         }
+
+        private double _udlagtSum2;
+
+        public double UdlagtSum2
+        {
+            get { return _udlagtSum2; }
+            set { _udlagtSum2 = value; }
+        }
+
+        private double _udlagtSum3;
+
+        public double UdlagtSum3
+        {
+            get { return _udlagtSum3; }
+            set { _udlagtSum3 = value; }
+        }
+
+        private double _udlagtSum4;
+
+        public double UdlagtSum4
+        {
+            get { return _udlagtSum4; }
+            set { _udlagtSum4 = value; }
+        }
+
+        public double GetFinalSum()
+        {
+            _finalSum = _udlagtSum1 + _udlagtSum2 + _udlagtSum3 + _udlagtSum4;
+            return _finalSum;
+
+        }
+
+
+        //public override string ToString()
+        //{
+        //    return  "kr" + ".";
+        //}
 
 
     }

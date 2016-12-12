@@ -56,6 +56,21 @@
             <PivotItem Header="Adminstration">
             </PivotItem>
             <PivotItem Header="Kassere">
+                <Grid Margin="10,10,-10,-10">
+                    <Grid.DataContext>
+                        <vm:KasserViewModel />
+                    </Grid.DataContext>
+                    <TextBlock x:Name="titelExpenses" HorizontalAlignment="Left" Text="Udlæg fra Husstand" Margin="20,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+                    <TextBlock x:Name="titelDag1" HorizontalAlignment="Left" Text="Dag 1" Margin="20,64,0,0" TextWrapping="Wrap" Width="50"/>
+                    <TextBlock x:Name="titelDag2" HorizontalAlignment="Left" Text="Dag 2" Margin="20, 124,0,0" TextWrapping="Wrap" Width="50"/>
+                    <TextBlock x:Name="titelDag3" HorizontalAlignment="Left" Text="Dag 3" Margin="20,184,0,0" TextWrapping="Wrap" Width="50"/>
+                    <TextBlock x:Name="titelDag4" HorizontalAlignment="Left" Text="Dag 4" Margin="20,244,0,0" TextWrapping="Wrap" Width="50"/>
+                    <TextBox x:Name="udlæg1" HorizontalAlignment="Left" Margin="80,64,0,0" Text="{Binding}" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
+                    <TextBox x:Name="udlæg2" HorizontalAlignment="Left" Margin="80,124, 0,0" Text="{Binding InsertUdlæg, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
+                    <TextBox x:Name="Udlæg3" HorizontalAlignment="Left" Margin="80 184,0,0" Text="{Binding InsertUdlæg, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
+                    <TextBox x:Name="Udlæg4" HorizontalAlignment="Left" Margin="80,244,0,0" Text="{Binding InsertUdlæg, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
+                    <Button x:Name="AddFinalSum" Content="Beregn Sum af Udlæg" HorizontalAlignment="Left" Margin="20,30,0,0" VerticalAlignment="Center" ClickMode="{Binding InsertFinalSum, Mode=TwoWay}" Command="{Binding AddFinalSumCommand}" Width="200" />
+                </Grid>
             </PivotItem>
         </Pivot>
     </Grid>

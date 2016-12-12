@@ -14,6 +14,8 @@ namespace FællesSpisning
     {
         private readonly Action _execute = null;
         private readonly Func<bool> _canExecute = null;
+        private Action addFinalSum;
+
         public event EventHandler CanExecuteChanged;
 
 
@@ -21,6 +23,11 @@ namespace FællesSpisning
         {
             _execute = methodToExecute;
             _canExecute = methodToDetectCanExecute;
+        }
+
+        public RelayCommand(Action addFinalSum)
+        {
+            this.addFinalSum = addFinalSum;
         }
 
         public void Execute(object paremeter)
