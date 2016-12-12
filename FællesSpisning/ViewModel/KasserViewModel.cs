@@ -19,7 +19,7 @@ namespace FællesSpisning.ViewModel
         private BeregnPris _insertFinalSum;
 
         private BeregnPris _calculateFinalSum;
-        private RelayCommand _calculateFinalSumCommand;
+        public RelayCommand _calculateFinalSumCommand { get; set; }
 
         public KasserViewModel()
         {
