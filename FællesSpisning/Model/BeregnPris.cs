@@ -55,7 +55,7 @@ namespace FællesSpisning.Model
 
         public BeregnPris()
         {
-
+            
         }
 
         public BeregnPris( double UdlagtSum1, double UdlagtSum2, double UdlagtSum3, double UdlagtSum4)

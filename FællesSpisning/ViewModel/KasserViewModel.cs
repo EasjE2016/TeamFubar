@@ -25,7 +25,7 @@ namespace FællesSpisning.ViewModel
         {
             _insertFinalSum = new BeregnPris();
             _calculateFinalSum = new BeregnPris();
-           CalculateFinalSumCommand = new RelayCommand(CalculateFinalSum);      
+           _calculateFinalSumCommand = new RelayCommand(CalculateFinalSum);      
         }
 
 
@@ -38,7 +38,10 @@ namespace FællesSpisning.ViewModel
         public void CalculateFinalSum()
         {
             BeregnPris tempPris = new BeregnPris();
-
+            tempPris.UdlagtSum1 = _insertFinalSum.UdlagtSum1;
+            tempPris.UdlagtSum2 = _insertFinalSum.UdlagtSum2;
+            tempPris.UdlagtSum3 = _insertFinalSum.UdlagtSum3;
+            tempPris.UdlagtSum4 = _insertFinalSum.UdlagtSum4;
             tempPris.FinalSum = _insertFinalSum.FinalSum;
            
             tempPris.GetFinalSum();
