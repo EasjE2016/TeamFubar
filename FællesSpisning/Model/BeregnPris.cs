@@ -18,7 +18,7 @@ namespace FællesSpisning.Model
 
         public double FinalSum
         {
-            get { return _finalSum; }
+            get{ return _finalSum; }
             set { _finalSum = value; }
         }
         
@@ -56,12 +56,6 @@ namespace FællesSpisning.Model
             set { _udlagtSum4 = value; }
         }
 
-        public double GetFinalSum()
-        {
-            _finalSum = _udlagtSum1 + _udlagtSum2 + _udlagtSum3 + _udlagtSum4;
-            return _finalSum;
-
-        }
 
 
         //public override string ToString()
