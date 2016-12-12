@@ -16,41 +16,73 @@ namespace FællesSpisning.ViewModel
         /// <summary>
         /// fields som er private
         /// </summary>
-        
+
         private BeregnPris _udlagtSum1;
+
+        public BeregnPris UdlagtSum1
+        {
+            get { return _udlagtSum1; }
+            set { _udlagtSum1 = value; }
+        }
+
         private BeregnPris _udlagtSum2;
+
+        public BeregnPris UdlagtSum2
+        {
+            get { return _udlagtSum2; }
+            set { _udlagtSum2 = value; }
+        }
+
         private BeregnPris _udlagtSum3;
+
+        public BeregnPris UdlagtSum3
+        {
+            get { return _udlagtSum3; }
+            set { _udlagtSum3 = value; }
+        }
+
         private BeregnPris _udlagtSum4;
+
+        public BeregnPris UdlagtSum4
+        {
+            get { return _udlagtSum4; }
+            set { _udlagtSum4 = value; }
+        }
+
 
         private BeregnPris _insertFinalSum;
         private RelayCommand _addFinalSumCommand;
 
         public KasserViewModel()
         {
-            _udlagtSum1 = new BeregnPris();
-            _udlagtSum2 = new BeregnPris();
-            _udlagtSum3 = new BeregnPris();
-            _udlagtSum4 = new BeregnPris();
+            //_udlagtSum1 = new BeregnPris();
+            //_udlagtSum2 = new BeregnPris();
+            //_udlagtSum3 = new BeregnPris();
+            //_udlagtSum4 = new BeregnPris();
 
-            _insertFinalSum = new BeregnPris();
-            _addFinalSumCommand = new RelayCommand(AddFinalSum);
+            //_insertFinalSum = new BeregnPris( );
+
+            _addFinalSumCommand = new RelayCommand(AddNewFinalSum);
 
         }
 
-        public BeregnPris InsertFinalSum
-        {
-            get { return _insertFinalSum; }
-            set { _insertFinalSum = value; }
-        }
+        //public BeregnPris InsertFinalSum
+        //{
+        //    get { return _insertFinalSum; }
+        //    set { _insertFinalSum = value; }
+        //}
 
-     
 
-        public void AddFinalSum()
+
+        public void AddNewFinalSum()
         {
             BeregnPris tempFinalSum = new BeregnPris();
-            tempFinalSum.FinalSum = _insertFinalSum.FinalSum;
-            
-             
+            //tempFinalSum.UdlagtSum1 = InsertFinalSum.UdlagtSum1;
+            //tempFinalSum.UdlagtSum2 = _insertFinalSum.UdlagtSum2;
+            //tempFinalSum.UdlagtSum3 = _insertFinalSum.UdlagtSum3;
+            //tempFinalSum.UdlagtSum4 = _insertFinalSum.UdlagtSum4;
+            //tempFinalSum.FinalSum = _insertFinalSum.FinalSum;
+
         }
 
         public RelayCommand AddFinalSumCommand

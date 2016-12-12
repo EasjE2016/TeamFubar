@@ -14,16 +14,6 @@ namespace FællesSpisning.Model
         /// </summary>
         /// 
 
-        private double _finalSum;
-
-        public double FinalSum
-        {
-            get{ return _finalSum; }
-            set { _finalSum = value; }
-        }
-        
-        public Hus HusObj { get; set; }
-
         private double _udlagtSum1;
 
         public double UdlagtSum1
@@ -56,12 +46,27 @@ namespace FællesSpisning.Model
             set { _udlagtSum4 = value; }
         }
 
+        private double _finalSum;
+
+        public double FinalSum
+        {
+
+            get { return _finalSum; }
+            set { _finalSum = value; }
+        }
+
+        public Hus HusObj { get; set; }
+
+        public BeregnPris()
+        {
+           
+        }
 
 
-        //public override string ToString()
-        //{
-        //    return  "kr" + ".";
-        //}
+        public override string ToString()
+        {
+            return "kr" + ".";
+        }
 
 
     }
