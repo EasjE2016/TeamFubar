@@ -10,7 +10,7 @@ using Windows.UI.Popups;
 
 namespace FællesSpisning.ViewModel
 {
-    class KasserViewModel : INotifyPropertyChanged
+    class KasserViewModel 
     {
 
         /// <summary>
@@ -19,13 +19,13 @@ namespace FællesSpisning.ViewModel
         private BeregnPris _insertFinalSum;
 
         private BeregnPris _calculateFinalSum;
-        public RelayCommand _calculateFinalSumCommand { get; set; }
+        public RelayCommand CalculateFinalSumCommand { get; set; }
 
         public KasserViewModel()
         {
             _insertFinalSum = new BeregnPris();
             _calculateFinalSum = new BeregnPris();
-           _calculateFinalSumCommand = new RelayCommand(CalculateFinalSum);      
+           CalculateFinalSumCommand = new RelayCommand(CalculateFinalSum, null);      
         }
 
 
@@ -48,11 +48,6 @@ namespace FællesSpisning.ViewModel
             
         }
 
-        public RelayCommand CalculateFinalSumCommand
-        {
-            get{ return _calculateFinalSumCommand; }
-            set{ _calculateFinalSumCommand = value; }
-        }
 
         ///// <summary>
         ///// Metode til at inserte Udlæg
