@@ -70,6 +70,13 @@
                     <Button x:Name="jobpersonButton" Content="Tilføj" HorizontalAlignment="Center" Margin="-95,140,0,0" VerticalAlignment="Top" Command="{Binding AddJobPersonCommand}"/>
                     <Button x:Name="jobpersonButton2" Content="Fjern" HorizontalAlignment="Center" Margin="185,140,0,0" VerticalAlignment="Top" Command="{Binding RemoveJobPersonCommand}"/>
                     
+                    <Button x:Name="LockDateStart" Content="Lås Dato Start" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding NewStartLockCommand, Mode=TwoWay}" Margin="0,50"/>
+                    <Button x:Name="LockDateEnd" Content="Lås Dato End" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding NewEndLockCommand, Mode=TwoWay}"/>
+                    <CalendarDatePicker x:Name="DateLockPicker" Date="{Binding DefaultLåsDate, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+                    <TextBox x:Name="DIsplayLockedDateStart" Text="{Binding LåsFunktion.StartDato, Mode=TwoWay}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0, 50" />
+                    <TextBox x:Name="DIsplayLockedDateEnd" Text="{Binding LåsFunktion.EndDato, Mode=TwoWay}" VerticalAlignment="Bottom" HorizontalAlignment="Left"  />
+
+
                     <ListView x:Name="listView"  BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Margin="50,70,0,0" Height="300" VerticalAlignment="Top" Width="150" ItemsSource="{Binding Result}" SelectedValue="{Binding SelectedJobPerson, Mode=TwoWay}"/>
                     <ComboBox x:Name="jobtypeCB" HorizontalAlignment="Center" Margin="185,70,0,0" Width="130" VerticalAlignment="Top" Header="Opgave" ItemsSource="{Binding JobPersonCBoxOptions}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"/>
                     <CalendarDatePicker x:Name="PlanlægKalenderPicker" Date="{Binding PlanDateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="300,28,0,0"/>

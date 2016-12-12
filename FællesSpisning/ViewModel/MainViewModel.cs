@@ -107,6 +107,10 @@ namespace FællesSpisning.ViewModel
             Result = new ObservableCollection<Hus>();
             LoadJson();
 
+            // Locktest
+            LåsListeFunktioner = LåsListe.LåsListeFunktioner;
+            // LockTest
+
         }
 
         public void RemoveEventOnDateTime()
@@ -123,15 +127,36 @@ namespace FællesSpisning.ViewModel
             }
         }
 
+        // Lock Test
+        public LåsListe LåsListeFunktioner { get; set; }
+
+        //private DateTime _dateToday = DateTime.Today; // will prevent user from signing house as long as lock start.
+        //public DateTime DateToday
+        //{
+        //    get { return _dateToday; }
+        //    set { _dateToday = value.Date; }
+        //}
+
+        // Lock Test
+
         public void AddEventOnDateTime()
         {
-            if (TilmeldsListe.Where(hus => hus.HusNr == HusListe[SelectedIndex].HusNr).Any(hus => hus.DT.Any(husDt => husDt == DateTime)) == false)
+// LockTEst
+            if (DateTime >= LåsListeFunktioner.StartDato && DateTime<LåsListeFunktioner.EndDato)
+            {
+                MessageDialog dateLocked = new MessageDialog("Denne Dato er Låst!");
+                dateLocked.Commands.Add(new UICommand { Label = "Ok" });
+                dateLocked.ShowAsync().AsTask();
+            }
+// LockTest
+            else if (TilmeldsListe.Where(hus => hus.HusNr == HusListe[SelectedIndex].HusNr).Any(hus => hus.DT.Any(husDt => husDt == DateTime)) == false)
             {
                 HusListe[SelectedIndex].DT.Add(DateTime);
                 TilmeldsListe.Add(HusListe[SelectedIndex]);
                 DisplayEventOnDateTime();
                 SaveList_Async(TilmeldsListe, FileNameForTilmeldsListe);
-            } else
+            }
+            else
             {
                 MessageDialog noEvent = new MessageDialog("Denne husstand er allerede tilmeldt!");
                 noEvent.Commands.Add(new UICommand { Label = "Ok" });

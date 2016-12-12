@@ -75,8 +75,57 @@ namespace FællesSpisning.ViewModel
             AddCBoxOptions();
             LoadJson();
 
+            // testlås
+            NewStartLockCommand = new RelayCommand(SetNewStartLock, null);
+            NewEndLockCommand = new RelayCommand(SetNewEndLock, null);
+
+            LåsFunktion = LåsListe.LåsListeFunktioner;
+            // TestLås        
+        }
+
+
+        // TestLock
+        public RelayCommand NewStartLockCommand { get; set; }
+        public RelayCommand NewEndLockCommand { get; set; }
+
+        public LåsListe LåsFunktion { get; set; }
+
+        private DateTime _defaultLåsDate = DateTime.Today;
+        public DateTime DefaultLåsDate
+        {
+            get { return _defaultLåsDate ; }
+            set { _defaultLåsDate  = value; }
+        }
+
+        public void SetNewStartLock()
+        {
+            LåsFunktion.SetStartDato(DefaultLåsDate);
+        }   
+        
+        public void SetNewEndLock()
+        {
+            LåsFunktion.SetEndDato(DefaultLåsDate);
+        }     
+
+        // TestLockEnd
+
+        public void AddNewJobPerson()
+        {
+
+                JobPerson tempListe = new JobPerson();
+
+                tempListe.JobDateTime = PlanDateTime;
+                tempListe.JobPersonNavn = PlanToListe.JobPersonNavn;
+                tempListe.JobPersonOpgave = JobPersonCBoxOptions[SelectedIndex];
+                tempListe.Menu = JobPersonCBoxOptions[SelectedIndex];
+
+                ListeOfPlans.Add(tempListe);
+
+                SaveList_Async(ListeOfPlans, PlanFileSave);
+                DisplayEventOnDateTime();
 
         }
+
 
 
         public void DisplayEventOnDateTime()
@@ -105,24 +154,6 @@ namespace FællesSpisning.ViewModel
         public void AddCBoxOptions()
         {
             JobPersonCBoxOptions = new List<string>() { "Chefkok", "Kok", "Oprydder", "Menu" };
-        }
-
-        public void AddNewJobPerson()
-        {
-
-
-            JobPerson tempListe = new JobPerson();
-
-            tempListe.JobDateTime = PlanDateTime;
-            tempListe.JobPersonNavn = PlanToListe.JobPersonNavn;
-            tempListe.JobPersonOpgave = JobPersonCBoxOptions[SelectedIndex];
-            tempListe.Menu = JobPersonCBoxOptions[SelectedIndex];
-
-            ListeOfPlans.Add(tempListe);
-
-            SaveList_Async(ListeOfPlans, PlanFileSave);
-            DisplayEventOnDateTime();
-
         }
 
 
