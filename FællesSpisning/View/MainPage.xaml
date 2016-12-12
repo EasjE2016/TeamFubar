@@ -65,13 +65,12 @@
                     <TextBlock x:Name="titelDag2" HorizontalAlignment="Left" Text="Dag 2" Margin="20, 124,0,0" TextWrapping="Wrap" Width="50"/>
                     <TextBlock x:Name="titelDag3" HorizontalAlignment="Left" Text="Dag 3" Margin="20,184,0,0" TextWrapping="Wrap" Width="50"/>
                     <TextBlock x:Name="titelDag4" HorizontalAlignment="Left" Text="Dag 4" Margin="20,244,0,0" TextWrapping="Wrap" Width="50"/>
-                    <TextBox x:Name="udlæg1" HorizontalAlignment="Left" Margin="80,64,0,0" Text="{Binding UdlagtSum1}" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
+                    <TextBox x:Name="udlæg1" HorizontalAlignment="Left" Margin="80,64,0,0" Text="{Binding UdlagtSum1, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
                     <TextBox x:Name="udlæg2" HorizontalAlignment="Left" Margin="80,124, 0,0" Text="{Binding UdlagtSum2, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
                     <TextBox x:Name="Udlæg3" HorizontalAlignment="Left" Margin="80 184,0,0" Text="{Binding UdlagtSum3, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
                     <TextBox x:Name="Udlæg4" HorizontalAlignment="Left" Margin="80,244,0,0" Text="{Binding UdlagtSum4, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="90"/>
-                    
-                    <Button x:Name="AddFinalSum" Content="Beregn Sum af Udlæg" HorizontalAlignment="Left" Margin="20,30,0,0" VerticalAlignment="Center" ClickMode="{Binding InsertFinalSum, Mode=TwoWay}" Command="{Binding AddFinalSumCommand}" Width="200" />
-                    <TextBox x:Name="Sumtest" HorizontalAlignment="Left" Margin=" 20, 120, 0,0 " VerticalAlignment="Center" Text="{Binding InsertFinalSum}" TextWrapping="Wrap"/>
+                    <Button x:Name="AddFinalSum" Content="Beregn Sum af Udlæg" HorizontalAlignment="Left" Margin="20,30,0,0" VerticalAlignment="Center" ClickMode="{Binding InsertFinalSum, Mode=TwoWay}" Command="{Binding CalculateFinalSumCommand}" Width="200" />
+                    <TextBox x:Name="Sumtest" HorizontalAlignment="Left" Margin=" 20, 120, 0,0 " VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding UdlagtSum1, Mode=TwoWay}" />
                 </Grid>
             </PivotItem>
         </Pivot>

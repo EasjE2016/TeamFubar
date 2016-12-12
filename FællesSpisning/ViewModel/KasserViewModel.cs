@@ -16,79 +16,39 @@ namespace FællesSpisning.ViewModel
         /// <summary>
         /// fields som er private
         /// </summary>
-
-        private BeregnPris _udlagtSum1;
-
-        public BeregnPris UdlagtSum1
-        {
-            get { return _udlagtSum1; }
-            set { _udlagtSum1 = value; }
-        }
-
-        private BeregnPris _udlagtSum2;
-
-        public BeregnPris UdlagtSum2
-        {
-            get { return _udlagtSum2; }
-            set { _udlagtSum2 = value; }
-        }
-
-        private BeregnPris _udlagtSum3;
-
-        public BeregnPris UdlagtSum3
-        {
-            get { return _udlagtSum3; }
-            set { _udlagtSum3 = value; }
-        }
-
-        private BeregnPris _udlagtSum4;
-
-        public BeregnPris UdlagtSum4
-        {
-            get { return _udlagtSum4; }
-            set { _udlagtSum4 = value; }
-        }
-
-
         private BeregnPris _insertFinalSum;
-        private RelayCommand _addFinalSumCommand;
+
+        private BeregnPris _calculateFinalSum;
+        private RelayCommand _calculateFinalSumCommand;
 
         public KasserViewModel()
         {
-            //_udlagtSum1 = new BeregnPris();
-            //_udlagtSum2 = new BeregnPris();
-            //_udlagtSum3 = new BeregnPris();
-            //_udlagtSum4 = new BeregnPris();
-
-            //_insertFinalSum = new BeregnPris( );
-
-            _addFinalSumCommand = new RelayCommand(AddNewFinalSum);
-
+            _insertFinalSum = new BeregnPris();
+            _calculateFinalSum = new BeregnPris();
+           CalculateFinalSumCommand = new RelayCommand(CalculateFinalSum);      
         }
 
-        //public BeregnPris InsertFinalSum
-        //{
-        //    get { return _insertFinalSum; }
-        //    set { _insertFinalSum = value; }
-        //}
 
-
-
-        public void AddNewFinalSum()
+        public BeregnPris InsertFinalSum
         {
-            BeregnPris tempFinalSum = new BeregnPris();
-            //tempFinalSum.UdlagtSum1 = InsertFinalSum.UdlagtSum1;
-            //tempFinalSum.UdlagtSum2 = _insertFinalSum.UdlagtSum2;
-            //tempFinalSum.UdlagtSum3 = _insertFinalSum.UdlagtSum3;
-            //tempFinalSum.UdlagtSum4 = _insertFinalSum.UdlagtSum4;
-            //tempFinalSum.FinalSum = _insertFinalSum.FinalSum;
-
+            get { return _insertFinalSum; }
+            set { _insertFinalSum = value; }
         }
 
-        public RelayCommand AddFinalSumCommand
+        public void CalculateFinalSum()
         {
-            get{ return _addFinalSumCommand; }
-            set{ _addFinalSumCommand = value; }
+            BeregnPris tempPris = new BeregnPris();
+
+            tempPris.FinalSum = _insertFinalSum.FinalSum;
+           
+            tempPris.GetFinalSum();
+            
+        }
+
+        public RelayCommand CalculateFinalSumCommand
+        {
+            get{ return _calculateFinalSumCommand; }
+            set{ _calculateFinalSumCommand = value; }
         }
 
         ///// <summary>

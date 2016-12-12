@@ -15,6 +15,10 @@ namespace FællesSpisning.Model
         /// 
 
         private double _udlagtSum1;
+        private double _udlagtSum2;
+        private double _udlagtSum3;
+        private double _udlagtSum4;
+        private double _finalSum;
 
         public double UdlagtSum1
         {
@@ -22,15 +26,11 @@ namespace FællesSpisning.Model
             set { _udlagtSum1 = value; }
         }
 
-        private double _udlagtSum2;
-
         public double UdlagtSum2
         {
             get { return _udlagtSum2; }
             set { _udlagtSum2 = value; }
         }
-
-        private double _udlagtSum3;
 
         public double UdlagtSum3
         {
@@ -38,15 +38,11 @@ namespace FællesSpisning.Model
             set { _udlagtSum3 = value; }
         }
 
-        private double _udlagtSum4;
-
         public double UdlagtSum4
         {
             get { return _udlagtSum4; }
             set { _udlagtSum4 = value; }
         }
-
-        private double _finalSum;
 
         public double FinalSum
         {
@@ -59,13 +55,28 @@ namespace FællesSpisning.Model
 
         public BeregnPris()
         {
-           
+
+        }
+
+        public BeregnPris( double UdlagtSum1, double UdlagtSum2, double UdlagtSum3, double UdlagtSum4)
+        {
+
+            this.UdlagtSum1 = UdlagtSum1;
+            this.UdlagtSum2 = UdlagtSum2;
+            this.UdlagtSum3 = UdlagtSum3;
+            this.UdlagtSum4 = UdlagtSum4;
         }
 
 
+        public double GetFinalSum()
+        {
+            _finalSum = _udlagtSum1 + _udlagtSum2 + _udlagtSum3 + _udlagtSum4;
+            return _finalSum;
+        }
+
         public override string ToString()
         {
-            return "kr" + ".";
+            return  "";
         }
 
 
