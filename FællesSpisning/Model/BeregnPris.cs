@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace FællesSpisning.Model
 {
-    public class BeregnPris
+    class BeregnPris
     {
         /// <summary>
         /// Properties 
