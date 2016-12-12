@@ -27,9 +27,9 @@ namespace FællesSpisning
 
       
 
-        public void Execute(object paremeter)
+        public void Execute(object parameter)
         {
-            this_execute;
+            this._execute();
         }
 
         public bool CanExecute(object parameter)
