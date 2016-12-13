@@ -8,12 +8,14 @@ namespace FællesSpisning.Model
 {
     class JobPerson
     {
-        enum job
+        public string JobPersonNavn { get; set; }
+        public string JobPersonOpgave { get; set; }
+        public DateTime JobDateTime { get; set; }
+
+
+        public override string ToString()
         {
-            ChefKok,
-            Kok,
-            Oprydder  
+            return JobPersonNavn + " \n " + JobPersonOpgave + " \n ";
         }
-        
     }
 }

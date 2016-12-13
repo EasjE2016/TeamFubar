@@ -37,6 +37,10 @@ namespace FællesSpisning.ViewModel
         const String FileNameForTilmeldsListe = "saveTilmeldsListe.json";
         const String FileNameForHusListe = "saveHouseList.json";
 
+        public ObsHusListeSingleton Singleton { get; set; }
+
+        public DateTime CurrentDateTime { get; set; } = DateTime.Today;
+
         private DateTime _dateTime = DateTime.Today;
         public DateTime DateTime
         {
@@ -44,7 +48,6 @@ namespace FællesSpisning.ViewModel
             set { _dateTime = value.Date;
                 OnPropertyChanged(nameof(DateTime)); }
         }
-
 
         private Hus _husTilListe;
         public Hus HusTilListe
@@ -71,16 +74,6 @@ namespace FællesSpisning.ViewModel
                 OnPropertyChanged(nameof(Result));
             }
         }
-    
-
-        private int _selectedIndex;
-        public int SelectedIndex
-        {
-            get { return _selectedIndex; }
-            set { _selectedIndex = value;
-                OnPropertyChanged(nameof(SelectedIndex));
-            }
-        }
 
         private Hus _selectedHusListView;
         public Hus SelectedHusListView
@@ -91,11 +84,21 @@ namespace FællesSpisning.ViewModel
             }
         }
 
+        private LåsListeSingleton _låsSingleton;
+        public LåsListeSingleton LåsSingleton
+        {
+            get { return _låsSingleton; }
+            set { _låsSingleton = value; }
+        }
 
+        
 
         public MainViewModel()
         {
-            HusListe = ObsHusListeSingleton._Instance.HusListe;
+            Singleton = ObsHusListeSingleton.Instance;
+            HusListe = Singleton.HusListe;
+
+            LåsSingleton = LåsListeSingleton.Instance;
 
             AddEvent = new RelayCommand(AddEventOnDateTime, null);
             DisplayEvent = new RelayCommand(DisplayEventOnDateTime, null);
@@ -112,7 +115,7 @@ namespace FællesSpisning.ViewModel
         public void RemoveEventOnDateTime()
         {
                 
-            if(SelectedHusListView != null) {           
+            if(SelectedHusListView != null) {
                 TilmeldsListe.Remove(SelectedHusListView);
                 DisplayEventOnDateTime();
                 SaveList_Async(TilmeldsListe, FileNameForTilmeldsListe);
@@ -125,10 +128,17 @@ namespace FællesSpisning.ViewModel
 
         public void AddEventOnDateTime()
         {
-            if (TilmeldsListe.Where(hus => hus.HusNr == HusListe[SelectedIndex].HusNr).Any(hus => hus.DT.Any(husDt => husDt == DateTime)) == false)
+            if (LåsSingleton.LockedDatesList.Any(x => x.LåsDato <= CurrentDateTime) && LåsSingleton.LockedDatesList.Any(xy => xy.DateTimeID == DateTime))
             {
-                HusListe[SelectedIndex].DT.Add(DateTime);
-                TilmeldsListe.Add(HusListe[SelectedIndex]);
+                MessageDialog dateLocked = new MessageDialog("Denne Dato er Låst!");
+                dateLocked.Commands.Add(new UICommand { Label = "Ok" });
+                dateLocked.ShowAsync().AsTask();
+            } else {
+
+            if (TilmeldsListe.Where(hus => hus.HusNr == HusListe[Singleton.SelectedIndex].HusNr).Any(hus => hus.DT.Any(husDt => husDt == DateTime)) == false)
+            {
+                HusListe[Singleton.SelectedIndex].DT.Add(DateTime);
+                TilmeldsListe.Add(HusListe[Singleton.SelectedIndex]);
                 DisplayEventOnDateTime();
                 SaveList_Async(TilmeldsListe, FileNameForTilmeldsListe);
             } else
@@ -138,6 +148,7 @@ namespace FællesSpisning.ViewModel
                 noEvent.ShowAsync().AsTask();
             }
 
+           }
         }
 
         public void DisplayEventOnDateTime()
@@ -170,11 +181,11 @@ namespace FællesSpisning.ViewModel
         public void RemoveHouseFromList()
         {
             if(HusListe.Count != 0) {
-                ObsHusListeSingleton._Instance.RemoveHouse(HusListe[SelectedIndex]);
+                Singleton.RemoveHouse(HusListe[Singleton.SelectedIndex]);
                 SaveList_Async(HusListe, FileNameForHusListe);
                 if(HusListe.Count > 0)
                 {
-                    SelectedIndex = 0;
+                    Singleton.SelectedIndex = 0;
                 }
             }
         }

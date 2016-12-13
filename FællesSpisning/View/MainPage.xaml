@@ -27,7 +27,7 @@
                     </Grid.Resources>
                     <CalendarDatePicker x:Name="TilmeldKalenderPicker" Date="{Binding DateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="300,28,0,0"/>
                     <ListView x:Name="TilmeldteListview" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="600" ItemsSource="{Binding Result, Mode=TwoWay}" SelectedValue="{Binding SelectedHusListView, Mode=TwoWay}" BorderBrush="Black" BorderThickness="2"/>
-                    <ComboBox x:Name="HusListeComboBox" Header="Huse" HorizontalAlignment="Center" Width="180" ItemsSource="{Binding HusListe, Mode=TwoWay}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
+                    <ComboBox x:Name="HusListeComboBox" Header="Huse" HorizontalAlignment="Center" Width="180" ItemsSource="{Binding HusListe, Mode=TwoWay}" SelectedIndex="{Binding Singleton.SelectedIndex, Mode=TwoWay}">
                     </ComboBox>
                     <Button x:Name="TilmeldHusBtn" Content="Tilmeld Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding AddEvent}" Margin="-85, 120, 0 ,0"/>
                     <Button x:Name="AfmeldHusBtn" Content="Afmeld Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding RemoveEvent}" Margin="115, 120, 0 ,0"/>
@@ -54,6 +54,31 @@
                 </Grid>
             </PivotItem>
             <PivotItem Header="Adminstration">
+                <Grid>
+                    <Grid.DataContext>
+                        <vm:AdminViewModel/>
+                    </Grid.DataContext>
+                    <Grid.Resources>
+                        <m:DateTimeConverter
+                            x:Key="DateTimeConverter" />
+                    </Grid.Resources>
+
+                    <ListView x:Name="JobListView" ItemsSource="{Binding ResultJob, Mode=TwoWay}" SelectedItem="{Binding SelectedJob, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180" Height="240" BorderBrush="Black" BorderThickness="2"/>
+                    <ListView x:Name="MenuListView" ItemsSource="{Binding ResultMenu, Mode=TwoWay}" SelectedItem="{Binding SelectedMenu, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="180" Height="120" BorderBrush="Black" BorderThickness="2" />
+                    <CalendarDatePicker x:Name="PlanlægKalenderPicker" Date="{Binding PlanDateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="450,20,0,0"/>
+                    <Button x:Name="LåsDateTimeBtn" Command="{Binding NyLåsCommand}" Content="Lås dato!" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="450, 55, 0 , 0" />
+                    <ListView x:Name="LåsDatoListView" ItemsSource="{Binding ResultLock, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="400" Height="240" BorderBrush="Black" BorderThickness="2" />
+
+                    <TextBox x:Name="JobPersonNavnTxtBox" Text="{Binding Job.JobPersonNavn, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="140" Margin="-150, 0, 0 ,0" PlaceholderText="Job"/>
+                    <ComboBox x:Name="JobPersonCBox" ItemsSource="{Binding JobPersonCBoxOptions}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="140" Margin="150, 0, 0 ,0"/>
+                    <Button x:Name="JobPersonAddBtn" Content="Tilføj Person" Command="{Binding AddJobPersonCommand}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-100, 50, 0 ,0"/>
+                    <Button x:Name="JobPersonRemoveBtn" Content="Fjern Person" Command="{Binding RemoveJobPersonCommand}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="100, 50, 0 ,0"/>
+
+                    <TextBox x:Name="MenuMealTxtBox" Text="{Binding Menu.MenuMeal, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="140" Margin="-100, 0, 0 ,0" PlaceholderText="Menu"/>
+                    <Button x:Name="MenuAddBtn" Content="Tilføj Menu" Command="{Binding AddMenuCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-100, 70, 0 ,0"/>
+                    <Button x:Name="MenuRemoveBtn" Content="Fjern Menu" Command="{Binding RemoveMenuCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100, 70, 0 ,0"/>
+
+                </Grid>
             </PivotItem>
             <PivotItem Header="Kassere">
             </PivotItem>
