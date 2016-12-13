@@ -73,17 +73,14 @@
                     
                     <Button x:Name="AddFinalSum" Content="Beregn Sum af Udlæg" HorizontalAlignment="Left" Margin="20,30,0,0" VerticalAlignment="Center" Command="{Binding CalculateFinalSumCommand}" Width="200" />
                     <TextBlock x:Name="Sumtest" HorizontalAlignment="Left" Margin=" 20, 120, 0,0 " VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding DisplayData, Mode=TwoWay}" />
-                    
                     <TextBlock x:Name="HusNr" HorizontalAlignment="Left" Text="Hus nr" Margin="250,20,0,0" TextWrapping="Wrap" Width="60" VerticalAlignment="Top" FontSize="20"/>
                     <TextBox x:Name="Hus1" HorizontalAlignment="Left" Margin="250,64,0,0" Text="{Binding}" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" Height="32"/>
                     <TextBox x:Name="Hus2" HorizontalAlignment="Left" Margin="250,124,0,0" Text="{Binding}" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" Height="32"/>
                     <TextBox x:Name="Hus3" HorizontalAlignment="Left" Margin="250,184,0,0" Text="{Binding}" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" Height="32"/>
                     <TextBox x:Name="Hus4" HorizontalAlignment="Left" Margin="250,244,0,0" Text="{Binding }" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" Height="32"/>
-
                 </Grid>
             </PivotItem>
         </Pivot>
     </Grid>
 </Page>
 
-<!--ClickMode="{Binding InsertFinalSum.FinalSum, Mode=TwoWay}"-->
