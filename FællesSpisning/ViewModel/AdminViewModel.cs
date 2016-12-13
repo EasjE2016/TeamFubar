@@ -32,7 +32,7 @@ namespace FællesSpisning.ViewModel
         public RelayCommand AddMenuCommand { get; set; }
         public RelayCommand RemoveMenuCommand { get; set; }
         public RelayCommand NyLåsCommand { get; set; }
-x
+
         private DateTime _planDateTime = DateTime.Today;
         public DateTime PlanDateTime
         {
@@ -154,7 +154,7 @@ x
         {
             LåstDates tempLås = new LåstDates();
             tempLås.LåsDato = PlanDateTime;
-            tempLås.DateTimeID = DateTime.Today;
+            tempLås.DateTimeID = PlanDateTime;
 
             LåsListeSingleton.Instance.AddNewLock(tempLås);
             DisplayEventOnDateTime();
