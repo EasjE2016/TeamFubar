@@ -1,58 +1,69 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace FællesSpisning.Model
 {
-    class Lås : INotifyPropertyChanged
+    class Lås
     {
-        private DateTime _startDato;
-        public DateTime StartDato
-        {
-            get { return _startDato; }
-            set { _startDato = value.Date; OnPropertyChanged(nameof(StartDato)); }
-        }
-
-        private DateTime _endDato;
-        public DateTime EndDato
-        {
-            get { return _endDato; }
-            set { _endDato = value.Date; OnPropertyChanged(nameof(EndDato)); }
-        }
-
-        private static Lås _låsListeFunktioner;
-        public static Lås LåsListeFunktioner
+        const String Filename = "saveLåsListe.json";
+  
+        private static Lås _låsFunktioner;
+        public static Lås LåsFunktioner
         {
             get
             {
-                if (_låsListeFunktioner == null)
+                if (_låsFunktioner == null)
                 {
-                    _låsListeFunktioner = new Lås();
+                    _låsFunktioner = new Lås();
                 }
-                return _låsListeFunktioner;
+                return _låsFunktioner;
+            }
+        }
+        
+        public ObservableCollection<LåsProperties> ListOfLockedDates { get; set; }
+
+        public Lås()
+        {
+            ListOfLockedDates = new ObservableCollection<LåsProperties>();
+            LoadJson();
+
+        }
+
+        private async void LoadJson()
+        {
+            try
+            {
+                StorageFile LocalFile = await ApplicationData.Current.LocalFolder.GetFileAsync(Filename);
+                String jsonSaveData = await FileIO.ReadTextAsync(LocalFile);
+                ListOfLockedDates = JsonConvert.DeserializeObject<ObservableCollection<LåsProperties>>(jsonSaveData); 
+                    
+            }
+            catch (Exception)
+            {
             }
         }
 
-        public void SetStartDato(DateTime startDato)
+        public String SaveJsonData()
         {
-            StartDato = startDato;
+            String jsonSaveData = JsonConvert.SerializeObject(ListOfLockedDates);
+
+            return jsonSaveData;
         }
 
-        public void SetEndDato(DateTime endDato)
-        {
-            EndDato = endDato;
-        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged(string propertyname)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyname));
-        }
 
-        }
+
+
+
+
+
+    }
 
 }

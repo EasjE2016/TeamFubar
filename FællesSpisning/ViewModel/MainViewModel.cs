@@ -108,7 +108,7 @@ namespace FællesSpisning.ViewModel
             LoadJson();
 
             // Locktest
-            LåsListeFunktioner = Lås.LåsListeFunktioner;
+            LockID = Lås.LåsFunktioner;
             // LockTest
 
         }
@@ -128,20 +128,29 @@ namespace FællesSpisning.ViewModel
         }
 
         // Lock Test
-        public Lås LåsListeFunktioner { get; set; }
-        
-        // Lock Test
+        private DateTime _currentDateTime = DateTime.Today;
+        public DateTime CurrentDateTime
+        {
+            get { return _currentDateTime; }
+            set { _currentDateTime = value.Date; }
+        }
 
+        private Lås _lockID;
+        public Lås LockID
+        {
+            get { return _lockID; }
+            set { _lockID = value; }
+        }
+        
         public void AddEventOnDateTime()
         {
-// LockTEst
-            if (DateTime >= LåsListeFunktioner.StartDato && DateTime<LåsListeFunktioner.EndDato)
+
+            if (LockID.ListOfLockedDates.Any(x => x.LåsDato <= CurrentDateTime) && LockID.ListOfLockedDates.Any(xy => xy.DateTimeID == DateTime))
             {
                 MessageDialog dateLocked = new MessageDialog("Denne Dato er Låst!");
                 dateLocked.Commands.Add(new UICommand { Label = "Ok" });
                 dateLocked.ShowAsync().AsTask();
             }
-// LockTest
             else if (TilmeldsListe.Where(hus => hus.HusNr == HusListe[SelectedIndex].HusNr).Any(hus => hus.DT.Any(husDt => husDt == DateTime)) == false)
             {
                 HusListe[SelectedIndex].DT.Add(DateTime);

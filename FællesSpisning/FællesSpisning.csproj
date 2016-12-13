@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\DateTimeConverter.cs" />
+    <Compile Include="Model\LåsProperties.cs" />
     <Compile Include="Model\ObsHusListeSingleton.cs" />
     <Compile Include="ViewModel\NewHouseViewModel.cs" />
     <Compile Include="View\MainPage.xaml.cs">

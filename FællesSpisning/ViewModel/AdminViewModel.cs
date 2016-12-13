@@ -22,8 +22,19 @@ namespace FællesSpisning.ViewModel
         public RelayCommand AddJobPersonCommand { get; set; }
         public RelayCommand RemoveJobPersonCommand { get; set; }
         public RelayCommand DisplayPlanDate { get; set; }
+        public RelayCommand NyLåsCommand { get; set; }
+        public RelayCommand RemoveLåsCommand { get; set; }
+        public RelayCommand DisplayLåsDate { get; set; }
 
         const string PlanFileSave = "savePlanListe.json";
+        //Lock Test
+
+            // Alt json skal flyttes over i lås.cs
+
+        //const String LåsStartSave = "saveStartLås.json";
+        //const String LåsEndSave = "saveEndLås.json";
+
+        //Lock Test
 
         private DateTime _planDateTime = DateTime.Today;
         public DateTime PlanDateTime
@@ -49,6 +60,14 @@ namespace FællesSpisning.ViewModel
             set { _selectedJobPerson = value; OnPropertyChanged(nameof(SelectedJobPerson)); }
         }
 
+        private LåsProperties _selectedLås;
+        public LåsProperties SelectedLås
+        {
+            get { return _selectedLås; }
+            set { _selectedLås = value; OnPropertyChanged(nameof(SelectedLås)); }
+        }
+
+
         private ObservableCollection<JobPerson> _result;
         public  ObservableCollection<JobPerson> Result
         {
@@ -57,57 +76,60 @@ namespace FællesSpisning.ViewModel
                 OnPropertyChanged(nameof(Result));
             }
         }
-        
 
+        private DateTime _låsDateID = DateTime.Today;
+        public DateTime LåsDateID
+        {
+            get { return _låsDateID; }
+            set { _låsDateID = value; }
+        }
+        private ObservableCollection<LåsProperties> _listOfLocks;
+        public ObservableCollection<LåsProperties> ListOfLocks
+        {
+            get { return _listOfLocks; }
+            set { _listOfLocks = value; OnPropertyChanged(nameof(ListOfLocks)); }
+        }
+
+        private ObservableCollection<LåsProperties> _displayLås;
+        public ObservableCollection<LåsProperties> DisplayLås
+        {
+            get { return _displayLås; }
+            set { _displayLås = value; OnPropertyChanged(nameof(DisplayLås)); }
+        }
 
         public AdminViewModel()
         {
             ListeOfPlans = new PlanListe();
             Result = new ObservableCollection<JobPerson>();
-
+            DisplayLås = new ObservableCollection<LåsProperties>();
+            
             SelectedJobPerson = new JobPerson();
             PlanToListe = new JobPerson();
+            SelectedLås = new LåsProperties();
 
-            DisplayPlanDate = new RelayCommand(DisplayEventOnDateTime, null);
             AddJobPersonCommand = new RelayCommand(AddNewJobPerson, null);
             RemoveJobPersonCommand = new RelayCommand(RemoveSelectedJobPerson, null);
+            NyLåsCommand = new RelayCommand(AddNyLås, null);
+            RemoveLåsCommand = new RelayCommand(RemoveSelectedLås, null);
 
+            ListOfLocks = Lås.LåsFunktioner.ListOfLockedDates;
+            
             AddCBoxOptions();
             LoadJson();
 
-            // testlås
-            NewStartLockCommand = new RelayCommand(SetNewStartLock, null);
-            NewEndLockCommand = new RelayCommand(SetNewEndLock, null);
-
-            LåsFunktion = Lås.LåsListeFunktioner;
-            // TestLås        
         }
-
-
-        // TestLock
-        public RelayCommand NewStartLockCommand { get; set; }
-        public RelayCommand NewEndLockCommand { get; set; }
-
-        public Lås LåsFunktion { get; set; }
-
-        private DateTime _defaultLåsDate = DateTime.Today;
-        public DateTime DefaultLåsDate
-        {
-            get { return _defaultLåsDate ; }
-            set { _defaultLåsDate  = value; }
-        }
-
-        public void SetNewStartLock()
-        {
-            LåsFunktion.SetStartDato(DefaultLåsDate);
-        }   
         
-        public void SetNewEndLock()
-        {
-            LåsFunktion.SetEndDato(DefaultLåsDate);
-        }     
 
-        // TestLockEnd
+        public void AddNyLås()
+        {
+            LåsProperties tempContainer = new LåsProperties();
+            tempContainer.DateTimeID = PlanDateTime;
+            tempContainer.LåsDato = LåsDateID;
+
+            ListOfLocks.Add(tempContainer);
+            DisplayLockOnDateTime();
+        }
+
 
         public void AddNewJobPerson()
         {
@@ -126,7 +148,38 @@ namespace FællesSpisning.ViewModel
 
         }
 
+        public void RemoveSelectedLås()
+        {
+            if (SelectedLås != null)
+            {
+                ListOfLocks.Remove(SelectedLås);
+                DisplayLockOnDateTime();
+            }
+            else
+            {
+                MessageDialog noLås = new MessageDialog("Vælg lås på liste!");
+                noLås.Commands.Add(new UICommand { Label = "Ok" } );
+                noLås.ShowAsync().AsTask();
+            }
+        }
 
+        public void RemoveSelectedJobPerson()
+        {
+            if (SelectedJobPerson != null)
+            {
+                ListeOfPlans.Remove(SelectedJobPerson);
+                DisplayEventOnDateTime();
+                SaveList_Async(ListeOfPlans, PlanFileSave);
+
+            }
+            else
+            {
+                MessageDialog noEvent = new MessageDialog("Vælg en husstand på listen!");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+            }
+
+        }
 
         public void DisplayEventOnDateTime()
         {
@@ -150,32 +203,34 @@ namespace FællesSpisning.ViewModel
             }
         }
 
+        public void DisplayLockOnDateTime()
+        {
+            DisplayLås.Clear();
+
+            try
+            {
+                foreach (LåsProperties x in ListOfLocks)
+                {
+                    if (x.DateTimeID == PlanDateTime)
+                    {
+                        DisplayLås.Add(x);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
 
         public void AddCBoxOptions()
         {
             JobPersonCBoxOptions = new List<string>() { "Chefkok", "Kok", "Oprydder", "Menu" };
         }
-
-
-
-        public void RemoveSelectedJobPerson()
-        {
-            if (SelectedJobPerson != null)
-            {
-                ListeOfPlans.Remove(SelectedJobPerson);
-                DisplayEventOnDateTime();
-                SaveList_Async(ListeOfPlans, PlanFileSave);
-
-            }
-            else
-            {
-                MessageDialog noEvent = new MessageDialog("Vælg en husstand på listen!");
-                noEvent.Commands.Add(new UICommand { Label = "Ok" });
-                noEvent.ShowAsync().AsTask();
-            }
-            
-        }
-
+        
         private async void SaveList_Async(Object objForSave, String FileName)
         {
 
@@ -200,7 +255,6 @@ namespace FællesSpisning.ViewModel
             }
         }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyname)
@@ -210,7 +264,10 @@ namespace FællesSpisning.ViewModel
             if (propertyname == nameof(PlanDateTime))
             {
                 DisplayEventOnDateTime();
+                DisplayLockOnDateTime();
+
             }
+
         }
 
     }
