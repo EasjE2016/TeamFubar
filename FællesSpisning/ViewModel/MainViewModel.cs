@@ -241,6 +241,7 @@ namespace FællesSpisning.ViewModel
             if(propertyname == nameof(DateTime))
             {
                 DisplayEventOnDateTime();
+
             }
 
         }

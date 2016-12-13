@@ -70,9 +70,8 @@
                     <Button x:Name="jobpersonButton" Content="Tilføj" HorizontalAlignment="Center" Margin="-95,140,0,0" VerticalAlignment="Top" Command="{Binding AddJobPersonCommand}"/>
                     <Button x:Name="jobpersonButton2" Content="Fjern" HorizontalAlignment="Center" Margin="185,140,0,0" VerticalAlignment="Top" Command="{Binding RemoveJobPersonCommand}"/>
                     
-                    <Button x:Name="AddLockDate" Content="Lås Dato Start" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding NyLåsCommand, Mode=TwoWay}" Margin="0,50"/>
-                    <Button x:Name="RemoveLockDate" Content="Fjern Dato Start" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding RemoveLåsCommand, Mode=TwoWay}" Margin="100,100"/>
-                    <CalendarDatePicker x:Name="DateLockPicker" Date="{Binding LåsDateID, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+                    <Button x:Name="AddLockDate" Content="Lås Begivenhed" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding NyLåsCommand, Mode=TwoWay}" Margin="0,50"/>
+                    <Button x:Name="RemoveLockDate" Content="Fjern Lås" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding RemoveLåsCommand, Mode=TwoWay}" Margin="100,100"/>
                     <ListView x:Name="DIsplayLockedDate" ItemsSource="{Binding DisplayLås, Mode=TwoWay}" SelectedValue="{Binding SelectedLås, Mode=TwoWay}" Height="100" Width="300" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="100, 100" BorderBrush="Black" BorderThickness="2"/>
 
 

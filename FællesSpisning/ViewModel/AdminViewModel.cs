@@ -77,12 +77,7 @@ namespace FællesSpisning.ViewModel
             }
         }
 
-        private DateTime _låsDateID = DateTime.Today;
-        public DateTime LåsDateID
-        {
-            get { return _låsDateID; }
-            set { _låsDateID = value; }
-        }
+        
         private ObservableCollection<LåsProperties> _listOfLocks;
         public ObservableCollection<LåsProperties> ListOfLocks
         {
@@ -119,12 +114,11 @@ namespace FællesSpisning.ViewModel
 
         }
         
-
         public void AddNyLås()
         {
             LåsProperties tempContainer = new LåsProperties();
             tempContainer.DateTimeID = PlanDateTime;
-            tempContainer.LåsDato = LåsDateID;
+            tempContainer.LåsDato = PlanDateTime;
 
             ListOfLocks.Add(tempContainer);
             DisplayLockOnDateTime();
