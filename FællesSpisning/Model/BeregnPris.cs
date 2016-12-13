@@ -99,7 +99,7 @@ namespace FællesSpisning.Model
             /// foreah loop eksempel
             /// </summary>
             /// <returns></returns>
-            /// 
+           
 
  //            foreach (Hus h in Total)
  //            {
