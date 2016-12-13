@@ -58,7 +58,7 @@
             <PivotItem Header="Kassere">
                 <Grid Margin="10,10,-10,-10">
                     <Grid.DataContext>
-                        <vm:KasserViewModel />
+                        <vm:KasserViewModel/>
                     </Grid.DataContext>
                     <TextBlock x:Name="titelExpenses" HorizontalAlignment="Left" Text="Udlæg fra Husstand" Margin="20,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
                     <TextBlock x:Name="titelDag1" HorizontalAlignment="Left" Text="Dag 1" Margin="20,64,0,0" TextWrapping="Wrap" Width="50"/>
