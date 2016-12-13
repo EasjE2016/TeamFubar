@@ -27,9 +27,5 @@ namespace FællesSpisning
             this.InitializeComponent();
         }
 
-        private void textBlock_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

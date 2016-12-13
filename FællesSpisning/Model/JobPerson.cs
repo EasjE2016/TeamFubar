@@ -8,19 +8,14 @@ namespace FællesSpisning.Model
 {
     class JobPerson
     {
-        
-            public string JobPersonNavn { get; set; }
-            public string JobPersonOpgave { get; set; }
-            public string Menu { get; set; }
-            public DateTime JobDateTime { get; set; }
+        public string JobPersonNavn { get; set; }
+        public string JobPersonOpgave { get; set; }
+        public DateTime JobDateTime { get; set; }
+
 
         public override string ToString()
-            {
-                return JobPersonNavn + " \n " + JobPersonOpgave + " \n ";
-            }
-
-
-        
-
+        {
+            return JobPersonNavn + " \n " + JobPersonOpgave + " \n ";
+        }
     }
 }

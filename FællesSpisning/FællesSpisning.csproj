@@ -96,20 +96,19 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\DateTimeConverter.cs" />
-    <Compile Include="Model\LåsProperties.cs" />
+    <Compile Include="Model\LåsListeSingleton.cs" />
+    <Compile Include="Model\LåstDates.cs" />
+    <Compile Include="Model\Menu.cs" />
     <Compile Include="Model\ObsHusListeSingleton.cs" />
+    <Compile Include="Model\PlanlægningSingleton.cs" />
     <Compile Include="ViewModel\NewHouseViewModel.cs" />
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\JobPerson.cs" />
     <Compile Include="ViewModel\AdminViewModel.cs" />
-    <Compile Include="ViewModel\EventViewModel.cs" />
     <Compile Include="Model\BeregnPris.cs" />
     <Compile Include="Model\Hus.cs" />
-    <Compile Include="Model\Lås.cs" />
-    <Compile Include="Model\PlanListe.cs" />
-    <Compile Include="Model\TilmeldListe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\Command\RelayCommand.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

@@ -14,161 +14,231 @@ namespace FællesSpisning.ViewModel
 {
     class AdminViewModel : INotifyPropertyChanged
     {
-        public List<string> JobPersonCBoxOptions { get; set; }
 
-        public JobPerson PlanToListe { get; set; }
+        //Konstanter til filnavne
+        const String FileNameJob = "saveJobListe.json";
+        const String FileNameMenu = "saveMenuListe.json";
+
+        //ComboBox options
+        public List<string> JobPersonCBoxOptions { get; set; }
+        public List<DateTime> ListeMedDateTimes { get; set; }
+
+        public JobPerson Job { get; set; }
+        public Menu Menu { get; set; }
         public int SelectedIndex { get; set; }
-        
+
         public RelayCommand AddJobPersonCommand { get; set; }
         public RelayCommand RemoveJobPersonCommand { get; set; }
-        public RelayCommand DisplayPlanDate { get; set; }
+        public RelayCommand AddMenuCommand { get; set; }
+        public RelayCommand RemoveMenuCommand { get; set; }
         public RelayCommand NyLåsCommand { get; set; }
         public RelayCommand RemoveLåsCommand { get; set; }
-        public RelayCommand DisplayLåsDate { get; set; }
-
-        const string PlanFileSave = "savePlanListe.json";
-        //Lock Test
-
-            // Alt json skal flyttes over i lås.cs
-
-        //const String LåsStartSave = "saveStartLås.json";
-        //const String LåsEndSave = "saveEndLås.json";
-
-        //Lock Test
 
         private DateTime _planDateTime = DateTime.Today;
         public DateTime PlanDateTime
         {
             get { return _planDateTime; }
-            set { _planDateTime = value.Date;
-                OnPropertyChanged(nameof(PlanDateTime)); 
+            set
+            {
+                _planDateTime = value.Date;
+                OnPropertyChanged(nameof(PlanDateTime));
             }
         }
 
-        
-        private PlanListe _listeOfPlans;
-        public PlanListe ListeOfPlans
+        private PlanlægningSingleton _planSingleton;
+        public PlanlægningSingleton PlanSingleton
         {
-            get { return _listeOfPlans; }
-            set { _listeOfPlans = value; OnPropertyChanged(nameof(ListeOfPlans)); }
-        }
-
-        private JobPerson _selectedJobPerson;
-        public JobPerson SelectedJobPerson
-        {
-            get { return _selectedJobPerson; }
-            set { _selectedJobPerson = value; OnPropertyChanged(nameof(SelectedJobPerson)); }
-        }
-
-        private LåsProperties _selectedLås;
-        public LåsProperties SelectedLås
-        {
-            get { return _selectedLås; }
-            set { _selectedLås = value; OnPropertyChanged(nameof(SelectedLås)); }
-        }
-
-
-        private ObservableCollection<JobPerson> _result;
-        public  ObservableCollection<JobPerson> Result
-        {
-            get { return _result; }
-            set { _result = value;
-                OnPropertyChanged(nameof(Result));
+            get { return _planSingleton; }
+            set { _planSingleton = value;
+                OnPropertyChanged(nameof(PlanSingleton));
             }
         }
 
-        
-        private ObservableCollection<LåsProperties> _listOfLocks;
-        public ObservableCollection<LåsProperties> ListOfLocks
+        public ObservableCollection<JobPerson> PlanListe { get; set; }
+        public ObservableCollection<Menu> MenuListe { get; set; }
+
+        private JobPerson _selectedJob;
+        public JobPerson SelectedJob
         {
-            get { return _listOfLocks; }
-            set { _listOfLocks = value; OnPropertyChanged(nameof(ListOfLocks)); }
+            get { return _selectedJob; }
+            set
+            {
+                _selectedJob = value;
+                OnPropertyChanged(nameof(SelectedJob));
+            }
         }
 
-        private ObservableCollection<LåsProperties> _displayLås;
-        public ObservableCollection<LåsProperties> DisplayLås
+        private Menu _selectedMenu;
+        public Menu SelectedMenu
         {
-            get { return _displayLås; }
-            set { _displayLås = value; OnPropertyChanged(nameof(DisplayLås)); }
+            get { return _selectedMenu; }
+            set
+            {
+                _selectedMenu = value;
+                OnPropertyChanged(nameof(SelectedMenu));
+            }
         }
+
+        private ObservableCollection<Menu> _resultMenu;
+        public ObservableCollection<Menu> ResultMenu
+        {
+            get { return _resultMenu; }
+            set
+            {
+                _resultMenu = value;
+                OnPropertyChanged(nameof(ResultMenu));
+            }
+        }
+
+        private ObservableCollection<JobPerson> _resultJob;
+        public ObservableCollection<JobPerson> ResultJob
+        {
+            get { return _resultJob; }
+            set
+            {
+                _resultJob = value;
+                OnPropertyChanged(nameof(ResultJob));
+            }
+        }
+
+        private ObservableCollection<LåstDates> _resultLock;
+        public ObservableCollection<LåstDates> ResultLock
+        {
+            get { return _resultLock; }
+            set { _resultLock = value;
+                OnPropertyChanged(nameof(ResultLock));
+            }
+        }
+
+
+        private ObservableCollection<LåstDates> _lockedDatesList;
+
+        public ObservableCollection<LåstDates> LockedDatesList
+        {
+            get { return _lockedDatesList; }
+            set { _lockedDatesList = value;
+            }
+        }
+
 
         public AdminViewModel()
         {
-            ListeOfPlans = new PlanListe();
-            Result = new ObservableCollection<JobPerson>();
-            DisplayLås = new ObservableCollection<LåsProperties>();
-            
-            SelectedJobPerson = new JobPerson();
-            PlanToListe = new JobPerson();
-            SelectedLås = new LåsProperties();
+            PlanSingleton = PlanlægningSingleton.Instance;
+
+            this.PlanListe = PlanSingleton.JobListe;
+            this.MenuListe = PlanSingleton.MenuListe;
+            this.LockedDatesList = LåsListeSingleton.Instance.LockedDatesList;
+
+            ResultJob = new ObservableCollection<JobPerson>();
+            ResultMenu = new ObservableCollection<Menu>();
+            ResultLock = new ObservableCollection<LåstDates>();
 
             AddJobPersonCommand = new RelayCommand(AddNewJobPerson, null);
             RemoveJobPersonCommand = new RelayCommand(RemoveSelectedJobPerson, null);
+            AddMenuCommand = new RelayCommand(AddNewMenu, null);
+            RemoveMenuCommand = new RelayCommand(RemoveSelectedMenu, null);
             NyLåsCommand = new RelayCommand(AddNyLås, null);
-            RemoveLåsCommand = new RelayCommand(RemoveSelectedLås, null);
+            RemoveLåsCommand = new RelayCommand(RemoveLås, null);
 
-            ListOfLocks = Lås.LåsFunktioner.ListOfLockedDates;
-            
+            SelectedJob = new JobPerson();
+            SelectedMenu = new Menu();
+
+            Job = new JobPerson();
+            Menu = new Menu();
+
             AddCBoxOptions();
-            LoadJson();
+            LoadJobJson();
+            LoadMenuJson();
 
         }
-        
+
         public void AddNyLås()
         {
-            LåsProperties tempContainer = new LåsProperties();
-            tempContainer.DateTimeID = PlanDateTime;
-            tempContainer.LåsDato = PlanDateTime;
+            LåstDates tempLås = new LåstDates();
+            tempLås.LåsDato = PlanDateTime;
+            tempLås.DateTimeID = PlanDateTime;
 
-            ListOfLocks.Add(tempContainer);
-            DisplayLockOnDateTime();
+            LåsListeSingleton.Instance.AddNewLock(tempLås);
+            DisplayEventOnDateTime();
+
         }
 
+        public void RemoveLås()
+        {
+            if(LockedDatesList.Count > 0) {
+            foreach (LåstDates item in LockedDatesList.ToList())
+            {
+                if(item.DateTimeID == PlanDateTime)
+                {
+                    LåsListeSingleton.Instance.RemoveLock(item);
+                }
+              }
+            }
+            DisplayEventOnDateTime();
+        }
 
         public void AddNewJobPerson()
         {
 
-                JobPerson tempListe = new JobPerson();
+            JobPerson tempJob = new JobPerson();
 
-                tempListe.JobDateTime = PlanDateTime;
-                tempListe.JobPersonNavn = PlanToListe.JobPersonNavn;
-                tempListe.JobPersonOpgave = JobPersonCBoxOptions[SelectedIndex];
-                tempListe.Menu = JobPersonCBoxOptions[SelectedIndex];
+            tempJob.JobDateTime = PlanDateTime;
+            tempJob.JobPersonNavn = Job.JobPersonNavn;
+            tempJob.JobPersonOpgave = JobPersonCBoxOptions[SelectedIndex];
 
-                ListeOfPlans.Add(tempListe);
-
-                SaveList_Async(ListeOfPlans, PlanFileSave);
-                DisplayEventOnDateTime();
-
+            PlanSingleton.AddJobPerson(tempJob);
+            PlanListe.Add(tempJob);
+            SaveJobList_Async();
+            DisplayEventOnDateTime();
         }
 
-        public void RemoveSelectedLås()
+
+        public void AddNewMenu()
         {
-            if (SelectedLås != null)
-            {
-                ListOfLocks.Remove(SelectedLås);
-                DisplayLockOnDateTime();
-            }
-            else
-            {
-                MessageDialog noLås = new MessageDialog("Vælg lås på liste!");
-                noLås.Commands.Add(new UICommand { Label = "Ok" } );
-                noLås.ShowAsync().AsTask();
-            }
+
+            Menu tempMenu = new Menu();
+
+            tempMenu.MenuDateTime = PlanDateTime;
+            tempMenu.MenuMeal = Menu.MenuMeal;
+
+            PlanSingleton.AddMenu(tempMenu);
+            MenuListe.Add(tempMenu);
+            SaveMenuList_Async();
+            DisplayEventOnDateTime();
+
         }
 
         public void RemoveSelectedJobPerson()
         {
-            if (SelectedJobPerson != null)
+            if (SelectedJob != null)
             {
-                ListeOfPlans.Remove(SelectedJobPerson);
+                PlanSingleton.RemoveJobPerson(SelectedJob);
+                PlanListe.Remove(SelectedJob);
+                SaveJobList_Async();
                 DisplayEventOnDateTime();
-                SaveList_Async(ListeOfPlans, PlanFileSave);
-
             }
             else
             {
-                MessageDialog noEvent = new MessageDialog("Vælg en husstand på listen!");
+                MessageDialog noEvent = new MessageDialog("Vælg person for at slette!");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+            }
+
+        }
+
+
+        public void RemoveSelectedMenu()
+        {
+            if (SelectedMenu != null)
+            {
+                PlanSingleton.RemoveMenu(SelectedMenu);
+                MenuListe.Remove(SelectedMenu);
+                SaveMenuList_Async();
+                DisplayEventOnDateTime();
+            }
+            else
+            {
+                MessageDialog noEvent = new MessageDialog("Vælg menu for at slette!");
                 noEvent.Commands.Add(new UICommand { Label = "Ok" });
                 noEvent.ShowAsync().AsTask();
             }
@@ -177,71 +247,85 @@ namespace FællesSpisning.ViewModel
 
         public void DisplayEventOnDateTime()
         {
-            Result.Clear();
+            ResultJob.Clear();
+            ResultMenu.Clear();
+            ResultLock.Clear();
 
             try
             {
 
-                foreach (JobPerson personObj in ListeOfPlans)
+                foreach (JobPerson personObj in PlanListe)
                 {
                     if (personObj.JobDateTime == PlanDateTime)
                     {
-                        Result.Add(personObj);
+                        ResultJob.Add(personObj);
                     }
                 }
-            }
-            catch (Exception)
-            {
 
-                throw;
-            }
-        }
-
-        public void DisplayLockOnDateTime()
-        {
-            DisplayLås.Clear();
-
-            try
-            {
-                foreach (LåsProperties x in ListOfLocks)
+                foreach (Menu menuObj in MenuListe)
                 {
-                    if (x.DateTimeID == PlanDateTime)
+                    if (menuObj.MenuDateTime == PlanDateTime)
                     {
-                        DisplayLås.Add(x);
+                        ResultMenu.Add(menuObj);
                     }
                 }
+
+                foreach (LåstDates item in LockedDatesList)
+                {
+                    ResultLock.Add(item);
+                }
+
             }
             catch (Exception)
             {
-
-                throw;
             }
         }
 
-
-
+        //Add muligheder til ComboBox
         public void AddCBoxOptions()
         {
-            JobPersonCBoxOptions = new List<string>() { "Chefkok", "Kok", "Oprydder", "Menu" };
+            JobPersonCBoxOptions = new List<string>() { "Chefkok", "Kok", "Oprydder" };
         }
         
-        private async void SaveList_Async(Object objForSave, String FileName)
+
+        //Json Save
+        public async void SaveJobList_Async()
         {
+            StorageFile LocalFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(FileNameJob, CreationCollisionOption.ReplaceExisting);
 
-            StorageFile LocalFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName, CreationCollisionOption.ReplaceExisting);
-            String jsonSaveData = JsonConvert.SerializeObject(objForSave);
+            await FileIO.WriteTextAsync(LocalFile, PlanSingleton.SaveJsonDataJob());
 
-
-            await FileIO.WriteTextAsync(LocalFile, jsonSaveData);
         }
 
-        private async void LoadJson()
+        public async void SaveMenuList_Async()
+        {
+            StorageFile LocalFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(FileNameMenu, CreationCollisionOption.ReplaceExisting);
+
+            await FileIO.WriteTextAsync(LocalFile, PlanSingleton.SaveJsonDataMenu());
+        }
+
+        //Load Json
+        private async void LoadJobJson()
         {
             try
             {
-                StorageFile LocalFile = await ApplicationData.Current.LocalFolder.GetFileAsync(PlanFileSave);
+                StorageFile LocalFile = await ApplicationData.Current.LocalFolder.GetFileAsync(FileNameJob);
                 String jsonSaveData = await FileIO.ReadTextAsync(LocalFile);
-                ListeOfPlans = JsonConvert.DeserializeObject<PlanListe>(jsonSaveData);
+                PlanListe = JsonConvert.DeserializeObject<ObservableCollection<JobPerson>>(jsonSaveData);
+                DisplayEventOnDateTime();
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private async void LoadMenuJson()
+        {
+            try
+            {
+                StorageFile LocalFile = await ApplicationData.Current.LocalFolder.GetFileAsync(FileNameMenu);
+                String jsonSaveData = await FileIO.ReadTextAsync(LocalFile);
+                MenuListe = JsonConvert.DeserializeObject<ObservableCollection<Menu>>(jsonSaveData);
                 DisplayEventOnDateTime();
             }
             catch (Exception)
@@ -255,13 +339,10 @@ namespace FællesSpisning.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyname));
 
-            if (propertyname == nameof(PlanDateTime))
+            if(propertyname == nameof(PlanDateTime))
             {
                 DisplayEventOnDateTime();
-                DisplayLockOnDateTime();
-
             }
-
         }
 
     }

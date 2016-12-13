@@ -37,6 +37,10 @@ namespace FællesSpisning.ViewModel
         const String FileNameForTilmeldsListe = "saveTilmeldsListe.json";
         const String FileNameForHusListe = "saveHouseList.json";
 
+        public ObsHusListeSingleton Singleton { get; set; }
+
+        public DateTime CurrentDateTime { get; set; } = DateTime.Today;
+
         private DateTime _dateTime = DateTime.Today;
         public DateTime DateTime
         {
@@ -44,7 +48,6 @@ namespace FællesSpisning.ViewModel
             set { _dateTime = value.Date;
                 OnPropertyChanged(nameof(DateTime)); }
         }
-
 
         private Hus _husTilListe;
         public Hus HusTilListe
@@ -71,16 +74,6 @@ namespace FællesSpisning.ViewModel
                 OnPropertyChanged(nameof(Result));
             }
         }
-    
-
-        private int _selectedIndex;
-        public int SelectedIndex
-        {
-            get { return _selectedIndex; }
-            set { _selectedIndex = value;
-                OnPropertyChanged(nameof(SelectedIndex));
-            }
-        }
 
         private Hus _selectedHusListView;
         public Hus SelectedHusListView
@@ -91,11 +84,31 @@ namespace FællesSpisning.ViewModel
             }
         }
 
+        private LåsListeSingleton _låsSingleton;
+        public LåsListeSingleton LåsSingleton
+        {
+            get { return _låsSingleton; }
+            set { _låsSingleton = value; }
+        }
+
+        private bool _isEnabled;
+
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set { _isEnabled = value;
+                OnPropertyChanged(nameof(IsEnabled));
+            }
+        }
+
 
 
         public MainViewModel()
         {
-            HusListe = ObsHusListeSingleton._Instance.HusListe;
+            Singleton = ObsHusListeSingleton.Instance;
+            HusListe = Singleton.HusListe;
+
+            LåsSingleton = LåsListeSingleton.Instance;
 
             AddEvent = new RelayCommand(AddEventOnDateTime, null);
             DisplayEvent = new RelayCommand(DisplayEventOnDateTime, null);
@@ -105,18 +118,15 @@ namespace FællesSpisning.ViewModel
             HusTilListe = new Hus();
             TilmeldsListe = new ObservableCollection<Hus>();
             Result = new ObservableCollection<Hus>();
+            IsEnabled = true;
             LoadJson();
-
-            // Locktest
-            LockID = Lås.LåsFunktioner;
-            // LockTest
 
         }
 
         public void RemoveEventOnDateTime()
         {
                 
-            if(SelectedHusListView != null) {           
+            if(SelectedHusListView != null) {
                 TilmeldsListe.Remove(SelectedHusListView);
                 DisplayEventOnDateTime();
                 SaveList_Async(TilmeldsListe, FileNameForTilmeldsListe);
@@ -127,81 +137,69 @@ namespace FællesSpisning.ViewModel
             }
         }
 
-        // Lock Test
-        private DateTime _currentDateTime = DateTime.Today;
-        public DateTime CurrentDateTime
-        {
-            get { return _currentDateTime; }
-            set { _currentDateTime = value.Date; }
-        }
-
-        private Lås _lockID;
-        public Lås LockID
-        {
-            get { return _lockID; }
-            set { _lockID = value; }
-        }
-        
         public void AddEventOnDateTime()
         {
-
-            if (LockID.ListOfLockedDates.Any(x => x.LåsDato <= CurrentDateTime) && LockID.ListOfLockedDates.Any(xy => xy.DateTimeID == DateTime))
+            
+            if (TilmeldsListe.Where(hus => hus.HusNr == HusListe[Singleton.SelectedIndex].HusNr).Any(hus => hus.DT.Any(husDt => husDt == DateTime)) == false)
             {
-                MessageDialog dateLocked = new MessageDialog("Denne Dato er Låst!");
-                dateLocked.Commands.Add(new UICommand { Label = "Ok" });
-                dateLocked.ShowAsync().AsTask();
-            }
-            else if (TilmeldsListe.Where(hus => hus.HusNr == HusListe[SelectedIndex].HusNr).Any(hus => hus.DT.Any(husDt => husDt == DateTime)) == false)
-            {
-                HusListe[SelectedIndex].DT.Add(DateTime);
-                TilmeldsListe.Add(HusListe[SelectedIndex]);
+                HusListe[Singleton.SelectedIndex].DT.Add(DateTime);
+                TilmeldsListe.Add(HusListe[Singleton.SelectedIndex]);
                 DisplayEventOnDateTime();
                 SaveList_Async(TilmeldsListe, FileNameForTilmeldsListe);
-            }
-            else
+            } else
             {
                 MessageDialog noEvent = new MessageDialog("Denne husstand er allerede tilmeldt!");
                 noEvent.Commands.Add(new UICommand { Label = "Ok" });
                 noEvent.ShowAsync().AsTask();
             }
 
+           
         }
 
         public void DisplayEventOnDateTime()
         {
 
-            Result.Clear();
-
-            try
+            if (LåsSingleton.LockedDatesList.Any(x => x.LåsDato <= CurrentDateTime) && LåsSingleton.LockedDatesList.Any(xy => xy.DateTimeID == DateTime))
             {
-                foreach (Hus husObj in TilmeldsListe)
+                IsEnabled = false;
+
+            } else {
+
+                IsEnabled = true;
+            
+                Result.Clear();
+
+                try
                 {
-                    foreach (DateTime DtHusObj in husObj.DT)
+                    foreach (Hus husObj in TilmeldsListe)
                     {
-                        if(DtHusObj == DateTime)
+                        foreach (DateTime DtHusObj in husObj.DT)
                         {
-                            if(!Result.Any(x => x.HusNr == husObj.HusNr))
+                            if(DtHusObj == DateTime)
                             {
-                                Result.Add(husObj);
+                                if(!Result.Any(x => x.HusNr == husObj.HusNr))
+                                {
+                                    Result.Add(husObj);
+                                }
                             }
                         }
-                    }
 
+                    }
                 }
-            }
-            catch (Exception)
-            {
-            }
+                catch (Exception)
+                {
+               }
+             }
         }
 
         public void RemoveHouseFromList()
         {
             if(HusListe.Count != 0) {
-                ObsHusListeSingleton._Instance.RemoveHouse(HusListe[SelectedIndex]);
+                Singleton.RemoveHouse(HusListe[Singleton.SelectedIndex]);
                 SaveList_Async(HusListe, FileNameForHusListe);
                 if(HusListe.Count > 0)
                 {
-                    SelectedIndex = 1;
+                    Singleton.SelectedIndex = 0;
                 }
             }
         }
@@ -241,7 +239,6 @@ namespace FællesSpisning.ViewModel
             if(propertyname == nameof(DateTime))
             {
                 DisplayEventOnDateTime();
-
             }
 
         }

@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
 
 namespace FællesSpisning.Model
 {
-    class PlanListe : ObservableCollection<JobPerson>
+    class LåsListe
     {
-        public PlanListe() : base()
+
+        public bool LåsCheck { get; set; }
+
+        public override string ToString()
         {
 
         }
+
     }
 }

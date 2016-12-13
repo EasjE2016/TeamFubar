@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace FællesSpisning.Model
 {
-    class LåsProperties
+    class LåstDates
     {
+
         public DateTime LåsDato { get; set; }
         public DateTime DateTimeID { get; set; }
 
-        public LåsProperties()
+        public LåstDates()
         {
 
         }
@@ -20,10 +21,6 @@ namespace FællesSpisning.Model
         {
             return $"{LåsDato}";
         }
-
-
-
-
 
     }
 }

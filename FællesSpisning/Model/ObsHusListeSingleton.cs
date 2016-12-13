@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Windows.Storage;
 using Windows.UI.Popups;
+using System.ComponentModel;
 
 namespace FællesSpisning.Model
 {
-    class ObsHusListeSingleton
+    class ObsHusListeSingleton : INotifyPropertyChanged
 
     {
         //Konstant Filnavn
         const String FileName = "saveHouseList.json";
 
         private static ObsHusListeSingleton _instance;
-        public static ObsHusListeSingleton _Instance
+        public static ObsHusListeSingleton Instance
         {
             get {
                 if (_instance == null)
@@ -27,6 +28,16 @@ namespace FællesSpisning.Model
                 return _instance;
             }
         }
+
+        private int _selectedIndex;
+        public int SelectedIndex
+        {
+            get { return _selectedIndex; }
+            set { _selectedIndex = value;
+                OnPropertyChanged(nameof(SelectedIndex));
+            }
+        }
+
 
         public ObservableCollection<Hus> HusListe { get; set; }
 
@@ -39,6 +50,7 @@ namespace FællesSpisning.Model
         public void AddNewHouse(Hus NytHus)
         {
             HusListe.Add(NytHus);
+            SelectedIndex = 0;
         }
 
         public void RemoveHouse(Hus SelectedHus)
@@ -64,6 +76,14 @@ namespace FællesSpisning.Model
             String jsonSaveData = JsonConvert.SerializeObject(HusListe);
 
             return jsonSaveData;
+        }
+
+        //INotifyPropertyChanged implementeret
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyname)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyname));
+
         }
 
     }

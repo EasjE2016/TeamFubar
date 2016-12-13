@@ -52,7 +52,7 @@ namespace FællesSpisning.ViewModel
             AddNewHouseCommand = new RelayCommand(AddNewHouse, null);
             NytHus = new Model.Hus();
             AddCBoxOptions();
-            this.HusListe = ObsHusListeSingleton._Instance;
+            this.HusListe = ObsHusListeSingleton.Instance;
         }
 
         public void AddNewHouse()
