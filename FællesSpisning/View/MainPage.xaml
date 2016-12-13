@@ -29,8 +29,8 @@
                     <ListView x:Name="TilmeldteListview" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="600" ItemsSource="{Binding Result, Mode=TwoWay}" SelectedValue="{Binding SelectedHusListView, Mode=TwoWay}" BorderBrush="Black" BorderThickness="2"/>
                     <ComboBox x:Name="HusListeComboBox" Header="Huse" HorizontalAlignment="Center" Width="180" ItemsSource="{Binding HusListe, Mode=TwoWay}" SelectedIndex="{Binding Singleton.SelectedIndex, Mode=TwoWay}">
                     </ComboBox>
-                    <Button x:Name="TilmeldHusBtn" Content="Tilmeld Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding AddEvent}" Margin="-85, 120, 0 ,0"/>
-                    <Button x:Name="AfmeldHusBtn" Content="Afmeld Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding RemoveEvent}" Margin="115, 120, 0 ,0"/>
+                    <Button x:Name="TilmeldHusBtn" Content="Tilmeld Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding AddEvent}" Margin="-85, 120, 0 ,0" IsEnabled="{Binding IsEnabled}"/>
+                    <Button x:Name="AfmeldHusBtn" Content="Afmeld Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding RemoveEvent}" Margin="115, 120, 0 ,0" IsEnabled="{Binding IsEnabled}"/>
                     <Button x:Name="SletHusBtn" Content="Slet Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding RemoveHouse}" Margin="-265, 120, 0, 0" />
                 </Grid>
             </PivotItem>
@@ -67,6 +67,7 @@
                     <ListView x:Name="MenuListView" ItemsSource="{Binding ResultMenu, Mode=TwoWay}" SelectedItem="{Binding SelectedMenu, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="180" Height="120" BorderBrush="Black" BorderThickness="2" />
                     <CalendarDatePicker x:Name="PlanlægKalenderPicker" Date="{Binding PlanDateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="450,20,0,0"/>
                     <Button x:Name="LåsDateTimeBtn" Command="{Binding NyLåsCommand}" Content="Lås dato!" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="450, 55, 0 , 0" />
+                    <Button x:Name="LåsOpDateTimeBtn" Command="{Binding RemoveLåsCommand}" Content="Lås op!" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="450, 95, 0 , 0" />
                     <ListView x:Name="LåsDatoListView" ItemsSource="{Binding ResultLock, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="400" Height="240" BorderBrush="Black" BorderThickness="2" />
 
                     <TextBox x:Name="JobPersonNavnTxtBox" Text="{Binding Job.JobPersonNavn, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="140" Margin="-150, 0, 0 ,0" PlaceholderText="Job"/>

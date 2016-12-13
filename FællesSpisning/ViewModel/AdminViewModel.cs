@@ -32,6 +32,7 @@ namespace FællesSpisning.ViewModel
         public RelayCommand AddMenuCommand { get; set; }
         public RelayCommand RemoveMenuCommand { get; set; }
         public RelayCommand NyLåsCommand { get; set; }
+        public RelayCommand RemoveLåsCommand { get; set; }
 
         private DateTime _planDateTime = DateTime.Today;
         public DateTime PlanDateTime
@@ -137,6 +138,7 @@ namespace FællesSpisning.ViewModel
             AddMenuCommand = new RelayCommand(AddNewMenu, null);
             RemoveMenuCommand = new RelayCommand(RemoveSelectedMenu, null);
             NyLåsCommand = new RelayCommand(AddNyLås, null);
+            RemoveLåsCommand = new RelayCommand(RemoveLås, null);
 
             SelectedJob = new JobPerson();
             SelectedMenu = new Menu();
@@ -159,6 +161,20 @@ namespace FællesSpisning.ViewModel
             LåsListeSingleton.Instance.AddNewLock(tempLås);
             DisplayEventOnDateTime();
 
+        }
+
+        public void RemoveLås()
+        {
+            if(LockedDatesList.Count > 0) {
+            foreach (LåstDates item in LockedDatesList.ToList())
+            {
+                if(item.DateTimeID == PlanDateTime)
+                {
+                    LåsListeSingleton.Instance.RemoveLock(item);
+                }
+              }
+            }
+            DisplayEventOnDateTime();
         }
 
         public void AddNewJobPerson()

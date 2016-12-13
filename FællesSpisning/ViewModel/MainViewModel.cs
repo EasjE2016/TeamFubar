@@ -91,7 +91,17 @@ namespace FællesSpisning.ViewModel
             set { _låsSingleton = value; }
         }
 
-        
+        private bool _isEnabled;
+
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set { _isEnabled = value;
+                OnPropertyChanged(nameof(IsEnabled));
+            }
+        }
+
+
 
         public MainViewModel()
         {
@@ -108,6 +118,7 @@ namespace FællesSpisning.ViewModel
             HusTilListe = new Hus();
             TilmeldsListe = new ObservableCollection<Hus>();
             Result = new ObservableCollection<Hus>();
+            IsEnabled = true;
             LoadJson();
 
         }
@@ -128,13 +139,7 @@ namespace FællesSpisning.ViewModel
 
         public void AddEventOnDateTime()
         {
-            if (LåsSingleton.LockedDatesList.Any(x => x.LåsDato <= CurrentDateTime) && LåsSingleton.LockedDatesList.Any(xy => xy.DateTimeID == DateTime))
-            {
-                MessageDialog dateLocked = new MessageDialog("Denne Dato er Låst!");
-                dateLocked.Commands.Add(new UICommand { Label = "Ok" });
-                dateLocked.ShowAsync().AsTask();
-            } else {
-
+            
             if (TilmeldsListe.Where(hus => hus.HusNr == HusListe[Singleton.SelectedIndex].HusNr).Any(hus => hus.DT.Any(husDt => husDt == DateTime)) == false)
             {
                 HusListe[Singleton.SelectedIndex].DT.Add(DateTime);
@@ -148,34 +153,43 @@ namespace FællesSpisning.ViewModel
                 noEvent.ShowAsync().AsTask();
             }
 
-           }
+           
         }
 
         public void DisplayEventOnDateTime()
         {
 
-            Result.Clear();
-
-            try
+            if (LåsSingleton.LockedDatesList.Any(x => x.LåsDato <= CurrentDateTime) && LåsSingleton.LockedDatesList.Any(xy => xy.DateTimeID == DateTime))
             {
-                foreach (Hus husObj in TilmeldsListe)
+                IsEnabled = false;
+
+            } else {
+
+                IsEnabled = true;
+            
+                Result.Clear();
+
+                try
                 {
-                    foreach (DateTime DtHusObj in husObj.DT)
+                    foreach (Hus husObj in TilmeldsListe)
                     {
-                        if(DtHusObj == DateTime)
+                        foreach (DateTime DtHusObj in husObj.DT)
                         {
-                            if(!Result.Any(x => x.HusNr == husObj.HusNr))
+                            if(DtHusObj == DateTime)
                             {
-                                Result.Add(husObj);
+                                if(!Result.Any(x => x.HusNr == husObj.HusNr))
+                                {
+                                    Result.Add(husObj);
+                                }
                             }
                         }
-                    }
 
+                    }
                 }
-            }
-            catch (Exception)
-            {
-            }
+                catch (Exception)
+                {
+               }
+             }
         }
 
         public void RemoveHouseFromList()
