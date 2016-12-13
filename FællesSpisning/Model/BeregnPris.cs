@@ -19,6 +19,7 @@ namespace FællesSpisning.Model
         private double _udlagtSum3;
         private double _udlagtSum4;
         private double _finalSum;
+        
 
         public double UdlagtSum1
         {
@@ -70,9 +71,10 @@ namespace FællesSpisning.Model
 
         public double GetFinalSum()
         {
-            _finalSum = _udlagtSum1 + _udlagtSum2 + _udlagtSum3 + _udlagtSum4;
-            return _finalSum;
+            FinalSum = UdlagtSum1 + UdlagtSum2 + UdlagtSum3 + UdlagtSum4;
+            return FinalSum;
         }
+
 
         public override string ToString()
         {

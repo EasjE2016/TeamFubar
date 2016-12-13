@@ -10,7 +10,7 @@ using Windows.UI.Popups;
 
 namespace FællesSpisning.ViewModel
 {
-    class KasserViewModel 
+    class KasserViewModel : INotifyPropertyChanged
     {
 
         /// <summary>
@@ -18,13 +18,11 @@ namespace FællesSpisning.ViewModel
         /// </summary>
         private BeregnPris _insertFinalSum;
 
-        private BeregnPris _calculateFinalSum;
         public RelayCommand CalculateFinalSumCommand { get; set; }
 
         public KasserViewModel()
         {
             _insertFinalSum = new BeregnPris();
-            _calculateFinalSum = new BeregnPris();
            CalculateFinalSumCommand = new RelayCommand(CalculateFinalSum, null);      
         }
 
@@ -32,19 +30,34 @@ namespace FællesSpisning.ViewModel
         public BeregnPris InsertFinalSum
         {
             get { return _insertFinalSum; }
-            set { _insertFinalSum = value; }
+            set { _insertFinalSum = value;
+                OnPropertyChanged(nameof(InsertFinalSum));
+            }
         }
+
+        private String _displayData;
+
+        public String DisplayData
+        {
+            get { return _displayData; }
+            set { _displayData = value;
+                OnPropertyChanged(nameof(DisplayData));
+            }
+        }
+
 
         public void CalculateFinalSum()
         {
             BeregnPris tempPris = new BeregnPris();
-            tempPris.UdlagtSum1 = _insertFinalSum.UdlagtSum1;
-            tempPris.UdlagtSum2 = _insertFinalSum.UdlagtSum2;
-            tempPris.UdlagtSum3 = _insertFinalSum.UdlagtSum3;
-            tempPris.UdlagtSum4 = _insertFinalSum.UdlagtSum4;
-            tempPris.FinalSum = _insertFinalSum.FinalSum;
-           
-            tempPris.GetFinalSum();
+            tempPris.UdlagtSum1 = InsertFinalSum.UdlagtSum1;
+            tempPris.UdlagtSum2 = InsertFinalSum.UdlagtSum2;
+            tempPris.UdlagtSum3 = InsertFinalSum.UdlagtSum3;
+            tempPris.UdlagtSum4 = InsertFinalSum.UdlagtSum4;
+
+            InsertFinalSum.FinalSum = tempPris.GetFinalSum();
+
+            DisplayData = InsertFinalSum.FinalSum.ToString();
+            
             
         }
 
