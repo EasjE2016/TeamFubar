@@ -19,6 +19,7 @@ namespace FællesSpisning.Model
         private double _udlagtSum3;
         private double _udlagtSum4;
         private double _finalSum;
+        private double _weekSumHouse;
         
 
         public double UdlagtSum1
@@ -52,6 +53,12 @@ namespace FællesSpisning.Model
             set { _finalSum = value; }
         }
 
+        public double WeekSumHouse
+        {
+            get { return _weekSumHouse; }
+            set { _weekSumHouse = value; }
+        }
+
         public Hus HusObj { get; set; }
 
         public BeregnPris()
@@ -75,8 +82,34 @@ namespace FællesSpisning.Model
             return FinalSum;
         }
 
+        //public double GetKuvertPrisUge()
+        //{
+        //    FinalSum = (UdlagtSum1 + UdlagtSum2 + UdlagtSum3 + UdlagtSum4)/
+        // ((HusObj.AntalVoksneTotal*1) + (HusObj.AntalUngeTotal*0.5) + (HusObj.AntalBørnTotal*0.25));
+        //    return FinalSum;
+        //}
 
-        public override string ToString()
+        //    public double GetWeekSumHouse()
+        //{
+        //    WeekSumHouse = (FinalSum*1*HusObj.AntalVoksne) + (FinalSum*0.5*HusObj.AntalUnge) + (FinalSum*0.25*HusObj.AntalBørn);
+        //    return WeekSumHouse;
+        //}
+
+            /// <summary>
+            /// foreah loop eksempel
+            /// </summary>
+            /// <returns></returns>
+            /// 
+
+ //            foreach (Hus h in Total)
+ //            {
+ //                Console.WriteLine($"Prisen for mandag er i boligen:{h.GetWeekSumHouse()} kr");
+ //                
+ //           }
+
+            // <TextBlock x:Name="ListeMedHusStandsPrisUgen" HorizontalAlignment="Left" Text="Liste med Ugelig Husstands Pris" Margin="60, 350,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="215" Height="22"/>
+                   // <ListView x:Name="ListViewPris" HorizontalAlignment="Left" Height="170" Margin="60,400,0,0" VerticalAlignment="Top" Width="200"/>
+    public override string ToString()
         {
             return  "";
         }
