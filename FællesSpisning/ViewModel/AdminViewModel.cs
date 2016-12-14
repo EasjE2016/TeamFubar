@@ -116,8 +116,7 @@ namespace FællesSpisning.ViewModel
         public ObservableCollection<LåstDates> LockedDatesList
         {
             get { return _lockedDatesList; }
-            set { _lockedDatesList = value;
-            }
+            set { _lockedDatesList = value; }
         }
 
 
