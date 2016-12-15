@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace FællesSpisning.Model
 {
-    class BeregnPris
+    public class BeregnPris
     {
         /// <summary>
         /// Properties 
@@ -25,7 +25,13 @@ namespace FællesSpisning.Model
         public double UdlagtSum1
         {
             get { return _udlagtSum1; }
-            set { _udlagtSum1 = value; }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Udlagtsum 1 må ikke være negativ");
+                }
+                _udlagtSum1 = value; }
         }
 
         public double UdlagtSum2
@@ -76,16 +82,22 @@ namespace FællesSpisning.Model
         }
 
 
-        public double GetFinalSum()
+        //public double GetFinalSum()
+        //{
+        //    FinalSum = UdlagtSum1 + UdlagtSum2 + UdlagtSum3 + UdlagtSum4;
+        //    return FinalSum;
+        //}
+
+            public double GetKuvertPrisUge()
         {
-            FinalSum = UdlagtSum1 + UdlagtSum2 + UdlagtSum3 + UdlagtSum4;
+            FinalSum = (UdlagtSum1 + UdlagtSum2 + UdlagtSum3 + UdlagtSum4) / ((40 * 1) + (30 * 0.5) + (25*0.25));
             return FinalSum;
         }
 
         //public double GetKuvertPrisUge()
         //{
-        //    FinalSum = (UdlagtSum1 + UdlagtSum2 + UdlagtSum3 + UdlagtSum4)/
-        // ((HusObj.AntalVoksneTotal*1) + (HusObj.AntalUngeTotal*0.5) + (HusObj.AntalBørnTotal*0.25));
+        //    FinalSum = (UdlagtSum1 + UdlagtSum2 + UdlagtSum3 + UdlagtSum4) /
+        // ((HusObj.AntalVoksneTotal * 1) + (HusObj.AntalUngeTotal * 0.5) + (HusObj.AntalBørnTotal * 0.25));
         //    return FinalSum;
         //}
 
@@ -93,23 +105,22 @@ namespace FællesSpisning.Model
         //{
         //    WeekSumHouse = (FinalSum*1*HusObj.AntalVoksne) + (FinalSum*0.5*HusObj.AntalUnge) + (FinalSum*0.25*HusObj.AntalBørn);
         //    return WeekSumHouse;
+
         //}
 
-            /// <summary>
-            /// foreah loop eksempel
-            /// </summary>
-            /// <returns></returns>
-           
+        /// <summary>
+        /// foreah loop eksempel
+        /// </summary>
+        /// <returns></returns>
 
- //            foreach (Hus h in Total)
- //            {
- //                Console.WriteLine($"Prisen for mandag er i boligen:{h.GetWeekSumHouse()} kr");
- //                
- //           }
 
-            // <TextBlock x:Name="ListeMedHusStandsPrisUgen" HorizontalAlignment="Left" Text="Liste med Ugelig Husstands Pris" Margin="60, 350,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="215" Height="22"/>
-                   // <ListView x:Name="ListViewPris" HorizontalAlignment="Left" Height="170" Margin="60,400,0,0" VerticalAlignment="Top" Width="200"/>
-    public override string ToString()
+        //            foreach (Hus h in Total)
+        //            {
+        //                Console.WriteLine($"Prisen for ugen er i boligen:{h.GetWeekSumHouse()} kr");
+        //                
+        //           }
+
+        public override string ToString()
         {
             return  "";
         }

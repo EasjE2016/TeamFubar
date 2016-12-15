@@ -54,7 +54,7 @@ namespace FællesSpisning.ViewModel
             tempPris.UdlagtSum3 = InsertFinalSum.UdlagtSum3;
             tempPris.UdlagtSum4 = InsertFinalSum.UdlagtSum4;
 
-            InsertFinalSum.FinalSum = tempPris.GetFinalSum();
+            InsertFinalSum.FinalSum = tempPris.GetKuvertPrisUge();
 
             DisplayData = InsertFinalSum.FinalSum.ToString();
             
