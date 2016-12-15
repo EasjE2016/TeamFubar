@@ -80,7 +80,12 @@
                     <TextBox x:Name="Hus4" HorizontalAlignment="Left" Margin="250,244,0,0" Text="{Binding }" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" Height="32"/>
                     
                     <TextBlock x:Name="listenavn" HorizontalAlignment="Left" Margin="500, 34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="Uge pris for Husstande" Height="32" Width="200"/>
-                    <ListView x:Name="ListBeregn" HorizontalAlignment="Left" Margin="500,64,0,0" BorderBrush="Black" BorderThickness="1" VerticalAlignment="Top" Width="250" Height="120"/>
+                    <ListView x:Name="ListBeregn" HorizontalAlignment="Left" Margin="500,64,0,0" BorderBrush="Black" BorderThickness="1" VerticalAlignment="Top" Width="250" Height="120" ItemsSource="{Binding BeregnListe}"/>
+
+                    <TextBox x:Name="kuvertPerUge" HorizontalAlignment="Left" Margin="300, 50, 0,9" Text="{Binding InsertCalWeekHousePrice.FinalSum, Mode=TwoWay}" VerticalAlignment="Top" Width="90"/>
+                    <Button x:Name="CalculateWeekHousePrice" Content="Beregn ugepris i husstand" HorizontalAlignment="Left" Margin="300, 100,0,0" VerticalAlignment="Center" Command="{Binding CalculateWeekHousePriceCommand}" Width="200"/>
+                   
+                    <TextBlock x:Name="beregnHusstandUge" HorizontalAlignment="Left" Margin="300, 40,0,0" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding DisplayData2, Mode=TwoWay}"/>
                 </Grid>
             </PivotItem>
         </Pivot>

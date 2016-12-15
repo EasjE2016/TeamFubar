@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\BeregnPrisListe.cs" />
     <Compile Include="Model\DateTimeConverter.cs" />
     <Compile Include="Model\ObsHusListeSingleton.cs" />
     <Compile Include="ViewModel\KasserViewModel.cs" />

@@ -18,12 +18,21 @@ namespace FællesSpisning.ViewModel
         /// </summary>
         private BeregnPris _insertFinalSum;
 
+        private Model.BeregnPrisListe _beregnPrisList;
+
         public RelayCommand CalculateFinalSumCommand { get; set; }
+        public RelayCommand CalculateWeekHousePriceCommand { get; set; }
+
 
         public KasserViewModel()
         {
             _insertFinalSum = new BeregnPris();
-           CalculateFinalSumCommand = new RelayCommand(CalculateFinalSum, null);      
+           CalculateFinalSumCommand = new RelayCommand(CalculateFinalSum, null);
+
+            _insertCalWeekHousePrice = new BeregnPris();
+            CalculateWeekHousePriceCommand = new RelayCommand(CalculateWeekHousePrice, null);
+            //_beregnPrisList = new Model.BeregnPrisListe();  
+            
         }
 
 
@@ -36,6 +45,7 @@ namespace FællesSpisning.ViewModel
         }
 
         private String _displayData;
+        
 
         public String DisplayData
         {
@@ -57,23 +67,53 @@ namespace FællesSpisning.ViewModel
             InsertFinalSum.FinalSum = tempPris.GetKuvertPrisUge();
 
             DisplayData = InsertFinalSum.FinalSum.ToString();
-            
-            
         }
 
 
-        ///// <summary>
-        ///// Metode til at inserte Udlæg
-        ///// </summary>
+        public Model.BeregnPrisListe BeregnListe
+        {
+            get { return _beregnPrisList; }
+            set { _beregnPrisList = value; }
+        }
 
-      
+        private BeregnPris _insertCalWeekHousePrice;
+
+        public BeregnPris InsertCalWeekHousePrice
+        {
+            get { return _insertCalWeekHousePrice; }
+            set
+            {
+                _insertCalWeekHousePrice = value;
+                OnPropertyChanged(nameof(InsertCalWeekHousePrice));
+            }
+        }
+
+        private String _displayData2;
+
+        public String DisplayData2
+        {
+            get { return _displayData2; }
+            set { _displayData2 = value;
+                OnPropertyChanged(nameof(DisplayData2)); }
+        }
 
 
-        /// <summary>
-        /// Metode til at lægge udLæg sammen
-        /// </summary>
-        /// 
+        public void CalculateWeekHousePrice()
+        {
+            BeregnPris tempPris2 = new BeregnPris();
 
+            tempPris2.FinalSum = InsertCalWeekHousePrice.FinalSum;
+
+            //tempPris2.WeekSumHouse = InsertCalWeekHousePrice.WeekSumHouse;
+            
+           // InsertFinalSum.FinalSum = tempPris2.GetWeekSumHouse();
+
+            InsertCalWeekHousePrice.WeekSumHouse = tempPris2.GetWeekSumHouse();
+
+            DisplayData2 = InsertCalWeekHousePrice.WeekSumHouse.ToString();
+
+
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

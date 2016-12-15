@@ -94,6 +94,12 @@ namespace FællesSpisning.Model
             return FinalSum;
         }
 
+        public double GetWeekSumHouse()
+        {
+            WeekSumHouse = (FinalSum * 1 * 8) + (FinalSum * 0.5 * 4) + (FinalSum * 0.25 * 4);
+            return WeekSumHouse;
+        }
+
         //public double GetKuvertPrisUge()
         //{
         //    FinalSum = (UdlagtSum1 + UdlagtSum2 + UdlagtSum3 + UdlagtSum4) /
@@ -107,6 +113,8 @@ namespace FællesSpisning.Model
         //    return WeekSumHouse;
 
         //}
+
+
 
         /// <summary>
         /// foreah loop eksempel
@@ -122,7 +130,7 @@ namespace FællesSpisning.Model
 
         public override string ToString()
         {
-            return  "";
+            return  "Husnr:" + "Hustandspris for ugen:" + WeekSumHouse + ".";
         }
 
 
