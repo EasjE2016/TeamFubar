@@ -43,7 +43,7 @@ namespace FællesSpisning.ViewModel
         }
 
 
-        //Singleton
+        //HusListeSingleton
         public ObsHusListeSingleton HusListe { get; set; }
  
 

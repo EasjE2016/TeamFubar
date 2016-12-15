@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Windows.Storage;
 using Windows.UI.Popups;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace FællesSpisning.Model
 {
@@ -66,8 +67,9 @@ namespace FællesSpisning.Model
                 String jsonSaveData = await FileIO.ReadTextAsync(LocalFile);
                 HusListe = JsonConvert.DeserializeObject<ObservableCollection<Hus>>(jsonSaveData);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.Write($"Exception: { e }");
             }
         }
 
