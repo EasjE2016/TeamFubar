@@ -18,6 +18,7 @@ namespace FællesSpisning.ViewModel
         //Konstanter til filnavne
         const String FileNameJob = "saveJobListe.json";
         const String FileNameMenu = "saveMenuListe.json";
+        const String FileNameLock = "saveLåsDic.json";
 
         //ComboBox options
         public List<string> JobPersonCBoxOptions { get; set; }
@@ -91,16 +92,16 @@ namespace FællesSpisning.ViewModel
 
         public void AddNyLås()
         {
-            if(PlanSingleton.LockedDatesDic.ContainsKey(PlanSingleton.SingletonDateTime))
+            if (PlanSingleton.LockedDatesDic.ContainsKey(PlanSingleton.SingletonDateTime))
             {
                 MessageDialog locked = new MessageDialog("Dato er allerede låst");
-                locked.Commands.Add(new UICommand { Label = "Ok" } );
+                locked.Commands.Add(new UICommand { Label = "Ok" });
                 locked.ShowAsync().AsTask();
             } else
             {
                 bool BoolLock = true;
                 PlanSingleton.AddNewLock(PlanSingleton.SingletonDateTime, BoolLock);
-                PlanSingleton.SaveJsonLockDates();
+                SaveJsonLockDates_Async();
             }
         }
 
@@ -110,11 +111,11 @@ namespace FællesSpisning.ViewModel
             {
                 foreach (DateTime lockObj in PlanSingleton.LockedDatesDic.Keys.ToList())
                 {
-                    if(lockObj == PlanSingleton.SingletonDateTime)
+                    if (lockObj == PlanSingleton.SingletonDateTime)
                     {
                         PlanSingleton.RemoveLock();
-                        PlanSingleton.SaveJsonLockDates();
-                    }
+                        SaveJsonLockDates_Async();
+                    }                
                 }
             }
         }
@@ -203,7 +204,14 @@ namespace FællesSpisning.ViewModel
             await FileIO.WriteTextAsync(LocalFile, PlanSingleton.SaveJsonDataMenu());
         }
 
-        
+        public async void SaveJsonLockDates_Async()
+        {
+            StorageFile LocalFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(FileNameLock, CreationCollisionOption.ReplaceExisting);
+
+            await FileIO.WriteTextAsync(LocalFile, PlanSingleton.SaveJsonLockDates());
+        }
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

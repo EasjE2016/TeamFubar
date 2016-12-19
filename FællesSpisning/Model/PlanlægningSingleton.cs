@@ -114,7 +114,7 @@ namespace FællesSpisning.Model
             LoadTilmeldsListeJson();
             LoadMenuJson();
             LoadJobJson();
-            LoadTilmeldsListeJson();
+            LoadLockedDatesJson();
 
         }
 
@@ -151,6 +151,18 @@ namespace FællesSpisning.Model
         public void RemoveLock()
         {
             LockedDatesDic.Remove(SingletonDateTime);
+            DisplayTilmeldsListeOnDateTime();
+        }
+
+        public void AddTilTilmeld(Hus NyHus)
+        {
+            TilmeldsListe.Add(NyHus);
+            DisplayTilmeldsListeOnDateTime();
+        }
+
+        public void RemoveFraTilmeld(Hus SelectedHus)
+        {
+            TilmeldsListe.Remove(SelectedHus);
             DisplayTilmeldsListeOnDateTime();
         }
 
@@ -292,17 +304,10 @@ namespace FællesSpisning.Model
 
                 foreach (Hus husObj in TilmeldsListe)
                 {
-                    foreach (DateTime DtHusObj in husObj.DT)
+                    if(husObj.DT == SingletonDateTime)
                     {
-                        if (DtHusObj == SingletonDateTime)
-                        {
-                            if (!ResultTilmeldte.Any(x => x.HusNr == husObj.HusNr))
-                            {
-                                ResultTilmeldte.Add(husObj);
-                            }
-                        }
+                        ResultTilmeldte.Add(husObj);
                     }
-
                 }
 
             }

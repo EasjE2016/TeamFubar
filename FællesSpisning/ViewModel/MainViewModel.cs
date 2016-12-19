@@ -45,14 +45,6 @@ namespace FællesSpisning.ViewModel
             }
         }
 
-        private Hus _husTilListe;
-        public Hus HusTilListe
-        {
-            get { return _husTilListe; }
-            set { _husTilListe = value;
-                OnPropertyChanged(nameof(HusTilListe)); }
-        }
-
         private Hus _selectedHusListView;
         public Hus SelectedHusListView
         {
@@ -74,16 +66,13 @@ namespace FællesSpisning.ViewModel
             RemoveEvent = new RelayCommand(RemoveEventOnDateTime, null);
             RemoveHouse = new RelayCommand(RemoveHouseFromList, null);
 
-            HusTilListe = new Hus();
-
         }
 
 
         public void RemoveEventOnDateTime()
         {             
             if(SelectedHusListView != null) {
-                PlanSingleton.TilmeldsListe.Remove(SelectedHusListView);
-                PlanSingleton.DisplayTilmeldsListeOnDateTime();
+                PlanSingleton.RemoveFraTilmeld(SelectedHusListView);
                 SaveList_Async(PlanSingleton.TilmeldsListe, FileNameTilmeldsListe);
             } else { 
                 MessageDialog noEvent = new MessageDialog("Vælg en husstand på listen!");
@@ -94,11 +83,17 @@ namespace FællesSpisning.ViewModel
 
         public void AddEventOnDateTime()
         {
-            if (PlanSingleton.TilmeldsListe.Where(hus => hus.HusNr == HusListe[HusListeSingleton.SelectedIndex].HusNr).Any(hus => hus.DT.Any(husDt => husDt == PlanSingleton.SingletonDateTime)) == false)
+            Hus tempHus = new Hus();
+            tempHus.AntalBørnU3 = HusListe[HusListeSingleton.SelectedIndex].AntalBørnU3;
+            tempHus.AntalBørn = HusListe[HusListeSingleton.SelectedIndex].AntalBørn;
+            tempHus.AntalUnge = HusListe[HusListeSingleton.SelectedIndex].AntalUnge;
+            tempHus.AntalVoksne = HusListe[HusListeSingleton.SelectedIndex].AntalVoksne;
+            tempHus.HusNr = HusListe[HusListeSingleton.SelectedIndex].HusNr;
+            tempHus.DT = PlanSingleton.SingletonDateTime;
+
+            if(PlanSingleton.TilmeldsListe.Any(husObj => husObj.DT == tempHus.DT && husObj.HusNr == tempHus.HusNr) == false)
             {
-                HusListe[HusListeSingleton.SelectedIndex].DT.Add(PlanSingleton.SingletonDateTime);
-                PlanSingleton.TilmeldsListe.Add(HusListe[HusListeSingleton.SelectedIndex]);
-                PlanSingleton.DisplayTilmeldsListeOnDateTime();
+                PlanSingleton.AddTilTilmeld(tempHus);
                 SaveList_Async(PlanSingleton.TilmeldsListe, FileNameTilmeldsListe);
             } else
             {

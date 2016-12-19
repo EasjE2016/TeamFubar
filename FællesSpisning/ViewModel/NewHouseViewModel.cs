@@ -66,7 +66,6 @@ namespace FællesSpisning.ViewModel
                 tempHusObj.AntalBørn = VoksneCBoxOptions[NytHus.AntalBørn];
                 tempHusObj.AntalBørnU3 = VoksneCBoxOptions[NytHus.AntalBørnU3];
                 tempHusObj.HusNr = int.Parse(TempHusNr);
-                tempHusObj.DT = new List<DateTime>();
 
                 HusListe.AddNewHouse(tempHusObj);
                 SaveList_Async();

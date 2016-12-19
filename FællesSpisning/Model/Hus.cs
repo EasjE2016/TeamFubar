@@ -13,7 +13,7 @@ namespace FællesSpisning.Model
         public int AntalUnge { get; set; }
         public int AntalVoksne { get; set; }
         public int HusNr { get; set; }
-        public List<DateTime> DT { get; set; }
+        public DateTime DT { get; set; }
 
         public Hus()
         {
@@ -28,6 +28,7 @@ namespace FællesSpisning.Model
             this.AntalUnge = AntalUnge;
             this.AntalVoksne = AntalVoksne;
             this.HusNr = HusNr;
+            
         }
 
         public override string ToString()
