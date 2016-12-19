@@ -39,7 +39,7 @@ namespace FællesSpisning.Model
 
         public override string ToString()
         {
-            return $"Husstand: {HusNr} udlagt: {UdlagtSum} kr. - {DatoForUdlæg.ToString("dd/MM")}";
+            return $"Husstand: {HusNr} udlagt: {UdlagtSum} kr. - {DatoForUdlæg.ToString("MM/dd")}";
         }
     }
 }

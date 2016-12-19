@@ -10,7 +10,7 @@
     x:Class="FællesSpisning.MainPage"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="#FFD6D6C2">
         <Pivot x:Name="MainMenu">
             <PivotItem Header="Tilmeld">
                 <Grid>
@@ -21,15 +21,15 @@
                         <m:DateTimeConverter
                             x:Key="DateTimeConverter" />
                     </Grid.Resources>
-                    <CalendarDatePicker x:Name="TilmeldKalenderPicker" Date="{Binding PlanSingleton.SingletonDateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="300,28,0,0"/>
-                    <ListView x:Name="TilmeldteListview" ItemsSource="{Binding PlanSingleton.ResultTilmeldte, Mode=TwoWay}" SelectedValue="{Binding SelectedHusListView, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="450" BorderBrush="Black" BorderThickness="2" Margin="0, 65, 0, 0"/>
-                    <ListView x:Name="MenuListeView" ItemsSource="{Binding PlanSingleton.ResultMenu, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="50" BorderBrush="Black" BorderThickness="2" Margin="0, 10, 0, 0"/>
-                    <ListView x:Name="JobListeView" ItemsSource="{Binding PlanSingleton.ResultJob, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="250" BorderBrush="Black" BorderThickness="2" Margin="0, 520, 0, 0"/>
-                    <ComboBox x:Name="HusListeComboBox" Header="Huse" HorizontalAlignment="Center" Width="180" ItemsSource="{Binding HusListe, Mode=TwoWay}" SelectedIndex="{Binding HusListeSingleton.SelectedIndex, Mode=TwoWay}">
+                    <CalendarDatePicker x:Name="TilmeldKalenderPicker" Date="{Binding PlanSingleton.SingletonDateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="455,28,0,0"/>
+                    <ListView x:Name="TilmeldteListview" ItemsSource="{Binding PlanSingleton.ResultTilmeldte, Mode=TwoWay}" SelectedValue="{Binding SelectedHusListView, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="350" Height="450" BorderBrush="Black" BorderThickness="2" Margin="-450, 65, 0, 0"/>
+                    <ListView x:Name="MenuListeView" ItemsSource="{Binding PlanSingleton.ResultMenu, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="350" Height="50" BorderBrush="Black" BorderThickness="2" Margin="-450, 10, 0, 0"/>
+                    <ListView x:Name="JobListeView" ItemsSource="{Binding PlanSingleton.ResultJob, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="350" Height="250" BorderBrush="Black" BorderThickness="2" Margin="-450, 520, 0, 0"/>
+                    <ComboBox x:Name="HusListeComboBox" Header="Huse" HorizontalAlignment="Center" Width="180" ItemsSource="{Binding HusListe, Mode=TwoWay}" SelectedIndex="{Binding HusListeSingleton.SelectedIndex, Mode=TwoWay}" Margin="145,0,0,0">
                     </ComboBox>
-                    <Button x:Name="TilmeldHusBtn" Content="Tilmeld Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding AddEvent}" IsEnabled="{Binding PlanSingleton.IsEnabled}" Margin="-85, 120, 0 ,0"/>
-                    <Button x:Name="AfmeldHusBtn" Content="Afmeld Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding RemoveEvent}" IsEnabled="{Binding PlanSingleton.IsEnabled}" Margin="115, 120, 0 ,0"/>
-                    <Button x:Name="SletHusBtn" Content="Slet Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding RemoveHouse}" Margin="-265, 120, 0, 0" />
+                    <Button x:Name="TilmeldHusBtn" Content="Tilmeld Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding AddEvent}" IsEnabled="{Binding PlanSingleton.IsEnabled}" Margin="75, 120, 0 ,0"/>
+                    <Button x:Name="AfmeldHusBtn" Content="Afmeld Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding RemoveEvent}" IsEnabled="{Binding PlanSingleton.IsEnabled}" Margin="275, 120, 0 ,0"/>
+                    <Button x:Name="SletHusBtn" Content="Slet Hus" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding RemoveHouse}" Margin="450, 120, 0, 0" />
                 </Grid>
             </PivotItem>
             <PivotItem Header="Opret hus">
@@ -61,20 +61,20 @@
                             x:Key="DateTimeConverter" />
                     </Grid.Resources>
 
-                    <ListView x:Name="JobListView" ItemsSource="{Binding PlanSingleton.ResultJob, Mode=TwoWay}" SelectedItem="{Binding SelectedJob, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180" Height="240" BorderBrush="Black" BorderThickness="2"/>
-                    <ListView x:Name="MenuListView" ItemsSource="{Binding PlanSingleton.ResultMenu, Mode=TwoWay}" SelectedItem="{Binding SelectedMenu, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="180" Height="120" BorderBrush="Black" BorderThickness="2" />
-                    <CalendarDatePicker x:Name="PlanlægKalenderPicker" Date="{Binding PlanSingleton.SingletonDateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="450,20,0,0"/>
-                    <Button x:Name="LåsDateTimeBtn" Command="{Binding NyLåsCommand}" Content="Lås dato!" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="450, 55, 0 , 0" />
-                    <Button x:Name="LåsOpDateTimeBtn" Command="{Binding RemoveLåsCommand}" Content="Lås op!" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="450, 95, 0 , 0" />
-                    
-                    <TextBox x:Name="JobPersonNavnTxtBox" Text="{Binding Job.JobPersonNavn, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="140" Margin="-150, 0, 0 ,0" PlaceholderText="Job"/>
-                    <ComboBox x:Name="JobPersonCBox" ItemsSource="{Binding JobPersonCBoxOptions}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="140" Margin="150, 0, 0 ,0"/>
-                    <Button x:Name="JobPersonAddBtn" Content="Tilføj Person" Command="{Binding AddJobPersonCommand}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-100, 50, 0 ,0"/>
-                    <Button x:Name="JobPersonRemoveBtn" Content="Fjern Person" Command="{Binding RemoveJobPersonCommand}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="100, 50, 0 ,0"/>
+                    <ListView x:Name="JobListView" ItemsSource="{Binding PlanSingleton.ResultJob, Mode=TwoWay}" Header=" Opgaver" SelectedItem="{Binding SelectedJob, Mode=TwoWay}" Margin="200,20,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="300" Height="240" BorderBrush="Black" BorderThickness="2"/>
+                    <ListView x:Name="MenuListView" ItemsSource="{Binding PlanSingleton.ResultMenu, Mode=TwoWay}" SelectedItem="{Binding SelectedMenu, Mode=TwoWay}" Header=" Menu" Margin="200,300,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="300" Height="120" BorderBrush="Black" BorderThickness="2" />
+                    <CalendarDatePicker x:Name="PlanlægKalenderPicker" Date="{Binding PlanSingleton.SingletonDateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-450,20,0,0"/>
+                    <Button x:Name="LåsDateTimeBtn" Command="{Binding NyLåsCommand}" Content="Lås dato!" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="-450, 55, 0 , 0" />
+                    <Button x:Name="LåsOpDateTimeBtn" Command="{Binding RemoveLåsCommand}" Content="Lås op!" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="-450, 95, 0 , 0" />
 
-                    <TextBox x:Name="MenuMealTxtBox" Text="{Binding Menu.MenuMeal, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="140" Margin="-100, 0, 0 ,0" PlaceholderText="Menu"/>
-                    <Button x:Name="MenuAddBtn" Content="Tilføj Menu" Command="{Binding AddMenuCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-100, 70, 0 ,0"/>
-                    <Button x:Name="MenuRemoveBtn" Content="Fjern Menu" Command="{Binding RemoveMenuCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100, 70, 0 ,0"/>
+                    <TextBox x:Name="JobPersonNavnTxtBox" Text="{Binding Job.JobPersonNavn, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="140" Margin="-600, 170, 0 ,0" PlaceholderText="Navn"/>
+                    <ComboBox x:Name="JobPersonCBox" ItemsSource="{Binding JobPersonCBoxOptions}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="140" Margin="-300, 170, 0 ,0"/>
+                    <Button x:Name="JobPersonAddBtn" Content="Tilføj Person" Command="{Binding AddJobPersonCommand}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-550, 220, 0 ,0"/>
+                    <Button x:Name="JobPersonRemoveBtn" Content="Fjern Person" Command="{Binding RemoveJobPersonCommand}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-340, 220, 0 ,0"/>
+
+                    <TextBox x:Name="MenuMealTxtBox" Text="{Binding Menu.MenuMeal, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="140" Margin="-450, 340, 0 ,0" PlaceholderText="Menu"/>
+                    <Button x:Name="MenuAddBtn" Content="Tilføj Menu" Command="{Binding AddMenuCommand}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-550, 380, 0 ,0"/>
+                    <Button x:Name="MenuRemoveBtn" Content="Fjern Menu" Command="{Binding RemoveMenuCommand}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-350, 380, 0 ,0"/>
 
                 </Grid>
             </PivotItem>
@@ -88,22 +88,22 @@
                             x:Key="DateTimeConverter" />
                     </Grid.Resources>
 
-                    <CalendarDatePicker x:Name="KasserKalenderPicker" Date="{Binding KassereDateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" Header="Dato for udlæg" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,40,0,0"/>
-                    <TextBox x:Name="UdlagtSumTxtBox" Text="{Binding UdlagtSumString, Mode=TwoWay}" Header="Udlægs sum" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" PlaceholderText="Udlagt Sum" Margin="200,40,0,0"/>
-                    <ComboBox x:Name="HusstandUdlagtCBox" ItemsSource="{Binding HusListe, Mode=TwoWay}" SelectedIndex="{Binding HusListeSingleton.SelectedIndex, Mode=TwoWay}" Header="Udlægs husstand" HorizontalAlignment="left" Width="180" Margin="345,0,0,0">
+                    <CalendarDatePicker x:Name="KasserKalenderPicker" Date="{Binding KassereDateTime, Converter={StaticResource DateTimeConverter}, Mode=TwoWay}" Header="Dato for udlæg" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,40,0,0"/>
+                    <TextBox x:Name="UdlagtSumTxtBox" Text="{Binding UdlagtSumString, Mode=TwoWay}" Header="Udlægs sum" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" PlaceholderText="Udlagt Sum" Margin="400,40,0,0"/>
+                    <ComboBox x:Name="HusstandUdlagtCBox" ItemsSource="{Binding HusListe, Mode=TwoWay}" SelectedIndex="{Binding HusListeSingleton.SelectedIndex, Mode=TwoWay}" Header="Udlægs husstand" HorizontalAlignment="left" Width="180" Margin="545,0,0,0">
                     </ComboBox>
-                    <Button x:Name="AddTilUdregningBtn" Command="{Binding AddToBeregningCommand}" Content="Add udlæg til udlægningsliste" HorizontalAlignment="Left" VerticalAlignment="Top" Width="465" Height="40" Margin="60, 105, 0, 0" />
-                    <Button x:Name="RemoveFraUdregningBtn" Command="{Binding RemoveBeregningCommand}" Content="Fjern fra udlægningsliste" HorizontalAlignment="Left" VerticalAlignment="Top" Width="465" Height="40" Margin="60, 150, 0, 0" />
+                    <Button x:Name="AddTilUdregningBtn" Command="{Binding AddToBeregningCommand}" Content="Add udlæg til udlægningsliste" HorizontalAlignment="Left" VerticalAlignment="Top" Width="465" Height="40" Margin="260, 105, 0, 0" />
+                    <Button x:Name="RemoveFraUdregningBtn" Command="{Binding RemoveBeregningCommand}" Content="Fjern fra udlægningsliste" HorizontalAlignment="Left" VerticalAlignment="Top" Width="465" Height="40" Margin="260, 150, 0, 0" />
 
-                    <ListView x:Name="ListeTilBeregningListView" ItemsSource="{Binding UdlægList}" SelectedValue="{Binding SelectedUdlæg, Mode= TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="700" BorderBrush="Black" BorderThickness="2" Margin="550, 28, 0 ,0" />
-                    <Button x:Name="UdregnKuvertPrisBtn" Command="{Binding UdregnKuvertPrisCommand}" Content="Udregn Kuvert!" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="40" Margin="550, 730, 0, 0" />
-                    <TextBlock x:Name="KuvertsPrisTxt" Text="{Binding FinalSumString}" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="722, 730, 0, 0" />
+                    <ListView x:Name="ListeTilBeregningListView" ItemsSource="{Binding UdlægList}" SelectedValue="{Binding SelectedUdlæg, Mode= TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="700" BorderBrush="Black" BorderThickness="2" Margin="750, 28, 0 ,0" />
+                    <Button x:Name="UdregnKuvertPrisBtn" Command="{Binding UdregnKuvertPrisCommand}" Content="Udregn Kuvert!" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Height="40" Margin="750, 730, 0, 0" />
+                    <TextBlock x:Name="KuvertsPrisTxt" Text="{Binding FinalSumString}" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="922, 730, 0, 0" />
 
-                    <TextBox x:Name="KuvertPrisTxtBox" Text="{Binding FinalSumString2, Mode=TwoWay}" Header="Kuvert pris" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" PlaceholderText="Kuvert pris" Margin="60, 250, 0, 0" />
-                    <ComboBox x:Name="BeregnForHusstadnCBox" ItemsSource="{Binding ResultatHusListe, Mode=TwoWay}" SelectedIndex="{Binding ResultatHusListeSelectedIndex, Mode=TwoWay}" Header="Beregn for husstand" HorizontalAlignment="left" Width="180" Margin="205,210,0,0">
+                    <TextBox x:Name="KuvertPrisTxtBox" Text="{Binding FinalSumString2, Mode=TwoWay}" Header="Kuvert pris" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" PlaceholderText="Kuvert pris" Margin="260, 250, 0, 0" />
+                    <ComboBox x:Name="BeregnForHusstadnCBox" ItemsSource="{Binding ResultatHusListe, Mode=TwoWay}" SelectedIndex="{Binding ResultatHusListeSelectedIndex, Mode=TwoWay}" Header="Beregn for husstand" HorizontalAlignment="left" Width="180" Margin="405,210,0,0">
                     </ComboBox>
-                    <TextBlock x:Name="HusstandDerSkalBetaleTxt" Text="{Binding EnkeltHusSumString}" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="400, 230, 0, 0" />
-                    <Button x:Name="BeregnForHusstandBtn" Command="{Binding UdregnEnkeltHusstandPrisCommand}" Content="Beregn pris for enkelt husstand" HorizontalAlignment="Left" VerticalAlignment="Top" Width="465" Height="40" Margin="60, 315, 0, 0" />
+                    <TextBlock x:Name="HusstandDerSkalBetaleTxt" Text="{Binding EnkeltHusSumString}" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="600, 230, 0, 0" />
+                    <Button x:Name="BeregnForHusstandBtn" Command="{Binding UdregnEnkeltHusstandPrisCommand}" Content="Beregn pris for enkelt husstand" HorizontalAlignment="Left" VerticalAlignment="Top" Width="465" Height="40" Margin="260, 315, 0, 0" />
 
                 </Grid>
             </PivotItem>
