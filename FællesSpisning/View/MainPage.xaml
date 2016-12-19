@@ -67,7 +67,7 @@
                         <m:DateTimeConverter
                             x:Key="DateTimeConverter" />
                     </Grid.Resources>
-                    <TextBlock x:Name="titel2Txt" HorizontalAlignment="Center" Text="Adminstrator" Margin="45, 20, 0, 0" FontSize="36"/>
+                    <TextBlock x:Name="titel2Txt" HorizontalAlignment="Center" Text="Adminstration" Margin="45, 20, 0, 0" FontSize="36"/>
                     <Grid Margin="500, 85, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="350" Height="120" Background="White"></Grid>
                     <ListView x:Name="MenuListView" ItemsSource="{Binding PlanSingleton.ResultMenu, Mode=TwoWay}" SelectedItem="{Binding SelectedMenu, Mode=TwoWay}" Header=" Menu" Margin="500,85,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="350" Height="120" BorderBrush="Black" BorderThickness="2" />
                     <Grid Margin="500,215,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="350" Height="650" Background="White"></Grid>
