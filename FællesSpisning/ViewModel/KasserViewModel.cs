@@ -202,6 +202,14 @@ namespace FællesSpisning.ViewModel
 
                 if (double.TryParse(UdlagtSumString, out _udlagtSum))
                 {
+                    if(UdlagtSum <= 0) {
+                        MessageDialog noEvent = new MessageDialog("Udlæg kan ikke være negativ eller 0!");
+                        noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                        noEvent.ShowAsync().AsTask();
+                        OutPutToUser = "";
+                    }
+                    else
+                    {
                     if (UdlagtSumString.Contains(","))
                     {
                         char[] tempArray = UdlagtSumString.ToCharArray();
@@ -258,8 +266,8 @@ namespace FællesSpisning.ViewModel
                         OutPutToUser = $"{tempUdlæg.UdlagtSum} kr. blev føjet til listen!";
 
                     }
+                    }
                 }
-
                 else
                 {
                     MessageDialog noEvent = new MessageDialog("Du kan kun indtaste tal!");
@@ -366,6 +374,16 @@ namespace FællesSpisning.ViewModel
             {
                 if (double.TryParse(FinalSumString2, out _finalSum))
                 {
+                    if(FinalSum <= 0)
+                    {
+                        MessageDialog noEvent = new MessageDialog("Kuvertpris kan ikke være negativ eller 0!");
+                        noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                        noEvent.ShowAsync().AsTask();
+                        OutPutToUser = "";
+                    }
+                    else
+                    {
+
                     if (FinalSumString2.Contains(","))
                     {
                         char[] tempArray = FinalSumString2.ToCharArray();
@@ -472,6 +490,7 @@ namespace FællesSpisning.ViewModel
                         }
                         OutPutToUser = $"Beregning for husstand {ResultatHusListe[ResultatHusListeSelectedIndex].HusNr} fuldført!";
                     }
+                   }
                 }
 
                 else

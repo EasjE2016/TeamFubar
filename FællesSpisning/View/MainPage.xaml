@@ -111,10 +111,10 @@
 
                     <Grid Margin="500, 78, 0 ,0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="350" Height="700" Background="White"></Grid>
                     <ListView x:Name="ListeTilBeregningListView" ItemsSource="{Binding UdlægList}" SelectedValue="{Binding SelectedUdlæg, Mode= TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="350" Height="700" BorderBrush="Black" BorderThickness="2" Margin="500, 78, 0 ,0" />
-                    <Button x:Name="UdregnKuvertPrisBtn" Command="{Binding UdregnKuvertPrisCommand}" Content="Udregn Kuvert!" HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" Height="40" Margin="300, 780, 0, 0" />
+                    <Button x:Name="UdregnKuvertPrisBtn" Command="{Binding UdregnKuvertPrisCommand}" Content="Udregn Kuvertpris!" HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" Height="40" Margin="300, 780, 0, 0" />
                     <TextBlock x:Name="KuvertsPrisTxt" Text="{Binding FinalSumString}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="750, 775, 0, 0" />
 
-                    <TextBox x:Name="KuvertPrisTxtBox" Text="{Binding FinalSumString2, Mode=TwoWay}" Header="Kuvert pris" HorizontalAlignment="Center" VerticalAlignment="Top" Width="140" PlaceholderText="Kuvert pris" Margin="-655, 330, 0, 0" />
+                    <TextBox x:Name="KuvertPrisTxtBox" Text="{Binding FinalSumString2, Mode=TwoWay}" Header="Kuvertpris" HorizontalAlignment="Center" VerticalAlignment="Top" Width="140" PlaceholderText="Kuvertpris" Margin="-655, 330, 0, 0" />
                     <ComboBox x:Name="BeregnForHusstadnCBox" ItemsSource="{Binding ResultatHusListe, Mode=TwoWay}" SelectedIndex="{Binding ResultatHusListeSelectedIndex, Mode=TwoWay}" Header="Beregn for husstand" HorizontalAlignment="Center" Width="180" Margin="-325,290,0,0">
                     </ComboBox>
                     <TextBlock x:Name="HusstandDerSkalBetaleTxt" Text="{Binding EnkeltHusSumString}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top" Width="140" Margin="15, 320, 0, 0" />
