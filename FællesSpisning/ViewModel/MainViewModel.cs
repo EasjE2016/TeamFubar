@@ -53,7 +53,17 @@ namespace FællesSpisning.ViewModel
                 OnPropertyChanged(nameof(SelectedHusListView));
             }
         }
-        
+
+        private String _outPutToUser;
+        public String OutPutToUser
+        {
+            get { return _outPutToUser; }
+            set
+            {
+                _outPutToUser = value;
+                OnPropertyChanged(nameof(OutPutToUser));
+            }
+        }
 
         public MainViewModel()
         {
@@ -74,15 +84,18 @@ namespace FællesSpisning.ViewModel
             if(SelectedHusListView != null) {
                 PlanSingleton.RemoveFraTilmeld(SelectedHusListView);
                 SaveList_Async(PlanSingleton.TilmeldsListe, FileNameTilmeldsListe);
+                OutPutToUser = $"Husstand blev afmeldt fra d. {PlanSingleton.SingletonDateTime.ToString("MM/dd")}!";
             } else { 
                 MessageDialog noEvent = new MessageDialog("Vælg en husstand på listen!");
                 noEvent.Commands.Add(new UICommand { Label = "Ok" });
                 noEvent.ShowAsync().AsTask();
+                OutPutToUser = "";
             }
         }
 
         public void AddEventOnDateTime()
         {
+            if (HusListe.Count > 0) {
             Hus tempHus = new Hus();
             tempHus.AntalBørnU3 = HusListe[HusListeSingleton.SelectedIndex].AntalBørnU3;
             tempHus.AntalBørn = HusListe[HusListeSingleton.SelectedIndex].AntalBørn;
@@ -90,16 +103,27 @@ namespace FællesSpisning.ViewModel
             tempHus.AntalVoksne = HusListe[HusListeSingleton.SelectedIndex].AntalVoksne;
             tempHus.HusNr = HusListe[HusListeSingleton.SelectedIndex].HusNr;
             tempHus.DT = PlanSingleton.SingletonDateTime;
-
-            if(PlanSingleton.TilmeldsListe.Any(husObj => husObj.DT == tempHus.DT && husObj.HusNr == tempHus.HusNr) == false)
+            
+            if (PlanSingleton.TilmeldsListe.Any(husObj => husObj.DT == tempHus.DT && husObj.HusNr == tempHus.HusNr) == false)
             {
                 PlanSingleton.AddTilTilmeld(tempHus);
                 SaveList_Async(PlanSingleton.TilmeldsListe, FileNameTilmeldsListe);
-            } else
+                OutPutToUser = $"Husstand blev tilmeldt til d. {PlanSingleton.SingletonDateTime.ToString("MM/dd")}!";
+            }
+                else
             {
                 MessageDialog noEvent = new MessageDialog("Denne husstand er allerede tilmeldt!");
                 noEvent.Commands.Add(new UICommand { Label = "Ok" });
                 noEvent.ShowAsync().AsTask();
+                OutPutToUser = "";
+            }
+            }
+            else
+            {
+                MessageDialog noEvent = new MessageDialog("Ingen husstand er valgt!");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+                OutPutToUser = "";
             }
 
         }
@@ -107,12 +131,20 @@ namespace FællesSpisning.ViewModel
         public void RemoveHouseFromList()
         {
             if(HusListe.Count != 0) {
+                OutPutToUser = $"Husstand {HusListe[HusListeSingleton.SelectedIndex].HusNr} blev slettet!";
                 HusListeSingleton.RemoveHouse(HusListe[HusListeSingleton.SelectedIndex]);
                 SaveList_Async(HusListe, FileNameForHusListe);
                 if(HusListe.Count > 0)
                 {
                     HusListeSingleton.SelectedIndex = 0;
                 }
+            }
+            else
+            {
+                MessageDialog noEvent = new MessageDialog("Der er ingen husstand at slette!");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+                OutPutToUser = "";
             }
         }
 

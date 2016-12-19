@@ -15,7 +15,7 @@ namespace FællesSpisning.Model
 
         public override string ToString()
         {
-            return JobPersonNavn + " \n " + JobPersonOpgave + " \n ";
+            return "\n" + JobPersonNavn + " \n " + JobPersonOpgave + "\n ";
         }
     }
 }

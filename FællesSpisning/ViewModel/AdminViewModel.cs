@@ -34,6 +34,7 @@ namespace FællesSpisning.ViewModel
         public RelayCommand RemoveMenuCommand { get; set; }
         public RelayCommand NyLåsCommand { get; set; }
         public RelayCommand RemoveLåsCommand { get; set; }
+        public RelayCommand RydAltCommand { get; set; }
 
 
         private PlanlægningSingleton _planSingleton;
@@ -67,6 +68,14 @@ namespace FællesSpisning.ViewModel
             }
         }
 
+        private String _outPutToUser;
+        public String OutPutToUser
+        {
+            get { return _outPutToUser; }
+            set { _outPutToUser = value;
+                OnPropertyChanged(nameof(OutPutToUser));
+            }
+        }
 
         public AdminViewModel()
         {
@@ -79,6 +88,7 @@ namespace FællesSpisning.ViewModel
             RemoveMenuCommand = new RelayCommand(RemoveSelectedMenu, null);
             NyLåsCommand = new RelayCommand(AddNyLås, null);
             RemoveLåsCommand = new RelayCommand(RemoveLås, null);
+            RydAltCommand = new RelayCommand(RydAlt, null);
 
             SelectedJob = new JobPerson();
             SelectedMenu = new Menu();
@@ -97,10 +107,12 @@ namespace FællesSpisning.ViewModel
                 MessageDialog locked = new MessageDialog("Dato er allerede låst");
                 locked.Commands.Add(new UICommand { Label = "Ok" });
                 locked.ShowAsync().AsTask();
+                OutPutToUser = "";
             } else
             {
                 bool BoolLock = true;
                 PlanSingleton.AddNewLock(PlanSingleton.SingletonDateTime, BoolLock);
+                OutPutToUser = $"{PlanSingleton.SingletonDateTime.ToString("MM/dd")} er låst for tilmeldinger!";
                 SaveJsonLockDates_Async();
             }
         }
@@ -115,14 +127,22 @@ namespace FællesSpisning.ViewModel
                     {
                         PlanSingleton.RemoveLock();
                         SaveJsonLockDates_Async();
+                        OutPutToUser = $"{PlanSingleton.SingletonDateTime.ToString("MM/dd")} er blevet låst op!";
                     }                
                 }
+            }
+            else
+            {
+                MessageDialog locked = new MessageDialog("Denne dato er ikke låst!");
+                locked.Commands.Add(new UICommand { Label = "Ok" });
+                locked.ShowAsync().AsTask();
+                OutPutToUser = "";
             }
         }
 
         public void AddNewJobPerson()
         {
-
+            if(!String.IsNullOrEmpty(Job.JobPersonNavn) && !String.IsNullOrWhiteSpace(Job.JobPersonNavn)) {
             JobPerson tempJob = new JobPerson();
 
             tempJob.JobDateTime = PlanSingleton.SingletonDateTime;
@@ -131,12 +151,21 @@ namespace FællesSpisning.ViewModel
 
             PlanSingleton.AddJobPerson(tempJob);
             SaveJobList_Async();
+            OutPutToUser = $"{tempJob.JobPersonNavn} er tildelt {tempJob.JobPersonOpgave}!";
+            }
+            else
+            {
+                MessageDialog locked = new MessageDialog("Du skal skrive et navn!");
+                locked.Commands.Add(new UICommand { Label = "Ok" });
+                locked.ShowAsync().AsTask();
+                OutPutToUser = "";
+            }
         }
 
 
         public void AddNewMenu()
         {
-
+            if (!String.IsNullOrEmpty(Menu.MenuMeal) && !String.IsNullOrWhiteSpace(Menu.MenuMeal)) {
             Menu tempMenu = new Menu();
 
             tempMenu.MenuDateTime = PlanSingleton.SingletonDateTime;
@@ -144,13 +173,21 @@ namespace FællesSpisning.ViewModel
 
             PlanSingleton.AddMenu(tempMenu);
             SaveMenuList_Async();
-
+            OutPutToUser = $"{tempMenu.MenuMeal} er dagens måltid!";
+            } else
+            {
+                MessageDialog locked = new MessageDialog("Du skal skrive en menu!");
+                locked.Commands.Add(new UICommand { Label = "Ok" });
+                locked.ShowAsync().AsTask();
+                OutPutToUser = "";
+            }
         }
 
         public void RemoveSelectedJobPerson()
         {
-            if (SelectedJob != null)
+            if ((SelectedJob != null) && (SelectedJob.JobPersonNavn != null))
             {
+                OutPutToUser = $"{SelectedJob.JobPersonNavn} er fjernet som {SelectedJob.JobPersonOpgave}";
                 PlanSingleton.RemoveJobPerson(SelectedJob);
                 SaveJobList_Async();
             }
@@ -159,6 +196,7 @@ namespace FællesSpisning.ViewModel
                 MessageDialog noEvent = new MessageDialog("Vælg person for at slette!");
                 noEvent.Commands.Add(new UICommand { Label = "Ok" });
                 noEvent.ShowAsync().AsTask();
+                OutPutToUser = "";
             }
 
         }
@@ -166,8 +204,9 @@ namespace FællesSpisning.ViewModel
 
         public void RemoveSelectedMenu()
         {
-            if (SelectedMenu != null)
+            if ((SelectedMenu != null) && (SelectedMenu.MenuMeal != null))
             {
+                OutPutToUser = $"{SelectedMenu.MenuMeal} er fjernet!";
                 PlanSingleton.RemoveMenu(SelectedMenu);
                 SaveMenuList_Async();
             }
@@ -176,11 +215,31 @@ namespace FællesSpisning.ViewModel
                 MessageDialog noEvent = new MessageDialog("Vælg menu for at slette!");
                 noEvent.Commands.Add(new UICommand { Label = "Ok" });
                 noEvent.ShowAsync().AsTask();
+                OutPutToUser = "";
             }
 
         }
 
-
+        public void RydAlt()
+        {
+            if(PlanSingleton.MenuListe.Count > 0 || PlanSingleton.JobListe.Count > 0)
+            {
+                PlanSingleton.MenuListe.Clear();
+                PlanSingleton.DisplayMenuOnDateTime();
+                PlanSingleton.JobListe.Clear();
+                PlanSingleton.DisplayJobOnDateTime();
+                SaveJobList_Async();
+                SaveMenuList_Async();
+                OutPutToUser = "Listerne er blevet ryddet!";
+            }
+            else
+            {
+                MessageDialog noEvent = new MessageDialog("Begge lister er tomme!");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+                OutPutToUser = "";
+            }
+        }
         //Add muligheder til ComboBox
         public void AddCBoxOptions()
         {

@@ -159,7 +159,17 @@ namespace FællesSpisning.ViewModel
             get { return _multiplicationEnkeltHusstand; }
             set { _multiplicationEnkeltHusstand = value; }
         }
-
+        
+        private String _outPutToUser;
+        public String OutPutToUser
+        {
+            get { return _outPutToUser; }
+            set
+            {
+                _outPutToUser = value;
+                OnPropertyChanged(nameof(OutPutToUser));
+            }
+        }
 
         public KasserViewModel()
         {
@@ -185,7 +195,7 @@ namespace FællesSpisning.ViewModel
 
         public void AddToBeregning()
         {
-            if (!String.IsNullOrWhiteSpace(UdlagtSumString))
+            if (!String.IsNullOrEmpty(UdlagtSumString) || !String.IsNullOrWhiteSpace(UdlagtSumString))
             {
                 Udlæg tempUdlæg = new Udlæg();
                 
@@ -221,11 +231,14 @@ namespace FællesSpisning.ViewModel
                             }
 
                             UdlægList.Add(tempUdlæg);
+                            OutPutToUser = $"{tempUdlæg.UdlagtSum} kr. blev føjet til listen!";
+
                         } else
                         {
                             MessageDialog noEvent = new MessageDialog("Du kan kun bruge 1 komma.");
                             noEvent.Commands.Add(new UICommand { Label = "Ok" });
                             noEvent.ShowAsync().AsTask();
+                            OutPutToUser = "";
                         }
                     } else {                    
                     
@@ -242,8 +255,9 @@ namespace FællesSpisning.ViewModel
                         }
 
                         UdlægList.Add(tempUdlæg);
-                    
-                   }
+                        OutPutToUser = $"{tempUdlæg.UdlagtSum} kr. blev føjet til listen!";
+
+                    }
                 }
 
                 else
@@ -251,16 +265,32 @@ namespace FællesSpisning.ViewModel
                     MessageDialog noEvent = new MessageDialog("Du kan kun indtaste tal!");
                     noEvent.Commands.Add(new UICommand { Label = "Ok" });
                     noEvent.ShowAsync().AsTask();
+                    OutPutToUser = "";
                 }
             }
+            else
+            {
+                MessageDialog noEvent = new MessageDialog("Du skal indtaste et tal!");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+                OutPutToUser = "";
+            } 
             
         }//Method close
 
         public void RemoveBeregning()
         {
-            if(SelectedUdlæg != null)
+            if((SelectedUdlæg != null) && (SelectedUdlæg.HusNr != 0))
             {
                 UdlægList.Remove(SelectedUdlæg);
+                OutPutToUser = $"Udlæg blev fjernet fra listen!";
+            }
+            else
+            {
+                MessageDialog noEvent = new MessageDialog("Intet udlæg er valgt fra listen!");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+                OutPutToUser = "";
             }
         }
 
@@ -270,7 +300,7 @@ namespace FællesSpisning.ViewModel
 
             foreach (Hus relHus in RelevanteHusstande)
             {
-                if((ResultatHusListe.Count == 0) || (ResultatHusListe.Any(resultHus => resultHus.HusNr == relHus.HusNr) == false))
+                if((ResultatHusListe.Count == 0) || (ResultatHusListe.Any(resultHus => resultHus.HusNr == relHus.HusNr && resultHus.AntalVoksne == relHus.AntalVoksne && resultHus.AntalBørn == relHus.AntalBørn && resultHus.AntalUnge == relHus.AntalUnge && resultHus.AntalBørnU3 == resultHus.AntalBørnU3) == false))
                 {
                     ResultatHusListe.Add(relHus);
                 }
@@ -318,18 +348,21 @@ namespace FællesSpisning.ViewModel
             FinalSumString2 = FinalSum.ToString();
 
             LavResultatHusLise();
-          }
+            OutPutToUser = $"Beregning fuldført!";
+            }
           else
           {
                 MessageDialog noEvent = new MessageDialog("Du kan ikke udregne med en tom liste!");
                 noEvent.Commands.Add(new UICommand { Label = "Ok" });
                 noEvent.ShowAsync().AsTask();
+                OutPutToUser = "";
            }
+
        }
 
         public void EnkeltHusstandUdregning()
         {
-            if (!String.IsNullOrWhiteSpace(FinalSumString2))
+            if ((!String.IsNullOrEmpty(FinalSumString2)) || (!String.IsNullOrWhiteSpace(FinalSumString2)))
             {
                 if (double.TryParse(FinalSumString2, out _finalSum))
                 {
@@ -387,12 +420,14 @@ namespace FællesSpisning.ViewModel
                                 EnkeltHusSum = Math.Round(EnkeltHusSum * AttendanceTimes, 2);
                                 EnkeltHusSumString = $"Husstand {ResultatHusListe[ResultatHusListeSelectedIndex].HusNr}\r\nskal betale:\r\n{EnkeltHusSum} kr.";
                             }
+                            OutPutToUser = $"Beregning for husstand {ResultatHusListe[ResultatHusListeSelectedIndex].HusNr} fuldført!";
                         }
                         else
                         {
                             MessageDialog noEvent = new MessageDialog("Du kan kun bruge 1 komma.");
                             noEvent.Commands.Add(new UICommand { Label = "Ok" });
                             noEvent.ShowAsync().AsTask();
+                            OutPutToUser =  "";
                         }
                     }
                     else
@@ -435,7 +470,7 @@ namespace FællesSpisning.ViewModel
                             EnkeltHusSum = EnkeltHusSum * AttendanceTimes;
                             EnkeltHusSumString = $"Husstand {ResultatHusListe[ResultatHusListeSelectedIndex].HusNr}\r\nskal betale:\r\n{EnkeltHusSum} kr.";
                         }
-
+                        OutPutToUser = $"Beregning for husstand {ResultatHusListe[ResultatHusListeSelectedIndex].HusNr} fuldført!";
                     }
                 }
 
@@ -444,7 +479,15 @@ namespace FællesSpisning.ViewModel
                     MessageDialog noEvent = new MessageDialog("Du kan kun indtaste tal!");
                     noEvent.Commands.Add(new UICommand { Label = "Ok" });
                     noEvent.ShowAsync().AsTask();
+                    OutPutToUser = "";
                 }
+            }
+            else
+            {
+                MessageDialog noEvent = new MessageDialog("Du skal indtaste et tal!");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
+                OutPutToUser = "";
             }
         }
 

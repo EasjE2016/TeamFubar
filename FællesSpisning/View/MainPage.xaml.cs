@@ -25,11 +25,10 @@ namespace FællesSpisning
     {
         public MainPage()
         {
-            this.InitializeComponent();
-
             ApplicationView.PreferredLaunchViewSize = new Size(12800, 6000);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
+            this.InitializeComponent();
         }
 
         private void textBlock_SelectionChanged(object sender, RoutedEventArgs e)

@@ -7,6 +7,7 @@ using System.ComponentModel;
 using FællesSpisning.Model;
 using Newtonsoft.Json;
 using Windows.Storage;
+using Windows.UI.Popups;
 
 namespace FællesSpisning.ViewModel
 {
@@ -42,6 +43,15 @@ namespace FællesSpisning.ViewModel
             set { _tempHusNr = value; }
         }
 
+        private String _outPutToUser;
+        public String OutPutToUser
+        {
+            get { return _outPutToUser; }
+            set { _outPutToUser = value;
+                OnPropertyChanged(nameof(OutPutToUser));
+            }
+        }
+
 
         //HusListeSingleton
         public ObsHusListeSingleton HusListe { get; set; }
@@ -57,7 +67,7 @@ namespace FællesSpisning.ViewModel
 
         public void AddNewHouse()
         {
-            if(TempHusNr.All(char.IsDigit))
+            if((!String.IsNullOrEmpty(TempHusNr)) && (TempHusNr.All(char.IsDigit)))
             {
 
                 Hus tempHusObj = new Hus();
@@ -69,6 +79,13 @@ namespace FællesSpisning.ViewModel
 
                 HusListe.AddNewHouse(tempHusObj);
                 SaveList_Async();
+                OutPutToUser = "Husstand blev oprettet!";
+            } else
+            {
+                OutPutToUser = "";
+                MessageDialog noEvent = new MessageDialog("Hus nummer skal være et tal!");
+                noEvent.Commands.Add(new UICommand { Label = "Ok" });
+                noEvent.ShowAsync().AsTask();
             }
 
 
